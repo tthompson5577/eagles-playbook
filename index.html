@@ -643,7 +643,7 @@ function renderTabs(){
   $('#tabs').innerHTML=TABS.map(t=>`<button class="tb" role="tab" data-act="tab" data-k="${t[0]}" aria-selected="${store.tab===t[0]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${t[2]}</svg>${t[1]}</button>`).join('');
 }
 const inSeries=x=>store.series==='All'||x.series===store.series;
-function needSignIn(){return !!API_URL&&!store.player&&!store.guest;}
+function needSignIn(){return !!API_URL&&!store.player;}
 function render(keepScroll){
   stopAnim();
   const gate=needSignIn();
@@ -843,7 +843,7 @@ function signInView(){
       <input id="si-who" name="who" class="inp" type="text" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="e.g. Angel Reese" required>
       <button class="btn primary block" type="submit" ${signin.busy?'disabled':''}>${signin.busy?'Checking…':'Sign in'}</button></form>
     ${signin.msg?`<p class="err" role="alert">${esc(signin.msg)}</p>`:''}
-    <button class="link" data-act="si-guest" style="margin-top:14px">Practice without signing in</button></div>`;
+    <p class="muted small" style="margin:14px 0 0">Don't know your player? Ask Coach.</p></div>`;
 }
 
 function mastered(series,plays,last){
