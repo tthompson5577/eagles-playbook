@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Eagles Playbook</title>
+<meta name="description" content="Stratton Girls Basketball playbook trainer: learn the Princeton motion and quiz your reads.">
+<meta name="theme-color" content="#0f3d28">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Eagles Playbook">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+:root{
+  --bg:#eef4f0;--surface:#fff;--surface-2:#f3f8f5;--line:#d5e3db;--ink:#122019;--muted:#586b60;
+  --band:#0f3d28;--band-ink:#f2f8f4;--band-muted:#9fc3ae;
+  --brand:#1b6b43;--on-brand:#fff;--chip:#e2efe8;--chip-ink:#155636;
+  --good:#1f8a51;--good-soft:#dcefe3;--bad:#c23b2b;--bad-soft:#fbe7e3;--ball:#ff7a1a;--you:#ff9a3c;--gold:#ffd25a;
+  --floor:#1f5d3e;--paint:#194f34;--court-line:rgba(255,255,255,.85);--def:#ffe08a;
+  --font-display:"Oswald","Arial Narrow","Roboto Condensed","Helvetica Neue",Arial,sans-serif;
+  --font-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --radius:14px;--shadow:0 1px 2px rgba(15,61,40,.06),0 4px 14px rgba(15,61,40,.08);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c1712;--surface:#13201a;--surface-2:#1a2b22;--line:#284037;--ink:#e7f1ea;--muted:#9cb0a5;
+  --band:#08130d;--band-ink:#eef6f1;--band-muted:#86a896;--brand:#3fae6c;--on-brand:#06120b;--chip:#1e332a;--chip-ink:#8fdcae;
+  --good:#4cc27f;--good-soft:#173323;--bad:#e2685a;--bad-soft:#3a201c;--shadow:0 1px 2px rgba(0,0,0,.3),0 4px 14px rgba(0,0,0,.25);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1712;--surface:#13201a;--surface-2:#1a2b22;--line:#284037;--ink:#e7f1ea;--muted:#9cb0a5;
+  --band:#08130d;--band-ink:#eef6f1;--band-muted:#86a896;--brand:#3fae6c;--on-brand:#06120b;--chip:#1e332a;--chip-ink:#8fdcae;
+  --good:#4cc27f;--good-soft:#173323;--bad:#e2685a;--bad-soft:#3a201c;color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.45 var(--font-body);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-display);margin:0;text-transform:uppercase;letter-spacing:.03em;font-weight:600}
+.wrap{max-width:560px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left,0px)) 0 max(16px,env(safe-area-inset-right,0px))}
+header.band{background:var(--band);color:var(--band-ink);padding-top:env(safe-area-inset-top,0px)}
+header .wrap{padding-top:14px;padding-bottom:12px}
+.eyebrow{font:500 12px/1 var(--font-display);letter-spacing:.16em;text-transform:uppercase;color:var(--band-muted)}
+header h1{font-size:26px;line-height:1.05;margin-top:6px}
+header h1 span{color:var(--band-muted);font-weight:500}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:12px;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{appearance:none;border:1px solid rgba(255,255,255,.25);background:transparent;color:var(--band-ink);border-radius:999px;padding:7px 14px;font:500 14px/1 var(--font-display);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--band-ink);color:var(--band);border-color:var(--band-ink)}
+main .wrap{padding-top:16px;padding-bottom:24px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:12px}
+.muted{color:var(--muted)}.small{font-size:14px}
+.pill{display:inline-block;font:500 11px/1 var(--font-display);letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;border-radius:999px;background:var(--chip);color:var(--chip-ink);vertical-align:middle}
+.pill.good{background:var(--good-soft);color:var(--good)}
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:11px 18px;font-weight:600;font-size:16px;cursor:pointer;line-height:1.1;text-decoration:none;color:var(--ink);min-height:44px}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.btn[disabled]{opacity:.4;cursor:default}
+.btn.block{width:100%}
+.row{display:flex;gap:8px;align-items:center}
+.row.spread{justify-content:space-between}
+.list{display:grid;gap:8px}
+.item{appearance:none;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 14px;display:flex;gap:12px;align-items:center;cursor:pointer;box-shadow:var(--shadow);color:var(--ink)}
+.item .t{font:600 17px/1.2 var(--font-display);text-transform:uppercase;letter-spacing:.02em}
+.item .s{font-size:14px;color:var(--muted);margin-top:2px}
+.item .go{margin-left:auto;color:var(--muted);font-size:20px}
+.item .ck{width:24px;height:24px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:14px;border:2px solid var(--line);color:transparent}
+.item .ck.on{background:var(--good);border-color:var(--good);color:#fff}
+.grp{font:500 13px/1 var(--font-display);letter-spacing:.14em;text-transform:uppercase;color:var(--brand);margin:18px 0 8px}
+.court-wrap{background:var(--floor);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);touch-action:none;user-select:none;-webkit-user-select:none}
+svg.court{display:block;width:100%;height:auto}
+.cap{font-size:17px;margin:12px 0 4px;min-height:3em}
+.stepno{font:500 12px/1 var(--font-display);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.dots{display:flex;gap:6px;margin:8px 0 12px}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--brand)}
+.ctl{display:grid;grid-template-columns:auto 1fr auto;gap:8px}
+.back{appearance:none;border:0;background:none;color:var(--brand);font-weight:600;padding:6px 0;margin-bottom:8px;cursor:pointer}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted);margin-top:10px}
+.legend svg{vertical-align:middle;margin-right:4px}
+.prompt{font:600 19px/1.25 var(--font-body);margin:12px 0 10px}
+.sit{font-size:15px;color:var(--muted);margin-top:12px}
+.choices{display:grid;gap:8px}
+.choice{appearance:none;text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 14px;font-size:16px;font-weight:600;cursor:pointer;color:var(--ink);min-height:48px}
+.choice.right{border-color:var(--good);background:var(--good-soft)}
+.choice.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.choice[disabled]{cursor:default}
+.fb{border-radius:12px;padding:12px 14px;margin-top:12px;font-size:16px}
+.fb b{font-family:var(--font-display);text-transform:uppercase;letter-spacing:.06em;font-size:18px;display:block;margin-bottom:2px}
+.fb.good{background:var(--good-soft)}.fb.good b{color:var(--good)}
+.fb.bad{background:var(--bad-soft)}.fb.bad b{color:var(--bad)}
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.bar{height:10px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+.bar span{display:block;height:100%;background:var(--brand)}
+.big{font:700 54px/1 var(--font-display);color:var(--brand)}
+.rules{margin:0;padding-left:1.3em;display:grid;gap:6px}
+.rules b{font-family:var(--font-display);text-transform:uppercase;letter-spacing:.03em;font-weight:600}
+details.card summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details.card summary::-webkit-details-marker{display:none}
+details.card summary::after{content:"+";font-size:22px;color:var(--muted)}
+details.card[open] summary::after{content:"–"}
+details.card[open] summary{margin-bottom:10px}
+nav.tabbar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav.tabbar .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.tb{appearance:none;border:0;background:none;padding:8px 0 10px;display:grid;justify-items:center;gap:3px;font:500 12px/1 var(--font-display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;min-height:56px}
+.tb svg{width:24px;height:24px}
+.tb[aria-selected="true"]{color:var(--brand)}
+.stat{display:grid;gap:6px;margin-top:12px}
+.stat .row{font-size:15px}
+a{color:var(--brand)}
+.pulse{animation:pulse 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+</style>
+</head>
+<body>
+<header class="band"><div class="wrap">
+  <div class="eyebrow">Stratton Eagles · Girls Basketball</div>
+  <h1>Playbook <span>Trainer</span></h1>
+  <div class="chips" id="chips" role="group" aria-label="Series"></div>
+</div></header>
+<main><div class="wrap" id="view"></div></main>
+<nav class="tabbar" aria-label="Sections"><div class="wrap" role="tablist" id="tabs"></div></nav>
+
+<script>
+'use strict';
+/* =====================================================================
+   CONTENT (plain data). Add plays and quiz questions here.
+   Court is in FEET: x = -25 (left sideline) .. 25 (right sideline),
+   y = 0 at the baseline up to 47 at half court. The rim is at [0, 5.25].
+   Offense players are "1".."5"; defenders are "x1".."x5".
+   Actions in a step:
+     P(from, to)        pass                (dashed arrow)
+     H(from, to)        dribble handoff
+     C(p, [x,y], via)   cut                 (solid arrow; optional curve point)
+     D(p, [x,y])        dribble             (zig-zag arrow)
+     S(p, [x,y])        screen              (T-line)
+   ===================================================================== */
+const P=(f,to)=>({t:'pass',f:String(f),to:String(to)});
+const H=(f,to)=>({t:'hand',f:String(f),to:String(to)});
+const C=(p,to,via)=>({t:'cut',p:String(p),to,via});
+const D=(p,to)=>({t:'drib',p:String(p),to});
+const S=(p,to)=>({t:'screen',p:String(p),to});
+
+const SP={lb:[-7.5,8],rb:[7.5,8],hp:[0,18],ls:[-8,26],rs:[8,26],lw:[-20,18],rw:[20,18],lc:[-21.5,3],rc:[21.5,3],top:[0,28]};
+const LOW  ={1:SP.ls,2:SP.rs,3:SP.lw,4:SP.rw,5:SP.lb};
+const POINT={1:SP.ls,2:SP.rs,3:SP.lw,4:SP.rw,5:SP.hp};
+const FIVE ={1:[-14,25],2:[14,25],3:[-21,8],4:[21,8],5:[0,29]};
+const TRANS={1:[0,42],2:[7,46],3:[-19,40],4:[19,40],5:[-4,37]};
+const with_=(base,extra)=>Object.assign({},base,extra);
+
+const SERIES=['All','Rules','Low','Point','5 Out'];
+
+const RULES=[
+  ['Overplayed? Backcut.','Step up, plant, go to the rim. Bounce pass on every backdoor.'],
+  ['Dribble at you = handoff or backcut.','Defender trailing = come get the handoff. Defender jumping it = backcut. Never stand still.'],
+  ['Pass and move.','After you pass, cut or screen. Never stand and watch.'],
+  ['Fill the empty spot.','When someone cuts, the next player replaces her.'],
+  ['Post feed on the block = cut off the post.','Split, Split Backcut, or Curl.'],
+  ['Ball reversal = post flashes high.','Duck in if her defender is behind her. High-post catch = Point.'],
+  ['Ball at the high post = read Away or Over.','Away is our base. Ball-side wing denied = backdoor.'],
+  ['Every catch faces the rim.','Catch & Shoot / Go / Rip / Pump Fake.'],
+  ['Shots we want.','Layups, post catches in the paint, open 3s.'],
+  ['Talk.','"Back!" on a backcut, "Hand!" on a handoff.']
+];
+
+const PLAYS=[
+ {id:'low-transition',series:'Low',stage:1,title:'Transition into Low',sub:'Run, kick it ahead, feed the post',view:'full',
+  video:'https://www.youtube.com/watch?v=OtEbuDo6Yac',start:TRANS,ball:'1',
+  steps:[
+   {cap:'Rim runner (5) sprints straight to the rim and seals on the ball-side block. Wings sprint wide up the sidelines. 1 pushes the ball up the left side; 2 trails.',
+    a:[C(5,SP.lb,[-3,16]),C(3,SP.lw,[-21,30]),C(4,SP.rw,[21,30]),D(1,[-8,27]),C(2,SP.rs)]},
+   {cap:'1 kicks it ahead to the wing. Every catch faces the rim.',a:[P(1,3)]},
+   {cap:'3 feeds the post on the block. 5 seals: wide base, target hand away from her defender.',a:[P(3,5)]}
+  ],end:'Ball is in the post. Now cut off the post: Split, Split Backcut or Curl (next plays).'},
+
+ {id:'low-split',series:'Low',stage:1,title:'Low: Split',sub:'Passer screens, cutter pops to the wing',
+  video:'https://www.youtube.com/watch?v=7KBun_5cNPc',start:LOW,ball:'3',
+  steps:[
+   {cap:'3 feeds 5 on the block.',a:[P(3,5)]},
+   {cap:'Split: 3 (the passer) runs up and screens for 1.',a:[S(3,[-12,23])]},
+   {cap:'1 comes off the screen to the wing. 3 fills the empty slot. 5 reads the cutters first.',a:[C(1,[-20,16],[-14,25.5]),C(3,SP.ls,[-10,26])]},
+   {cap:'5 kicks it out to 1 for the catch & shoot.',a:[P(5,1)]}
+  ],end:'Never stand after a post feed. The post is the passer.'},
+
+ {id:'low-split-backcut',series:'Low',stage:1,title:'Low: Split Backcut',sub:'Defender jumps the screen? Go backdoor',
+  video:'https://www.youtube.com/watch?v=7KBun_5cNPc',start:LOW,ball:'3',
+  steps:[
+   {cap:'3 feeds 5 on the block.',a:[P(3,5)]},
+   {cap:'3 runs up to screen for 1.',a:[S(3,[-12,23])]},
+   {cap:'1\'s defender jumps over the top of the screen. 1 plants and backcuts to the rim. Call "Back!" 3 fills the slot.',a:[C(1,[-2,6],[-8,15]),C(3,SP.ls,[-10,26])]},
+   {cap:'5 hits the backcut with a bounce pass. Layup.',a:[P(5,1)]}
+  ],end:'Split Backcut beats a defender who cheats over the screen.'},
+
+ {id:'low-curl',series:'Low',stage:1,title:'Low: Curl',sub:'Curl tight for the handoff',
+  video:'https://www.youtube.com/watch?v=7KBun_5cNPc',start:LOW,ball:'3',
+  steps:[
+   {cap:'3 feeds 5 on the block.',a:[P(3,5)]},
+   {cap:'3 runs up to screen for 1.',a:[S(3,[-12,23])]},
+   {cap:'1\'s defender trails the screen. 1 curls tight around it toward 5. 3 fills the slot.',a:[C(1,[-4.5,11],[-16,19]),C(3,SP.ls,[-10,26])]},
+   {cap:'5 hands it off. 1 finishes at the rim.',a:[H(5,1)]}
+  ],end:'Curl when the defender trails you around the screen.'},
+
+ {id:'low-reversal',series:'Low',stage:2,title:'Low to Point: Reversal',sub:'Swing it, post flashes high',
+  video:'https://www.youtube.com/watch?v=F04sPDeFRuw',start:LOW,ball:'3',
+  steps:[
+   {cap:'No post feed? Swing it. 3 passes back to 1.',a:[P(3,1)]},
+   {cap:'1 reverses it to 2. On the reversal, 5 flashes to the high post.',a:[P(1,2),C(5,SP.hp,[-5,13])]},
+   {cap:'2 hits 5 at the high post.',a:[P(2,5)]}
+  ],end:'High-post catch = POINT. Every reversal turns Low into Point without a call.'},
+
+ {id:'point-away',series:'Point',stage:2,title:'Point Away (Base)',sub:'Pass to the high post, screen away',
+  video:'https://www.youtube.com/watch?v=fJxH3z4j49k',start:POINT,ball:'1',
+  steps:[
+   {cap:'1 passes to 5 at the high post.',a:[P(1,5)]},
+   {cap:'AWAY: 1 cuts away and down-screens for 3.',a:[S(1,[-17,15])]},
+   {cap:'3 uses the screen and comes up to the slot. 1 pops back out to the wing.',a:[C(3,[-9,26],[-15,20]),C(1,[-20,17],[-19,14])]},
+   {cap:'5 passes to 3. Ball is back on top. Keep it moving.',a:[P(5,3)]}
+  ],end:'Away is our base. Most common read next: the wing rejects the screen and goes backdoor.'},
+
+ {id:'point-away-reject',series:'Point',stage:2,title:'Point Away: Reject',sub:'Wing rejects the screen, backdoor',
+  video:'https://www.youtube.com/watch?v=fJxH3z4j49k',start:POINT,ball:'1',
+  steps:[
+   {cap:'1 passes to 5 at the high post.',a:[P(1,5)]},
+   {cap:'1 cuts away to down-screen for 3.',a:[S(1,[-17,15])]},
+   {cap:'3\'s defender cheats over the top to beat the screen. 3 rejects it: plants and backcuts. Call "Back!" 1 pops back to the slot.',a:[C(3,[-3,6],[-13,8]),C(1,SP.ls,[-15,22])]},
+   {cap:'5 hits the backdoor with a bounce pass. Layup.',a:[P(5,3)]}
+  ],end:'Overplayed = backcut, even off a screen.'},
+
+ {id:'point-over',series:'Point',stage:2,title:'Point Over',sub:'Cut over the top for the handoff',
+  video:'https://www.youtube.com/watch?v=YLYJJ7j_HZU',start:POINT,ball:'1',
+  steps:[
+   {cap:'1 passes to 5 at the high post.',a:[P(1,5)]},
+   {cap:'OVER: 1\'s defender sagged to help on 5, so 1 cuts over the top of 5 to get the ball back.',a:[C(1,[3,21],[-1,23.5])]},
+   {cap:'5 hands it off. Call "Hand!"',a:[H(5,1)]},
+   {cap:'1 attacks the gap. 5 rolls to the rim. 2 fills the slot 1 left.',a:[D(1,[3,11]),C(5,[-4,8],[-3,14]),C(2,SP.ls,[0,29])]}
+  ],end:'Over = get the ball back going downhill.'},
+
+ {id:'five-out-hand',series:'5 Out',stage:4,title:'5 Out: Dribble-At Handoff',sub:'Post up top, dribbles at a guard',
+  video:'https://www.youtube.com/shorts/5QCOJEqIkdk',start:FIVE,ball:'1',
+  steps:[
+   {cap:'Everyone on the perimeter. 1 passes to 5 up top.',a:[P(1,5)]},
+   {cap:'5 dribbles at 2. 2\'s defender is trailing, so 2 comes to get the handoff.',a:[D(5,[8,26.5]),C(2,[11,24])]},
+   {cap:'5 hands it off. Call "Hand!"',a:[H(5,2)]},
+   {cap:'2 attacks the gap. 5 rolls to the rim. 1 fills the top.',a:[D(2,[5,13]),C(5,[0,8],[5,18]),C(1,[-2,29])]}
+  ],end:'5 Out = the post becomes a passer up top.'},
+
+ {id:'five-out-backcut',series:'5 Out',stage:4,title:'5 Out: Dribble-At Backcut',sub:'Defender jumps it? Go backdoor',
+  video:'https://www.youtube.com/shorts/5QCOJEqIkdk',start:FIVE,ball:'1',
+  steps:[
+   {cap:'1 passes to 5 up top.',a:[P(1,5)]},
+   {cap:'5 dribbles at 2.',a:[D(5,[8,26.5])]},
+   {cap:'2\'s defender jumps the handoff. 2 backcuts to the rim. Call "Back!"',a:[C(2,[3,6],[13,12])]},
+   {cap:'5 hits her with a bounce pass. Layup.',a:[P(5,2)]}
+  ],end:'Same dribble-at rule as the rest of the offense.'}
+];
+
+/* Read quiz: frozen moment. pos includes defenders (x#). ctx = arrows showing what just happened.
+   show = steps animated after the answer to demonstrate the right read. */
+const OVERPLAY={x1:[-7,23.5],x2:[6.5,22.5],x3:[-17.4,19.6],x4:[13,14],x5:[-6,10]};
+const READS=[
+ {id:'r-overplay',series:'Rules',you:'3',ball:'1',pos:with_(LOW,OVERPLAY),
+  sit:'1 has the ball in the slot. You are 3 on the wing.',
+  q:'Your defender has her hand and foot in the passing lane. What do you do?',
+  choices:[
+   {t:'Backcut to the rim',ok:true,why:'Overplayed = backcut. Step up, plant, go. Look for the bounce pass.'},
+   {t:'Fight harder to get open on the wing',why:'Fighting a denial wastes the possession. Her overplay is giving you a layup.'},
+   {t:'Stand still and call for the ball',why:'Never stand still. Overplayed = backcut.'},
+   {t:'Go set a screen for 5',why:'Not when you\'re overplayed. Take the layup she\'s giving you: backcut.'}],
+  show:[{a:[C(3,[-3,6],[-12,9])]},{a:[P(1,3)]}]},
+
+ {id:'r-talk',series:'Rules',you:'3',ball:'1',pos:with_(LOW,OVERPLAY),
+  sit:'You are overplayed on the wing and about to backcut.',
+  q:'What do you yell?',
+  choices:[
+   {t:'"Back!"',ok:true,why:'"Back!" tells the passer a backcut is coming. Bounce pass on every backdoor.'},
+   {t:'"Hand!"',why:'"Hand!" is for a dribble handoff.'},
+   {t:'"Ball!"',why:'"Ball!" is a defensive call. On a backcut, yell "Back!"'},
+   {t:'Nothing. Just go.',why:'Talk is a team rule. Yell "Back!" so the passer is ready.'}],
+  show:[{a:[C(3,[-3,6],[-12,9])]},{a:[P(1,3)]}]},
+
+ {id:'r-dribat-trail',series:'Rules',you:'3',ball:'1',
+  pos:with_(LOW,{1:[-12,24.5],x1:[-11,22],x2:[6.5,22.5],x3:[-18.5,13.5],x4:[13,14],x5:[-6,10]}),
+  ctx:[D(1,[-15,22.5])],
+  sit:'1 is dribbling right at you on the wing.',
+  q:'Your defender is sitting back, trailing behind you. What do you do?',
+  choices:[
+   {t:'Come get the dribble handoff',ok:true,why:'Defender trailing = handoff. Call "Hand!" and come get it moving toward the ball.'},
+   {t:'Backcut to the rim',why:'Backcut is for when she jumps the handoff. She\'s sitting back, so the handoff is open.'},
+   {t:'Clear out to the corner',why:'A dribble at you always means handoff or backcut. Never clear out.'},
+   {t:'Stand still and wait for a pass',why:'Never stand still on a dribble-at.'}],
+  show:[{a:[C(3,[-15.5,21])]},{a:[H(1,3)]},{a:[D(3,[-6,12])]}]},
+
+ {id:'r-dribat-jump',series:'Rules',you:'3',ball:'1',
+  pos:with_(LOW,{1:[-12,24.5],x1:[-11,22],x2:[6.5,22.5],x3:[-17,20.5],x4:[13,14],x5:[-6,10]}),
+  ctx:[D(1,[-15,22.5])],
+  sit:'1 is dribbling right at you on the wing.',
+  q:'Your defender jumps up into the handoff. What do you do?',
+  choices:[
+   {t:'Backcut to the rim',ok:true,why:'Defender jumping it = backcut. Call "Back!" and look for the bounce pass.'},
+   {t:'Come get the handoff anyway',why:'She\'s sitting on the handoff. If she jumps it, go behind her.'},
+   {t:'Pop out to the corner',why:'A dribble at you means handoff or backcut. She jumped it, so backcut.'},
+   {t:'Set a screen on 1\'s defender',why:'Not the read. Her defender jumped the handoff, so the rim is open.'}],
+  show:[{a:[C(3,[-3,6],[-13,10])]},{a:[P(1,3)]}]},
+
+ {id:'r-pass-move',series:'Rules',you:'1',ball:'3',
+  pos:with_(LOW,{x1:[-8,22],x2:[6,22],x3:[-17,16],x4:[13,14],x5:[-6,10]}),
+  ctx:[P(1,3)],
+  sit:'You are 1. You just passed to 3 on the wing.',
+  q:'What now?',
+  choices:[
+   {t:'Cut or screen right away',ok:true,why:'Pass and move. After you pass, cut or screen. Never stand and watch.'},
+   {t:'Stay in the slot so she can pass it back',why:'Standing still lets your defender help on the ball. Pass and move.'},
+   {t:'Clap and ask for it back',why:'Pass and move. The ball finds the player who cuts.'},
+   {t:'Watch to see what 3 does',why:'Never stand and watch. Cut or screen.'}],
+  show:[{a:[C(1,[-2,7],[-5,18]),C(2,SP.ls,[0,29])]}]},
+
+ {id:'r-fill',series:'Rules',you:'2',ball:'3',
+  pos:with_(LOW,{1:[-4,13],x1:[-5,15],x2:[6,22],x3:[-17,16],x4:[13,14],x5:[-6,10]}),
+  ctx:[C(1,[-2,7])],
+  sit:'1 just backcut from the left slot. 3 has the ball on the left wing. You are 2.',
+  q:'What do you do?',
+  choices:[
+   {t:'Fill the slot 1 just left',ok:true,why:'Fill the empty spot. When someone cuts, the next player replaces her, so 3 always has an outlet.'},
+   {t:'Follow 1 to the rim',why:'Two players at the rim crowds the lane. Fill the empty spot.'},
+   {t:'Stay where you are',why:'3 needs an outlet on her side. Fill the empty spot.'},
+   {t:'Run to the right corner',why:'That takes you away from the ball. Fill the slot 1 left.'}],
+  show:[{a:[C(2,SP.ls,[0,29])]}]},
+
+ {id:'r-catch',series:'Rules',you:'3',ball:'3',
+  pos:with_(LOW,{x1:[-7,22],x2:[6,22],x3:[-12,12],x4:[13,14],x5:[-6,10]}),
+  ctx:[P(1,3)],
+  sit:'You catch it on the wing in your range. Your defender is late closing out.',
+  q:'What do you do?',
+  choices:[
+   {t:'Face up and catch & shoot',ok:true,why:'Every catch faces the rim. Open 3 in your range = a shot we want.'},
+   {t:'Hold it and look around',why:'Every catch faces the rim and is a threat. Catch & Shoot / Go / Rip / Pump Fake.'},
+   {t:'Dribble first, then look',why:'Face the rim first. She\'s late, so shoot it.'},
+   {t:'Pass it right back',why:'Open 3 in your range is a shot we want. Let it fly.'}]},
+
+ {id:'r-postfeed',series:'Low',you:'3',ball:'5',
+  pos:with_(LOW,{x1:[-7,22.5],x2:[6,22],x3:[-16,15],x4:[12,14],x5:[-6.5,6]}),
+  ctx:[P(3,5)],
+  sit:'You are 3. You just fed 5 on the block.',
+  q:'What do you do now?',
+  choices:[
+   {t:'Cut off the post: Split, Split Backcut or Curl',ok:true,why:'Post feed on the block = cut off the post. The post is the passer.'},
+   {t:'Stay on the wing and watch 5 score',why:'Never stand after a post feed. Cut off the post.'},
+   {t:'Run to the other side of the floor',why:'Cut off the post on your side: Split, Split Backcut or Curl.'},
+   {t:'Post up next to 5',why:'That crowds her. Cut off the post instead.'}],
+  show:[{a:[S(3,[-12,23])]},{a:[C(1,[-20,16],[-14,25.5]),C(3,SP.ls,[-10,26])]},{a:[P(5,1)]}]},
+
+ {id:'r-flash',series:'Low',you:'5',ball:'2',
+  pos:with_(LOW,{x1:[-7,23],x2:[7,22.5],x3:[-17,16],x4:[17,16],x5:[-6.5,10.5]}),
+  ctx:[P(1,2)],
+  sit:'No post feed. The ball just got reversed to 2. You are 5 on the left block.',
+  q:'Your defender is on your high side. What do you do?',
+  choices:[
+   {t:'Flash to the high post',ok:true,why:'Ball reversal = flash to the high post. High-post catch = Point.'},
+   {t:'Duck in to the lane',why:'Duck in when her defender is behind you. She\'s on your high side, so flash high.'},
+   {t:'Stay on the block',why:'Every reversal, the post flashes. Stand still and the offense stops.'},
+   {t:'Run out to the corner',why:'The post flashes high on a reversal.'}],
+  show:[{a:[C(5,SP.hp,[-5,14])]},{a:[P(2,5)]}]},
+
+ {id:'r-duckin',series:'Low',you:'5',ball:'2',
+  pos:with_(LOW,{x1:[-7,23],x2:[7,22.5],x3:[-17,16],x4:[17,16],x5:[-8.5,5.5]}),
+  ctx:[P(1,2)],
+  sit:'The ball just got reversed to 2. You are 5 on the left block.',
+  q:'Your defender is behind you and late. What do you do?',
+  choices:[
+   {t:'Duck in: seal her and step into the lane',ok:true,why:'Flash high, unless her defender is behind her. Then duck in and seal.'},
+   {t:'Flash to the high post',why:'Usually yes, but she\'s behind you. Duck in and take the easy post catch.'},
+   {t:'Stay on the block',why:'Move on every reversal. She\'s behind you, so duck in.'},
+   {t:'Go set a screen for 1',why:'She\'s behind you and late. Duck in and seal.'}],
+  show:[{a:[C(5,[-1.5,10])]},{a:[P(2,5)]}]},
+
+ {id:'r-point-sag',series:'Point',you:'1',ball:'5',
+  pos:with_(POINT,{x1:[-3.5,21.5],x2:[6.5,23],x3:[-17.5,16],x4:[17.5,16],x5:[0,15.5]}),
+  ctx:[P(1,5)],
+  sit:'You are 1. You just passed to 5 at the high post.',
+  q:'Your defender sagged back to help on 5. What\'s your read?',
+  choices:[
+   {t:'OVER: cut over the top of 5 for the handoff',ok:true,why:'Defender sags = Over. Get the ball back going downhill.'},
+   {t:'AWAY: screen for 3',why:'Away is for when your defender stays with you. She sagged, so go Over.'},
+   {t:'Stay in the slot',why:'Pass and move. Read your defender: she sagged, so go Over.'},
+   {t:'Cut to the corner',why:'Read Over or Away. She sagged, so Over.'}],
+  show:[{a:[C(1,[3,21],[-1,23.5])]},{a:[H(5,1)]},{a:[D(1,[3,11])]}]},
+
+ {id:'r-point-tight',series:'Point',you:'1',ball:'5',
+  pos:with_(POINT,{x1:[-6,24],x2:[6.5,23],x3:[-17.5,16],x4:[17.5,16],x5:[0,15.5]}),
+  ctx:[P(1,5)],
+  sit:'You are 1. You just passed to 5 at the high post.',
+  q:'Your defender stays right with you. What\'s your read?',
+  choices:[
+   {t:'AWAY: cut away and down-screen for 3',ok:true,why:'Defender stays with you = Away, our base. Screen for the wing.'},
+   {t:'OVER: get the handoff',why:'Over is for when your defender sags. She\'s right on you, so go Away.'},
+   {t:'Ask for it back',why:'Pass and move. She\'s with you, so go Away.'},
+   {t:'Stand and watch 5',why:'Never stand. Read it: Away.'}],
+  show:[{a:[S(1,[-17,15])]},{a:[C(3,[-9,26],[-15,20]),C(1,[-20,17],[-19,14])]}]},
+
+ {id:'r-point-wing',series:'Point',you:'3',ball:'5',
+  pos:with_(POINT,{x1:[-6,23],x2:[6.5,23],x3:[-16.5,18.5],x4:[17.5,16],x5:[0,15.5]}),
+  ctx:[P(1,5)],
+  sit:'5 just caught it at the high post. You are 3 on the ball-side wing.',
+  q:'Your defender is denying you hard. What do you do?',
+  choices:[
+   {t:'Backdoor right away',ok:true,why:'Ball at the high post + ball-side wing denied = backdoor. 5 hits you with a bounce pass.'},
+   {t:'Wait for 1 to screen for you',why:'If you\'re denied, don\'t wait. Backdoor now.'},
+   {t:'Come up to the slot',why:'She\'s denying you, so the rim is open. Backdoor.'},
+   {t:'Stand still on the wing',why:'Never stand still. Overplayed = backcut.'}],
+  show:[{a:[C(3,[-3,6],[-13,9])]},{a:[P(5,3)]}]},
+
+ {id:'r-5out-jump',series:'5 Out',you:'2',ball:'5',
+  pos:with_(FIVE,{5:[6,27],x5:[5,24.5],x1:[-12,22],x2:[12,26.5],x3:[-17,9],x4:[17,9]}),
+  ctx:[D(5,[9,26.5])],
+  sit:'5 Out. 5 is dribbling at you from the top.',
+  q:'Your defender jumps up into the handoff. What do you do?',
+  choices:[
+   {t:'Backcut to the rim',ok:true,why:'Same rule everywhere: defender jumps the handoff = backcut. Call "Back!"'},
+   {t:'Come get the handoff',why:'She\'s sitting on the handoff. Go behind her.'},
+   {t:'Drift to the corner',why:'Dribble at you = handoff or backcut. Never drift away.'},
+   {t:'Stand and wait',why:'Never stand still on a dribble-at.'}],
+  show:[{a:[C(2,[3,6],[13,12])]},{a:[P(5,2)]}]}
+];
+
+/* Where do you go? Tap or drag YOUR player to the spot. Graded within tol (feet). */
+const WHERE=[
+ {id:'w-rimrun',series:'Low',view:'full',you:'5',ball:'1',pos:TRANS,ctx:[D(1,[-8,27])],
+  q:'Transition! 1 is pushing it up the left side. You\'re the rim runner (5). Where do you run?',
+  ans:SP.lb,tol:5,why:'Rim runner sprints straight to the rim, then seals on the BALL-SIDE block.',
+  show:[{a:[C(5,SP.lb,[-3,16])]}]},
+ {id:'w-wing-run',series:'Low',view:'full',you:'4',ball:'1',pos:TRANS,ctx:[D(1,[-8,27])],
+  q:'Transition. You\'re 4 on the right. Where do you run?',
+  ans:SP.rw,tol:6,why:'Wings sprint wide up the sideline to the wing (free-throw line extended).',
+  show:[{a:[C(4,SP.rw,[21,30])]}]},
+ {id:'w-fill',series:'Rules',you:'2',ball:'3',pos:with_(LOW,{1:[-4,13]}),ctx:[C(1,[-2,7])],
+  q:'1 just backcut out of the left slot. You\'re 2. Where do you go?',
+  ans:SP.ls,tol:5,why:'Fill the empty spot. 3 needs an outlet in the slot.',
+  show:[{a:[C(2,SP.ls,[0,29])]}]},
+ {id:'w-split',series:'Low',you:'3',ball:'5',pos:LOW,ctx:[P(3,5)],
+  q:'You (3) just fed 5 on the block. Where do you go to set the Split screen for 1?',
+  ans:[-12,23],tol:5,why:'Split: the passer runs up toward the slot and screens for 1.',
+  show:[{a:[S(3,[-12,23])]}]},
+ {id:'w-flash',series:'Low',you:'5',ball:'2',pos:with_(LOW,{x5:[-6.5,10.5]}),ctx:[P(1,2)],
+  q:'The ball got reversed to 2. Your defender is on your high side. Where do you go?',
+  ans:SP.hp,tol:4.5,why:'Ball reversal = flash to the high post. High-post catch = Point.',
+  show:[{a:[C(5,SP.hp,[-5,14])]}]},
+ {id:'w-over',series:'Point',you:'1',ball:'5',pos:with_(POINT,{x1:[-3.5,21.5]}),ctx:[P(1,5)],
+  q:'You passed to 5 at the high post. Your defender sagged to help. Where do you go?',
+  ans:[2.5,21.5],tol:4.5,why:'Defender sags = OVER. Cut over the top of 5 for the handoff.',
+  show:[{a:[C(1,[3,21],[-1,23.5])]},{a:[H(5,1)]}]},
+ {id:'w-away',series:'Point',you:'1',ball:'5',pos:with_(POINT,{x1:[-6,24]}),ctx:[P(1,5)],
+  q:'You passed to 5 at the high post. Your defender stayed with you. Where do you go?',
+  ans:[-17,15],tol:5,why:'Defender stays with you = AWAY. Down-screen for the wing on your side.',
+  show:[{a:[S(1,[-17,15])]}]},
+ {id:'w-reject',series:'Point',you:'3',ball:'5',pos:with_(POINT,{1:[-14,19],x3:[-17,20]}),ctx:[S(1,[-17,15])],
+  q:'1 is coming to screen for you. Your defender is cheating over the top. Where do you go?',
+  ans:[-3,6],tol:5,why:'Reject the screen and backcut to the rim. Overplayed = backcut.',
+  show:[{a:[C(3,[-3,6],[-13,8])]},{a:[P(5,3)]}]},
+ {id:'w-5out-roll',series:'5 Out',you:'5',ball:'2',pos:with_(FIVE,{5:[8,26.5],2:[11,24]}),ctx:[H(5,2)],
+  q:'5 Out. You (5) just handed off to 2. Where do you go?',
+  ans:[0,8],tol:6,why:'After the handoff, roll to the rim (or pop if the lane is crowded).',
+  show:[{a:[C(5,[0,8],[5,18])]}]}
+];
+
+/* =====================================================================
+   ENGINE
+   ===================================================================== */
+const LS='eagles-playbook-v1';
+function loadStore(){try{return JSON.parse(localStorage.getItem(LS))||{};}catch(e){return {};}}
+const store=Object.assign({series:'All',tab:'learn',plays:{},reads:{},where:{}},loadStore());
+function save(){try{localStorage.setItem(LS,JSON.stringify(store));}catch(e){}}
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+const BALL_OFF=[1.3,-1.2];
+
+function copyPos(p){const o={};for(const k in p)o[k]=p[k].slice();return o;}
+function applyStep(st,step){
+  const pos=copyPos(st.pos);let ball=st.ball;
+  step.a.forEach(a=>{
+    if(a.t==='pass'||a.t==='hand')ball=a.to;
+    else if(a.to)pos[a.p]=a.to.slice();
+  });
+  return {pos,ball};
+}
+function stateAt(play,i){let st={pos:copyPos(play.start),ball:play.ball};for(let k=0;k<i;k++)st=applyStep(st,play.steps[k]);return st;}
+function qpt(a,b,c,t){if(!c)return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];const u=1-t;return [u*u*a[0]+2*u*t*c[0]+t*t*b[0],u*u*a[1]+2*u*t*c[1]+t*t*b[1]];}
+const f2=n=>Math.round(n*100)/100;
+
+const COURT=`
+<rect x="-26" y="-2" width="52" height="52" fill="#1f5d3e"/>
+<rect x="-6" y="0" width="12" height="19" fill="#194f34"/>
+<text x="0" y="44.6" text-anchor="middle" font-family="Oswald,Arial Narrow,Arial,sans-serif" font-weight="700" font-size="4" letter-spacing=".6" fill="rgba(255,255,255,.10)">EAGLES</text>
+<g fill="none" stroke="rgba(255,255,255,.85)" stroke-width=".22">
+  <rect x="-25" y="0" width="50" height="47"/>
+  <rect x="-6" y="0" width="12" height="19"/>
+  <path d="M-6 19A6 6 0 0 0 6 19"/>
+  <path d="M-6 19A6 6 0 0 1 6 19" stroke-dasharray=".8 .8"/>
+  <path d="M-19.75 0V5.25A19.75 19.75 0 0 0 19.75 5.25V0"/>
+  <path d="M-4 4V5.25A4 4 0 0 0 4 5.25V4"/>
+  <path d="M-6 47A6 6 0 0 1 6 47"/>
+  <path d="M-6 7h-.8M6 7h.8M-6 11h-.6M6 11h.6M-6 14h-.6M6 14h.6"/>
+</g>
+<line x1="-3" y1="4" x2="3" y2="4" stroke="#fff" stroke-width=".35"/>
+<circle cx="0" cy="5.25" r=".75" fill="none" stroke="#ff8a3d" stroke-width=".25"/>`;
+const DEFS=`<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#fff"/></marker>
+<marker id="ahg" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ffd25a"/></marker>
+</defs>`;
+const VIEWS={half:'-26 -1.5 52 36.5',full:'-26 -1.5 52 50'};
+
+function shorten(a,b,s0,s1){const dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy)||1;return [[a[0]+dx/L*s0,a[1]+dy/L*s0],[b[0]-dx/L*s1,b[1]-dy/L*s1]];}
+function zig(a,b){
+  const dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy);
+  if(L<2.5)return `M${f2(a[0])} ${f2(a[1])}L${f2(b[0])} ${f2(b[1])}`;
+  const ux=dx/L,uy=dy/L,nx=-uy,ny=ux,run=L-1.8,n=Math.max(2,Math.round(run/1.1));
+  let d=`M${f2(a[0])} ${f2(a[1])}`;
+  for(let i=1;i<=n;i++){const s=run*i/n,off=i===n?0:(i%2?.6:-.6);d+=`L${f2(a[0]+ux*s+nx*off)} ${f2(a[1]+uy*s+ny*off)}`;}
+  return d+`L${f2(b[0])} ${f2(b[1])}`;
+}
+/* arrow for action a, using positions before (st) and after (en) */
+function arrowSvg(a,st,en,opt){
+  opt=opt||{};const col=opt.gold?'#ffd25a':'#fff',mk=opt.gold?'url(#ahg)':'url(#ah)',op=opt.dim?.35:1;
+  const g=(inner)=>`<g opacity="${op}" fill="none" stroke="${col}" stroke-width=".3" stroke-linecap="round" stroke-linejoin="round">${inner}</g>`;
+  if(a.t==='pass'||a.t==='hand'){
+    const A=st.pos[a.f],B=en.pos[a.to];if(!A||!B)return '';
+    const [p,q]=shorten(A,B,1.9,2.2);
+    if(a.t==='hand'){const m=[(A[0]+B[0])/2,(A[1]+B[1])/2];
+      return g(`<path d="M${f2(p[0])} ${f2(p[1])}L${f2(q[0])} ${f2(q[1])}" stroke-dasharray=".5 .45" marker-end="${mk}"/>`)+`<text x="${f2(m[0])}" y="${f2(m[1]-1.2)}" text-anchor="middle" font-size="1.5" font-weight="700" fill="${col}" opacity="${op}" font-family="system-ui,sans-serif">HAND</text>`;}
+    return g(`<path d="M${f2(p[0])} ${f2(p[1])}L${f2(q[0])} ${f2(q[1])}" stroke-dasharray="1 .7" marker-end="${mk}"/>`);
+  }
+  const A=st.pos[a.p];if(!A)return '';
+  const B=a.to;
+  if(a.t==='drib'){const [p]=shorten(A,B,1.9,0);return g(`<path d="${zig(p,B)}" marker-end="${mk}"/>`);}
+  if(a.t==='screen'){
+    const [p]=shorten(A,B,1.9,0),dx=B[0]-A[0],dy=B[1]-A[1],L=Math.hypot(dx,dy)||1,nx=-dy/L*1.3,ny=dx/L*1.3;
+    return g(`<path d="M${f2(p[0])} ${f2(p[1])}L${f2(B[0])} ${f2(B[1])}"/><path d="M${f2(B[0]+nx)} ${f2(B[1]+ny)}L${f2(B[0]-nx)} ${f2(B[1]-ny)}" stroke-width=".42"/>`);
+  }
+  // cut
+  const s=qpt(A,B,a.via,0),start=a.via?shorten(A,a.via,1.9,0)[0]:shorten(A,B,1.9,0)[0];
+  const d=a.via?`M${f2(start[0])} ${f2(start[1])}Q${f2(a.via[0])} ${f2(a.via[1])} ${f2(B[0])} ${f2(B[1])}`:`M${f2(start[0])} ${f2(start[1])}L${f2(B[0])} ${f2(B[1])}`;
+  void s;
+  return g(`<path d="${d}" marker-end="${mk}"/>`);
+}
+function playerSvg(id,xy,you){
+  const x=f2(xy[0]),y=f2(xy[1]);
+  if(id[0]==='x'){const r=.95;return `<g stroke="#ffe08a" stroke-width=".42" stroke-linecap="round"><path d="M${f2(xy[0]-r)} ${f2(xy[1]-r)}L${f2(xy[0]+r)} ${f2(xy[1]+r)}M${f2(xy[0]+r)} ${f2(xy[1]-r)}L${f2(xy[0]-r)} ${f2(xy[1]+r)}"/></g>`;}
+  return (you?`<circle cx="${x}" cy="${y}" r="2.55" fill="none" stroke="#ff9a3c" stroke-width=".35" class="pulse"/><text x="${x}" y="${f2(xy[1]-3)}" text-anchor="middle" font-size="1.5" font-weight="800" fill="#ff9a3c" font-family="system-ui,sans-serif" letter-spacing=".1">YOU</text>`:'')+
+    `<circle cx="${x}" cy="${y}" r="1.75" fill="${you?'#ff9a3c':'#fff'}" stroke="${you?'#fff':'#0f3d28'}" stroke-width=".25"/>`+
+    `<text x="${x}" y="${f2(xy[1]+.08)}" text-anchor="middle" dominant-baseline="central" font-size="2.1" font-weight="800" fill="${you?'#1b0d03':'#0f3d28'}" font-family="system-ui,sans-serif">${esc(id)}</text>`;
+}
+/* f = {view,pos,ball,ballXY,you,arrows:[svg],marks:svg,under:svg} */
+function courtSvg(f){
+  const ids=Object.keys(f.pos);
+  const defs=ids.filter(k=>k[0]==='x').map(k=>playerSvg(k,f.pos[k])).join('');
+  const offs=ids.filter(k=>k[0]!=='x').map(k=>playerSvg(k,f.pos[k],k===f.you)).join('');
+  let bxy=f.ballXY;if(!bxy&&f.ball&&f.pos[f.ball])bxy=[f.pos[f.ball][0]+BALL_OFF[0],f.pos[f.ball][1]+BALL_OFF[1]];
+  const ball=bxy?`<circle cx="${f2(bxy[0])}" cy="${f2(bxy[1])}" r=".85" fill="#ff7a1a" stroke="#5a2600" stroke-width=".15"/>`:'';
+  return `<svg class="court" viewBox="${VIEWS[f.view||'half']}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Half-court diagram">${DEFS}${COURT}${f.under||''}${(f.arrows||[]).join('')}${defs}${offs}${ball}${f.marks||''}</svg>`;
+}
+
+/* animate one step from st; calls onFrame(frame) and done(en) */
+let animId=0;
+function animateStep(st,step,draw,done,dur){
+  const my=++animId,en=applyStep(st,step),t0=performance.now();dur=dur||1150;
+  const pa=step.a.find(a=>a.t==='pass'||a.t==='hand');
+  const moves=step.a.filter(a=>a.t==='cut'||a.t==='drib'||a.t==='screen');
+  function frame(now){
+    if(my!==animId)return;
+    const t=Math.min(1,(now-t0)/dur),e=ease(t),pos=copyPos(st.pos);
+    moves.forEach(a=>{pos[a.p]=qpt(st.pos[a.p],a.to,a.t==='cut'?a.via:null,e);});
+    let ballXY=null,ball=st.ball;
+    if(pa){
+      const bt=moves.length?clamp((e-.45)/.55,0,1):e;
+      const A=pos[pa.f],B=pos[pa.to];
+      ballXY=[A[0]+BALL_OFF[0]+(B[0]-A[0])*bt,A[1]+BALL_OFF[1]+(B[1]-A[1])*bt];ball=null;
+    }
+    draw({pos,ball,ballXY,arrows:step.a.map(a=>arrowSvg(a,st,en,{dim:true}))});
+    if(t<1)requestAnimationFrame(frame);else done(en);
+  }
+  requestAnimationFrame(frame);
+}
+function animateSeq(st,steps,draw,done,gap){
+  let i=0;
+  (function next(s){
+    if(i>=steps.length){done&&done(s);return;}
+    const step=steps[i++];
+    animateStep(s,step,draw,en=>{setTimeout(()=>{next(en);},gap==null?250:gap);});
+  })(st);
+}
+function stopAnim(){animId++;}
+
+/* =====================================================================
+   UI
+   ===================================================================== */
+const ui={play:null,step:0,q:null,auto:false};
+const TABS=[['learn','Learn','<path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h6M8 13h6"/>'],
+  ['reads','Reads','<circle cx="12" cy="12" r="8.5"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .8-1 1.5v.7M12 17h.01"/>'],
+  ['where','Where?','<path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>'],
+  ['me','Me','<circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/>']];
+
+function renderChips(){
+  $('#chips').innerHTML=SERIES.map(s=>`<button class="chip" data-act="series" data-k="${esc(s)}" aria-pressed="${store.series===s}">${esc(s)}</button>`).join('');
+}
+function renderTabs(){
+  $('#tabs').innerHTML=TABS.map(t=>`<button class="tb" role="tab" data-act="tab" data-k="${t[0]}" aria-selected="${store.tab===t[0]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${t[2]}</svg>${t[1]}</button>`).join('');
+}
+const inSeries=x=>store.series==='All'||x.series===store.series;
+function render(){
+  stopAnim();renderChips();renderTabs();
+  const v=$('#view');
+  if(store.tab==='learn')v.innerHTML=ui.play?playView():learnList();
+  else if(store.tab==='reads'||store.tab==='where')v.innerHTML=quizView();
+  else v.innerHTML=meView();
+  if(store.tab==='learn'&&ui.play)drawPlay();
+  if((store.tab==='reads'||store.tab==='where')&&ui.q&&ui.q.kind===store.tab&&!ui.q.done)drawQ();
+  window.scrollTo(0,0);
+}
+
+/* ---------- Learn ---------- */
+function rulesCard(open){
+  return `<details class="card"${open?' open':''}><summary><h3>Our rules</h3></summary><ol class="rules">${RULES.map(r=>`<li><b>${esc(r[0])}</b> <span class="muted">${esc(r[1])}</span></li>`).join('')}</ol></details>`;
+}
+function learnList(){
+  let out='';
+  if(store.series==='All'||store.series==='Rules')out+=rulesCard(store.series==='Rules');
+  const groups=['Low','Point','5 Out'].filter(s=>store.series==='All'||store.series===s);
+  if(!groups.length)return out+'<p class="muted">The Rules show up in every play. Pick Low, Point or 5 Out to see the plays.</p>';
+  groups.forEach(g=>{
+    out+=`<div class="grp">${esc(g)}</div><div class="list">`+PLAYS.filter(p=>p.series===g).map(p=>
+      `<button class="item" data-act="open-play" data-id="${p.id}"><span class="ck${store.plays[p.id]?' on':''}" aria-label="${store.plays[p.id]?'Viewed':'Not viewed yet'}">✓</span><span><div class="t">${esc(p.title)}</div><div class="s">${esc(p.sub)}</div></span><span class="go">›</span></button>`).join('')+'</div>';
+  });
+  return out+legend();
+}
+function legend(){
+  const l=(d,extra)=>`<svg width="34" height="12" viewBox="0 0 34 12"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.8" ${extra||''}/></svg>`;
+  return `<div class="legend"><span>${l('M2 6H30','stroke-dasharray="4 3"')}Pass</span><span>${l('M2 6H30')}Cut</span><span>${l('M2 6l3-3 4 6 4-6 4 6 4-6 4 6 3-3h4')}Dribble</span><span>${l('M2 6H28M28 1V11')}Screen</span><span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5" fill="#ff7a1a"/></svg>Ball</span><span style="color:#b98a00">✕ Defender</span></div>`;
+}
+function curPlay(){return PLAYS.find(p=>p.id===ui.play);}
+function playView(){
+  const p=curPlay(),n=p.steps.length,i=ui.step,done=i>=n;
+  return `<button class="back" data-act="close-play">‹ All plays</button>
+  <div class="row spread" style="margin-bottom:10px"><h2 style="font-size:22px">${esc(p.title)}</h2><span class="pill">${esc(p.series)}</span></div>
+  <div class="court-wrap" id="court"></div>
+  <div class="stepno" style="margin-top:12px">${done?'Done':'Step '+(i+1)+' of '+n}</div>
+  <div class="dots">${p.steps.map((_,k)=>`<i class="${k<i||done?'on':''}"></i>`).join('')}</div>
+  <p class="cap" id="cap">${esc(done?p.end:p.steps[i].cap)}</p>
+  <div class="ctl"><button class="btn" data-act="step-back" ${i===0?'disabled':''} aria-label="Previous step">‹ Back</button>
+  <button class="btn primary" data-act="step-next">${done?'↺ Replay':i===0?'▶ Run step 1':'▶ Next'}</button>
+  <button class="btn" data-act="play-all" aria-label="Play all steps">▶▶ All</button></div>
+  ${p.video?`<p class="small" style="margin-top:14px"><a href="${esc(p.video)}" target="_blank" rel="noopener">Watch the video ↗</a> <span class="muted">(needs internet)</span></p>`:''}
+  ${legend()}`;
+}
+function drawPlay(frame){
+  const p=curPlay(),i=Math.min(ui.step,p.steps.length),st=stateAt(p,i);
+  const f=frame||{pos:st.pos,ball:st.ball,arrows:i<p.steps.length?p.steps[i].a.map(a=>arrowSvg(a,st,applyStep(st,p.steps[i]))):[]};
+  $('#court').innerHTML=courtSvg(Object.assign({view:p.view},f));
+}
+function markViewed(p){if(!store.plays[p.id]){store.plays[p.id]=true;save();}}
+
+/* ---------- Quizzes ---------- */
+function pool(kind){return (kind==='reads'?READS:WHERE).filter(inSeries);}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startQuiz(kind,ids){
+  const items=ids||shuffle(pool(kind).map(x=>x.id));
+  ui.q={kind,items,i:0,right:0,missed:[],answered:false,choice:null,guess:null,done:false,series:store.series};
+  render();
+}
+function curItem(){const q=ui.q;return (q.kind==='reads'?READS:WHERE).find(x=>x.id===q.items[q.i]);}
+function quizView(){
+  const kind=store.tab,q=ui.q,label=kind==='reads'?'Read the defense':'Where do you go?';
+  if(!q||q.kind!==kind||q.series!==store.series){
+    const items=pool(kind),rec=store[kind],got=items.filter(x=>rec[x.id]&&rec[x.id].last).length;
+    if(!items.length)return `<div class="card"><h2>${label}</h2><p class="muted">No ${kind==='reads'?'read':'spot'} questions in ${esc(store.series)} yet. Pick another series above.</p></div>`;
+    return `<div class="card"><h2>${label}</h2>
+      <p class="muted" style="margin:6px 0 12px">${kind==='reads'?'A moment in the game freezes. Pick what you do.':'Tap the court (or drag your player) to where you should go. Close counts.'}</p>
+      <div class="row spread small"><span>${items.length} questions · ${esc(store.series==='All'?'all series':store.series)}</span><span>${got} of ${items.length} right last time</span></div>
+      <div class="bar" style="margin:8px 0 16px"><span style="width:${items.length?got/items.length*100:0}%"></span></div>
+      <button class="btn primary block" data-act="start">Start</button></div>${kind==='reads'?rulesCard(false):''}`;
+  }
+  if(q.done){
+    const n=q.items.length;
+    return `<div class="card" style="text-align:center"><div class="stepno">${label}</div><div class="big" style="margin:10px 0 4px">${q.right}/${n}</div>
+      <p class="muted">${q.right===n?'Perfect. You know this series.':q.right>=n*.7?'Nice work. Clean up the misses.':'Keep at it. Walk through the plays in Learn, then try again.'}</p>
+      <div class="list" style="margin-top:14px">${q.missed.length?`<button class="btn primary block" data-act="retry-missed">Try the ${q.missed.length} I missed</button>`:''}
+      <button class="btn block${q.missed.length?'':' primary'}" data-act="start">Start over</button></div></div>`;
+  }
+  const it=curItem();
+  if(kind==='reads'&&!q.order)q.order=shuffle(it.choices.map((_,k)=>k));
+  let body='';
+  if(kind==='reads'){
+    body=`<p class="sit">${esc(it.sit)}</p><p class="prompt">${esc(it.q)}</p><div class="choices" id="choices">`+
+      (q.order||[]).map(k=>{const c=it.choices[k];let cls='';if(q.answered){if(c.ok)cls='right';else if(q.choice===k)cls='wrong';}
+        return `<button class="choice ${cls}" data-act="choose" data-k="${k}" ${q.answered?'disabled':''}>${esc(c.t)}</button>`;}).join('')+'</div>';
+    if(q.answered){const c=it.choices[q.choice],ok=!!c.ok,right=it.choices.find(x=>x.ok);
+      body+=`<div class="fb ${ok?'good':'bad'}"><b>${ok?'Right!':'Not quite'}</b>${esc(c.why)}${ok?'':'<br><span class="muted">Right answer: '+esc(right.t)+'.</span>'}</div>`;}
+  }else{
+    body=`<p class="prompt">${esc(it.q)}</p>`;
+    if(q.answered){const ok=q.ok;body+=`<div class="fb ${ok?'good':'bad'}"><b>${ok?'Right spot!':'Not quite'}</b>${esc(it.why)}${ok?'':'<br><span class="muted">The gold circle is the right spot.</span>'}</div>`;}
+    else body+=`<button class="btn primary block" data-act="check" ${q.guess?'':'disabled'}>Check my spot</button>`;
+  }
+  return `<div class="qhead"><span class="stepno">${label} · ${q.i+1} of ${q.items.length}</span><button class="back" style="margin:0" data-act="quit">Quit</button></div>
+    <div class="court-wrap" id="court"></div>${body}
+    ${q.answered?`<div class="row" style="margin-top:12px"><button class="btn" data-act="replay-show">↺ Show me</button><button class="btn primary" style="flex:1" data-act="next-q">${q.i+1<q.items.length?'Next ›':'See score'}</button></div>`:''}`;
+}
+function qFrame(it,extra){
+  const st={pos:it.pos,ball:it.ball};
+  return Object.assign({view:it.view,pos:it.pos,ball:it.ball,you:it.you,arrows:(it.ctx||[]).map(a=>arrowSvg(a,st,st,{dim:false}))},extra||{});
+}
+function drawQ(frame){
+  const it=curItem(),q=ui.q,el=$('#court');if(!el)return;
+  if(store.tab==='reads'&&!q.order)q.order=shuffle(it.choices.map((_,k)=>k));
+  if(frame){el.innerHTML=courtSvg(Object.assign({view:it.view,you:it.you},frame));return;}
+  if(q.kind==='where'){
+    const pos=copyPos(it.pos);let marks='',under='';
+    if(q.guess){
+      pos[it.you]=q.guess;
+      under=`<circle cx="${it.pos[it.you][0]}" cy="${it.pos[it.you][1]}" r="1.75" fill="none" stroke="rgba(255,255,255,.5)" stroke-width=".2" stroke-dasharray=".5 .4"/>`;
+    }
+    if(q.answered){
+      marks=`<circle cx="${it.ans[0]}" cy="${it.ans[1]}" r="${it.tol}" fill="rgba(255,210,90,.18)" stroke="#ffd25a" stroke-width=".3" stroke-dasharray="1 .6"/>`;
+      if(!q.ok)marks+=`<path d="M${f2(q.guess[0])} ${f2(q.guess[1])}L${it.ans[0]} ${it.ans[1]}" stroke="#ffd25a" stroke-width=".25" stroke-dasharray=".6 .5"/>`;
+    }
+    el.innerHTML=courtSvg(qFrame(it,{pos,under,marks}));
+    if(!q.answered)bindTap(el,it);
+  }else el.innerHTML=courtSvg(qFrame(it));
+}
+function bindTap(el,it){
+  const svg=el.querySelector('svg');let down=false;
+  const pt=e=>{const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const r=p.matrixTransform(svg.getScreenCTM().inverse());return [f2(clamp(r.x,-24,24)),f2(clamp(r.y,.5,46.5))];};
+  const move=e=>{if(!down)return;e.preventDefault();ui.q.guess=pt(e);redrawGuess(it);};
+  svg.addEventListener('pointerdown',e=>{down=true;svg.setPointerCapture(e.pointerId);ui.q.guess=pt(e);redrawGuess(it);});
+  svg.addEventListener('pointermove',move);
+  svg.addEventListener('pointerup',()=>{down=false;});
+  svg.addEventListener('pointercancel',()=>{down=false;});
+}
+function redrawGuess(it){
+  const svg=$('#court svg'),q=ui.q;
+  const pos=copyPos(it.pos);pos[it.you]=q.guess;
+  const tmp=document.createElement('div');
+  tmp.innerHTML=courtSvg(qFrame(it,{pos,under:`<circle cx="${it.pos[it.you][0]}" cy="${it.pos[it.you][1]}" r="1.75" fill="none" stroke="rgba(255,255,255,.5)" stroke-width=".2" stroke-dasharray=".5 .4"/>`}));
+  svg.innerHTML=tmp.firstChild.innerHTML;
+  const b=document.querySelector('[data-act="check"]');if(b)b.disabled=false;
+}
+function showAnswer(){
+  const it=curItem();if(!it.show)return;
+  const st={pos:copyPos(it.pos),ball:it.ball};
+  const marks=ui.q.kind==='where'?`<circle cx="${it.ans[0]}" cy="${it.ans[1]}" r="${it.tol}" fill="rgba(255,210,90,.18)" stroke="#ffd25a" stroke-width=".3" stroke-dasharray="1 .6"/>`:'';
+  animateSeq(st,it.show,f=>drawQ(Object.assign({marks},f)),en=>{
+    drawQ({pos:en.pos,ball:en.ball,marks,arrows:[]});
+  },350);
+}
+function record(kind,id,ok){
+  const r=store[kind][id]||{tries:0,right:0};r.tries++;if(ok)r.right++;r.last=ok;store[kind][id]=r;save();
+}
+
+/* ---------- Me ---------- */
+function meView(){
+  const rows=['Rules','Low','Point','5 Out'].map(s=>{
+    const pl=PLAYS.filter(p=>p.series===s),rd=READS.filter(x=>x.series===s),wh=WHERE.filter(x=>x.series===s);
+    const seen=pl.filter(p=>store.plays[p.id]).length,r=rd.filter(x=>store.reads[x.id]&&store.reads[x.id].last).length,w=wh.filter(x=>store.where[x.id]&&store.where[x.id].last).length;
+    const tot=pl.length+rd.length+wh.length,got=seen+r+w;
+    return `<div class="card"><div class="row spread"><h3>${esc(s)}</h3><span class="pill${got===tot&&tot?' good':''}">${got===tot&&tot?'Mastered':Math.round(tot?got/tot*100:0)+'%'}</span></div>
+      <div class="bar" style="margin-top:10px"><span style="width:${tot?got/tot*100:0}%"></span></div>
+      <div class="stat small muted">${pl.length?`<div class="row spread"><span>Plays watched</span><span>${seen} / ${pl.length}</span></div>`:''}
+      ${rd.length?`<div class="row spread"><span>Reads right</span><span>${r} / ${rd.length}</span></div>`:''}
+      ${wh.length?`<div class="row spread"><span>Spots right</span><span>${w} / ${wh.length}</span></div>`:''}</div></div>`;
+  }).join('');
+  return `<h2 style="margin-bottom:4px">My progress</h2><p class="muted small" style="margin:0 0 14px">Saved on this phone only. "Right" means you got it right the last time you tried.</p>${rows}
+  <details class="card"><summary><h3>Put it on your home screen</h3></summary>
+   <p style="margin:0 0 8px"><b>iPhone (Safari):</b> tap the Share button, then <b>Add to Home Screen</b>.</p>
+   <p style="margin:0"><b>Android (Chrome):</b> tap ⋮, then <b>Add to Home screen</b> or <b>Install app</b>.</p>
+   <p class="muted small" style="margin:8px 0 0">Open it once with internet, and after that it works with no signal.</p></details>
+  <button class="btn block" data-act="reset" style="margin-top:4px">Reset my progress</button>`;
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const act=b.dataset.act,k=b.dataset.k;
+  if(act==='series'){store.series=k;ui.play=null;save();render();}
+  else if(act==='tab'){store.tab=k;ui.play=null;save();render();}
+  else if(act==='open-play'){ui.play=b.dataset.id;ui.step=0;render();}
+  else if(act==='close-play'){ui.play=null;render();}
+  else if(act==='step-back'){stopAnim();ui.step=Math.max(0,ui.step-1);render();}
+  else if(act==='step-next'||act==='play-all'){
+    const p=curPlay();stopAnim();
+    if(ui.step>=p.steps.length){ui.step=0;}
+    if(act==='play-all'&&ui.step===p.steps.length)ui.step=0;
+    const runOne=()=>{
+      const st=stateAt(p,ui.step);
+      animateStep(st,p.steps[ui.step],f=>drawPlay(f),()=>{
+        ui.step++;
+        if(ui.step>=p.steps.length)markViewed(p);
+        const keep=ui.play;render();
+        if(act==='play-all'&&keep===ui.play&&ui.step<p.steps.length)setTimeout(()=>{if(ui.play===keep)runOne();},500);
+      });
+    };
+    if(act==='step-next'&&b.textContent.indexOf('Replay')>=0){render();return;}
+    runOne();
+  }
+  else if(act==='start'){startQuiz(store.tab);}
+  else if(act==='retry-missed'){startQuiz(store.tab,ui.q.missed.slice());}
+  else if(act==='quit'){ui.q=null;render();}
+  else if(act==='choose'){
+    const q=ui.q,it=curItem();if(q.answered)return;
+    q.answered=true;q.choice=Number(k);const ok=!!it.choices[q.choice].ok;
+    if(ok)q.right++;else q.missed.push(it.id);record('reads',it.id,ok);
+    const order=q.order;render();ui.q.order=order;drawQ();showAnswer();
+  }
+  else if(act==='check'){
+    const q=ui.q,it=curItem();if(!q.guess||q.answered)return;
+    const d=Math.hypot(q.guess[0]-it.ans[0],q.guess[1]-it.ans[1]);
+    q.answered=true;q.ok=d<=it.tol;if(q.ok)q.right++;else q.missed.push(it.id);record('where',it.id,q.ok);
+    render();setTimeout(showAnswer,700);
+  }
+  else if(act==='replay-show'){stopAnim();drawQ();setTimeout(showAnswer,300);}
+  else if(act==='next-q'){
+    const q=ui.q;q.i++;q.answered=false;q.choice=null;q.guess=null;q.order=null;q.ok=null;
+    if(q.i>=q.items.length)q.done=true;render();
+  }
+  else if(act==='reset'){
+    if(confirm('Reset your progress on this phone?')){store.plays={};store.reads={};store.where={};save();render();}
+  }
+});
+
+render();
+if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
+}
+</script>
+</body>
+</html>
