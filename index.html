@@ -498,7 +498,7 @@ const WHERE=[
    ENGINE
    ===================================================================== */
 /* Tracker: the coach's Google Sheet web app URL. Leave '' to run with no sign-in (progress stays on the phone). */
-const API_URL='';
+const API_URL='https://script.google.com/macros/s/AKfycbwq6mvtAuspRfLFCtlIZ8-J4fbmCdLM8saJQ4n4mO7l8jpxg1TTMaFKxI0MPDTz9czb/exec';
 const LS='eagles-playbook-v1';
 function loadStore(){try{return JSON.parse(localStorage.getItem(LS))||{};}catch(e){return {};}}
 const store=Object.assign({series:'All',tab:'learn',plays:{},reads:{},where:{},player:null,guest:false,outbox:[],board:null,coachKey:''},loadStore());
