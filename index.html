@@ -105,7 +105,7 @@ details.card summary::after{content:"+";font-size:22px;color:var(--muted)}
 details.card[open] summary::after{content:"–"}
 details.card[open] summary{margin-bottom:10px}
 nav.tabbar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
-nav.tabbar .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+nav.tabbar .wrap{display:grid;grid-template-columns:repeat(2,1fr);max-width:420px}
 .tb{appearance:none;border:0;background:none;padding:8px 0 10px;display:grid;justify-items:center;gap:3px;font:500 12px/1 var(--font-display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;min-height:56px}
 .tb svg{width:24px;height:24px}
 .tb[aria-selected="true"]{color:var(--brand)}
@@ -138,6 +138,23 @@ table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:ta
 th{font:500 11px/1 var(--font-display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--line)}
 td{padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
 [hidden]{display:none!important}
+.hello{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:4px 0 14px}
+.hello h2{font-size:28px;margin-top:6px}
+.rankchip{appearance:none;border:0;background:var(--brand);color:var(--on-brand);border-radius:14px;padding:8px 12px;font:600 17px/1.1 var(--font-display);text-transform:uppercase;letter-spacing:.04em;cursor:pointer;display:grid;text-align:right}
+.rankchip small{font:500 12px/1.3 var(--font-body);text-transform:none;letter-spacing:0;opacity:.85}
+.focus{border-left:5px solid var(--ball)}
+.focus p{margin:6px 0 0;font-size:17px;font-weight:600}
+.daily{display:flex;align-items:center;gap:14px;background:var(--band);color:var(--band-ink);border-color:var(--band)}
+.daily .muted{color:var(--band-muted)}
+.daily>div{flex:1}
+.daily .btn.primary{background:var(--ball);border-color:var(--ball);color:#1b0d03}
+.cats{margin-top:4px}
+.item.cat{padding:16px}
+.item.cat .t{font-size:22px}
+.item.cat.off{opacity:.55;cursor:default;box-shadow:none}
+.item.cat.off .pill{margin-left:auto}
+.ring{--p:0;width:46px;height:46px;border-radius:50%;flex:none;display:grid;place-items:center;background:conic-gradient(var(--brand) calc(var(--p)*1%),var(--surface-2) 0);margin-left:auto}
+.ring span{width:36px;height:36px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font:600 12px/1 var(--font-display)}
 .pulse{animation:pulse 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
 @media (prefers-reduced-motion:reduce){.pulse{animation:none}}
@@ -630,50 +647,117 @@ function stopAnim(){animId++;}
 /* =====================================================================
    UI
    ===================================================================== */
-const ui={play:null,step:0,q:null,auto:false};
-const TABS=[['learn','Learn','<path d="M4 5h11a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z"/><path d="M8 9h6M8 13h6"/>'],
-  ['reads','Reads','<circle cx="12" cy="12" r="8.5"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .8-1 1.5v.7M12 17h.01"/>'],
-  ['where','Where?','<path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>'],
-  ['team','Team','<circle cx="9" cy="8" r="3.2"/><path d="M3 20c.6-3.3 3-5 6-5s5.4 1.7 6 5"/><circle cx="17" cy="9" r="2.6"/><path d="M16.5 14.2c2.4.1 4 1.6 4.5 4.3"/>']];
+/* Categories -> groups -> series. Add a new group/series here, then tag plays and questions with that series name. */
+const CATS=[
+  {id:'offense',title:'Offense',sub:'Motion, sets and everything we run',groups:[
+    {title:'Motion (Princeton)',series:['Rules','Low','Point','5 Out']}]},
+  {id:'defense',title:'Defense',sub:'Man, zones and presses',groups:[]},
+  {id:'blob',title:'BLOBs',sub:'Baseline out of bounds',groups:[]},
+  {id:'slob',title:'SLOBs',sub:'Sideline out of bounds',groups:[]}
+];
+const SERIES_SUB={Rules:'The rules every play is built on',Low:'Post on the block, out of transition',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top'};
+const QUIZ=READS.map(x=>Object.assign({kind:'reads'},x)).concat(WHERE.map(x=>Object.assign({kind:'where'},x)));
+const qById=id=>QUIZ.find(x=>x.id===id);
+const catOf=series=>CATS.find(c=>c.groups.some(g=>g.series.indexOf(series)>=0));
+const catSeries=c=>[].concat(...c.groups.map(g=>g.series));
 
-function renderChips(){
-  $('#chips').innerHTML=SERIES.map(s=>`<button class="chip" data-act="series" data-k="${esc(s)}" aria-pressed="${store.series===s}">${esc(s)}</button>`).join('');
-}
+const ui={nav:{view:'home'},play:null,step:0,q:null};
+const TABS=[['home','Home','<path d="M4 11l8-6.5 8 6.5"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/>'],
+  ['team','Team','<circle cx="9" cy="8" r="3.2"/><path d="M3 20c.6-3.3 3-5 6-5s5.4 1.7 6 5"/><circle cx="17" cy="9" r="2.6"/><path d="M16.5 14.2c2.4.1 4 1.6 4.5 4.3"/>']];
+if(['home','team'].indexOf(store.tab)<0)store.tab='home';
+
 function renderTabs(){
   $('#tabs').innerHTML=TABS.map(t=>`<button class="tb" role="tab" data-act="tab" data-k="${t[0]}" aria-selected="${store.tab===t[0]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${t[2]}</svg>${t[1]}</button>`).join('');
 }
-const inSeries=x=>store.series==='All'||x.series===store.series;
 function needSignIn(){return !!API_URL&&!store.player;}
 function render(keepScroll){
   stopAnim();
   const gate=needSignIn();
-  $('#chips').hidden=gate;$('nav.tabbar').hidden=gate;
+  $('#chips').hidden=true;$('nav.tabbar').hidden=gate;
   if(gate){$('#view').innerHTML=signInView();return;}
-  renderChips();renderTabs();
-  const v=$('#view');
-  if(store.tab==='learn')v.innerHTML=ui.play?playView():learnList();
-  else if(store.tab==='reads'||store.tab==='where')v.innerHTML=quizView();
-  else{v.innerHTML=teamView();if(!ui.coach)loadBoard();}
-  if(store.tab==='learn'&&ui.play)drawPlay();
-  if((store.tab==='reads'||store.tab==='where')&&ui.q&&ui.q.kind===store.tab&&!ui.q.done)drawQ();
+  renderTabs();
+  const v=$('#view'),n=ui.nav;
+  if(store.tab==='team'){v.innerHTML=teamView();if(!ui.coach)loadBoard();}
+  else if(n.view==='play'){v.innerHTML=playView();drawPlay();}
+  else if(n.view==='quiz'){v.innerHTML=quizView();if(ui.q&&!ui.q.done)drawQ();}
+  else if(n.view==='series')v.innerHTML=seriesView();
+  else if(n.view==='cat')v.innerHTML=catView();
+  else{v.innerHTML=homeView();loadBoard();}
+  $('#view').querySelector('.court-wrap');
   if(!keepScroll)window.scrollTo(0,0);
 }
+function go(nav){ui.nav=nav;render();}
 
-/* ---------- Learn ---------- */
+/* ---------- progress ---------- */
+function seriesStats(s){
+  const pl=PLAYS.filter(p=>p.series===s),qs=QUIZ.filter(x=>x.series===s);
+  const seen=pl.filter(p=>store.plays[p.id]).length,right=qs.filter(x=>store[x.kind][x.id]&&store[x.kind][x.id].last).length;
+  return {plays:pl.length,seen,qs:qs.length,right,tot:pl.length+qs.length,got:seen+right};
+}
+function pct(st){return st.tot?Math.round(st.got/st.tot*100):0;}
+function catStats(c){return catSeries(c).map(seriesStats).reduce((a,s)=>({tot:a.tot+s.tot,got:a.got+s.got}),{tot:0,got:0});}
+function ring(p){return `<span class="ring" style="--p:${p}"><span>${p}%</span></span>`;}
+
+/* ---------- home ---------- */
+function myRank(){
+  const b=store.board;if(!b||!store.player)return null;
+  const act=b.players.filter(p=>p.reps>0).sort((a,c)=>c.reps-a.reps);
+  const i=act.findIndex(isMe);
+  return i<0?{reps:0}:{rank:i+1,reps:act[i].reps};
+}
+function homeView(){
+  const first=store.player?store.player.name:'';
+  const r=myRank(),focus=store.board&&store.board.focus;
+  let out=`<div class="hello"><div><div class="stepno">Welcome back</div><h2>Hi${first?', '+esc(first):''}</h2></div>
+    ${r?`<button class="rankchip" data-act="tab" data-k="team">${r.rank?'#'+r.rank+' this week':'No reps yet'}<small>${r.reps} rep${r.reps===1?'':'s'}</small></button>`:''}</div>`;
+  if(focus)out+=`<div class="card focus"><div class="stepno">This week's focus</div><p>${esc(focus)}</p></div>`;
+  out+=`<div class="card daily"><div><h3>Daily 5</h3><p class="muted small" style="margin:4px 0 0">5 quick questions from everything we've put in. Every answer is a rep.</p></div><button class="btn primary" data-act="daily">Start</button></div>`;
+  out+='<div class="list cats">'+CATS.map(c=>{
+    const ready=catSeries(c).length>0,st=catStats(c);
+    return ready?`<button class="item cat" data-act="open-cat" data-k="${c.id}"><span><div class="t">${esc(c.title)}</div><div class="s">${esc(c.sub)}</div></span>${ring(st.tot?Math.round(st.got/st.tot*100):0)}<span class="go">›</span></button>`
+      :`<div class="item cat off" aria-disabled="true"><span><div class="t">${esc(c.title)}</div><div class="s">${esc(c.sub)}</div></span><span class="pill">Coming soon</span></div>`;
+  }).join('')+'</div>';
+  return out;
+}
+
+/* ---------- category ---------- */
+function catView(){
+  const c=CATS.find(x=>x.id===ui.nav.cat);
+  let out=`<button class="back" data-act="nav-back">‹ Home</button><h2 style="margin-bottom:4px">${esc(c.title)}</h2><p class="muted small" style="margin:0 0 6px">${esc(c.sub)}</p>`;
+  c.groups.forEach(g=>{
+    out+=`<div class="grp">${esc(g.title)}</div><div class="list">`+g.series.map(s=>{
+      const st=seriesStats(s),done=st.tot&&st.got===st.tot;
+      return `<button class="item" data-act="open-series" data-k="${esc(s)}"><span style="flex:1;min-width:0"><div class="t">${esc(s)}${done?' <span class="pill good">Mastered</span>':''}</div><div class="s">${esc(SERIES_SUB[s]||'')}</div>
+        <div class="bar thin" style="margin-top:8px"><span style="width:${pct(st)}%"></span></div></span><span class="go">›</span></button>`;
+    }).join('')+'</div>';
+  });
+  return out;
+}
+
+/* ---------- series ---------- */
 function rulesCard(open){
   return `<details class="card"${open?' open':''}><summary><h3>Our rules</h3></summary><ol class="rules">${RULES.map(r=>`<li><b>${esc(r[0])}</b> <span class="muted">${esc(r[1])}</span></li>`).join('')}</ol></details>`;
 }
-function learnList(){
-  let out='';
-  if(store.series==='All'||store.series==='Rules')out+=rulesCard(store.series==='Rules');
-  const groups=['Low','Point','5 Out'].filter(s=>store.series==='All'||store.series===s);
-  if(!groups.length)return out+'<p class="muted">The Rules show up in every play. Pick Low, Point or 5 Out to see the plays.</p>';
-  groups.forEach(g=>{
-    out+=`<div class="grp">${esc(g)}</div><div class="list">`+PLAYS.filter(p=>p.series===g).map(p=>
-      `<button class="item" data-act="open-play" data-id="${p.id}"><span class="ck${store.plays[p.id]?' on':''}" aria-label="${store.plays[p.id]?'Viewed':'Not viewed yet'}">✓</span><span><div class="t">${esc(p.title)}</div><div class="s">${esc(p.sub)}</div></span><span class="go">›</span></button>`).join('')+'</div>';
-  });
+function seriesView(){
+  const s=ui.nav.series,c=catOf(s),st=seriesStats(s),pl=PLAYS.filter(p=>p.series===s),qs=QUIZ.filter(x=>x.series===s);
+  let out=`<button class="back" data-act="nav-back">‹ ${esc(c.title)}</button>
+    <div class="row spread"><h2>${esc(s)}</h2>${ring(pct(st))}</div><p class="muted small" style="margin:2px 0 14px">${esc(SERIES_SUB[s]||'')}</p>`;
+  if(s==='Rules')out+=rulesCard(true);
+  if(pl.length){
+    out+=`<div class="grp">Learn · ${st.seen} of ${pl.length} watched</div><div class="list">`+pl.map(p=>
+      `<button class="item" data-act="open-play" data-id="${p.id}"><span class="ck${store.plays[p.id]?' on':''}" aria-label="${store.plays[p.id]?'Watched':'Not watched yet'}">✓</span><span><div class="t">${esc(p.title)}</div><div class="s">${esc(p.sub)}</div></span><span class="go">›</span></button>`).join('')+'</div>';
+  }
+  if(qs.length){
+    out+=`<div class="grp">Quiz · ${st.right} of ${qs.length} right</div>
+      <div class="card"><p class="muted small" style="margin:0 0 10px">Read the defense and pick what you do, or tap the court where you go. Close counts.</p>
+      <div class="bar" style="margin-bottom:14px"><span style="width:${qs.length?st.right/qs.length*100:0}%"></span></div>
+      <button class="btn primary block" data-act="series-quiz">Start the quiz (${qs.length})</button></div>`;
+  }
+  out+=`<p class="muted small" style="text-align:center;margin-top:6px">Draw-it-yourself is coming later.</p>`;
   return out+legend();
 }
+
+/* ---------- play ---------- */
 function legend(){
   const l=(d,extra)=>`<svg width="34" height="12" viewBox="0 0 34 12"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.8" ${extra||''}/></svg>`;
   return `<div class="legend"><span>${l('M2 6H30','stroke-dasharray="4 3"')}Pass</span><span>${l('M2 6H30')}Cut</span><span>${l('M2 6l3-3 4 6 4-6 4 6 4-6 4 6 3-3h4')}Dribble</span><span>${l('M2 6H28M28 1V11')}Screen</span><span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5" fill="#ff7a1a"/></svg>Ball</span><span style="color:#b98a00">✕ Defender</span></div>`;
@@ -681,7 +765,7 @@ function legend(){
 function curPlay(){return PLAYS.find(p=>p.id===ui.play);}
 function playView(){
   const p=curPlay(),n=p.steps.length,i=ui.step,done=i>=n;
-  return `<button class="back" data-act="close-play">‹ All plays</button>
+  return `<button class="back" data-act="nav-back">‹ ${esc(p.series)}</button>
   <div class="row spread" style="margin-bottom:10px"><h2 style="font-size:22px">${esc(p.title)}</h2><span class="pill">${esc(p.series)}</span></div>
   <div class="court-wrap" id="court"></div>
   <div class="stepno" style="margin-top:12px">${done?'Done':'Step '+(i+1)+' of '+n}</div>
@@ -700,48 +784,44 @@ function drawPlay(frame){
 }
 function markViewed(p){if(!store.plays[p.id]){store.plays[p.id]=true;save();logEvent('play',p.id,p.series,null);}}
 
-/* ---------- Quizzes ---------- */
-function pool(kind){return (kind==='reads'?READS:WHERE).filter(inSeries);}
+/* ---------- quiz (reads + where mixed) ---------- */
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function startQuiz(kind,ids){
-  const items=ids||shuffle(pool(kind).map(x=>x.id));
-  ui.q={kind,items,i:0,right:0,missed:[],answered:false,choice:null,guess:null,done:false,series:store.series};
-  render();
+function startQuiz(ids,label,back){
+  ui.q={items:ids,label,back,i:0,right:0,missed:[],answered:false,choice:null,guess:null,done:false};
+  go({view:'quiz',back});
 }
-function curItem(){const q=ui.q;return (q.kind==='reads'?READS:WHERE).find(x=>x.id===q.items[q.i]);}
+function dailyIds(){
+  const avail=QUIZ.filter(x=>catOf(x.series));
+  const fresh=shuffle(avail.filter(x=>!(store[x.kind][x.id]&&store[x.kind][x.id].last)));
+  const known=shuffle(avail.filter(x=>store[x.kind][x.id]&&store[x.kind][x.id].last));
+  return fresh.concat(known).slice(0,5).map(x=>x.id);
+}
+function curItem(){return qById(ui.q.items[ui.q.i]);}
 function quizView(){
-  const kind=store.tab,q=ui.q,label=kind==='reads'?'Read the defense':'Where do you go?';
-  if(!q||q.kind!==kind||q.series!==store.series){
-    const items=pool(kind),rec=store[kind],got=items.filter(x=>rec[x.id]&&rec[x.id].last).length;
-    if(!items.length)return `<div class="card"><h2>${label}</h2><p class="muted">No ${kind==='reads'?'read':'spot'} questions in ${esc(store.series)} yet. Pick another series above.</p></div>`;
-    return `<div class="card"><h2>${label}</h2>
-      <p class="muted" style="margin:6px 0 12px">${kind==='reads'?'A moment in the game freezes. Pick what you do.':'Tap the court (or drag your player) to where you should go. Close counts.'}</p>
-      <div class="row spread small"><span>${items.length} questions · ${esc(store.series==='All'?'all series':store.series)}</span><span>${got} of ${items.length} right last time</span></div>
-      <div class="bar" style="margin:8px 0 16px"><span style="width:${items.length?got/items.length*100:0}%"></span></div>
-      <button class="btn primary block" data-act="start">Start</button></div>${kind==='reads'?rulesCard(false):''}`;
-  }
+  const q=ui.q;
   if(q.done){
     const n=q.items.length;
-    return `<div class="card" style="text-align:center"><div class="stepno">${label}</div><div class="big" style="margin:10px 0 4px">${q.right}/${n}</div>
-      <p class="muted">${q.right===n?'Perfect. You know this series.':q.right>=n*.7?'Nice work. Clean up the misses.':'Keep at it. Walk through the plays in Learn, then try again.'}</p>
+    return `<div class="card" style="text-align:center"><div class="stepno">${esc(q.label)}</div><div class="big" style="margin:10px 0 4px">${q.right}/${n}</div>
+      <p class="muted">${q.right===n?'Perfect. That\'s how you know it.':q.right>=n*.7?'Nice work. Clean up the misses.':'Keep at it. Walk through the plays in Learn, then try again.'}</p>
       <div class="list" style="margin-top:14px">${q.missed.length?`<button class="btn primary block" data-act="retry-missed">Try the ${q.missed.length} I missed</button>`:''}
-      <button class="btn block${q.missed.length?'':' primary'}" data-act="start">Start over</button></div></div>`;
+      <button class="btn block${q.missed.length?'':' primary'}" data-act="quiz-again">${q.label==='Daily 5'?'Another 5':'Start over'}</button>
+      <button class="btn block" data-act="quit">Done</button></div></div>`;
   }
   const it=curItem();
-  if(kind==='reads'&&!q.order)q.order=shuffle(it.choices.map((_,k)=>k));
   let body='';
-  if(kind==='reads'){
+  if(it.kind==='reads'){
+    if(!q.order)q.order=shuffle(it.choices.map((_,k)=>k));
     body=`<p class="sit">${esc(it.sit)}</p><p class="prompt">${esc(it.q)}</p><div class="choices" id="choices">`+
-      (q.order||[]).map(k=>{const c=it.choices[k];let cls='';if(q.answered){if(c.ok)cls='right';else if(q.choice===k)cls='wrong';}
+      q.order.map(k=>{const c=it.choices[k];let cls='';if(q.answered){if(c.ok)cls='right';else if(q.choice===k)cls='wrong';}
         return `<button class="choice ${cls}" data-act="choose" data-k="${k}" ${q.answered?'disabled':''}>${esc(c.t)}</button>`;}).join('')+'</div>';
     if(q.answered){const c=it.choices[q.choice],ok=!!c.ok,right=it.choices.find(x=>x.ok);
       body+=`<div class="fb ${ok?'good':'bad'}"><b>${ok?'Right!':'Not quite'}</b>${esc(c.why)}${ok?'':'<br><span class="muted">Right answer: '+esc(right.t)+'.</span>'}</div>`;}
   }else{
     body=`<p class="prompt">${esc(it.q)}</p>`;
     if(q.answered){const ok=q.ok;body+=`<div class="fb ${ok?'good':'bad'}"><b>${ok?'Right spot!':'Not quite'}</b>${esc(it.why)}${ok?'':'<br><span class="muted">The gold circle is the right spot.</span>'}</div>`;}
-    else body+=`<button class="btn primary block" data-act="check" ${q.guess?'':'disabled'}>Check my spot</button>`;
+    else body+=`<p class="muted small" style="margin:-4px 0 10px">Tap the court, or drag your player.</p><button class="btn primary block" data-act="check" ${q.guess?'':'disabled'}>Check my spot</button>`;
   }
-  return `<div class="qhead"><span class="stepno">${label} · ${q.i+1} of ${q.items.length}</span><button class="back" style="margin:0" data-act="quit">Quit</button></div>
+  return `<div class="qhead"><span class="stepno">${esc(q.label)} · ${q.i+1} of ${q.items.length} · ${it.kind==='reads'?'Read it':'Where do you go?'}</span><button class="back" style="margin:0" data-act="quit">Quit</button></div>
     <div class="court-wrap" id="court"></div>${body}
     ${q.answered?`<div class="row" style="margin-top:12px"><button class="btn" data-act="replay-show">↺ Show me</button><button class="btn primary" style="flex:1" data-act="next-q">${q.i+1<q.items.length?'Next ›':'See score'}</button></div>`:''}`;
 }
@@ -751,9 +831,8 @@ function qFrame(it,extra){
 }
 function drawQ(frame){
   const it=curItem(),q=ui.q,el=$('#court');if(!el)return;
-  if(store.tab==='reads'&&!q.order)q.order=shuffle(it.choices.map((_,k)=>k));
   if(frame){el.innerHTML=courtSvg(Object.assign({view:it.view,you:it.you},frame));return;}
-  if(q.kind==='where'){
+  if(it.kind==='where'){
     const pos=copyPos(it.pos);let marks='',under='';
     if(q.guess){
       pos[it.you]=q.guess;
@@ -770,9 +849,8 @@ function drawQ(frame){
 function bindTap(el,it){
   const svg=el.querySelector('svg');let down=false;
   const pt=e=>{const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const r=p.matrixTransform(svg.getScreenCTM().inverse());return [f2(clamp(r.x,-24,24)),f2(clamp(r.y,.5,46.5))];};
-  const move=e=>{if(!down)return;e.preventDefault();ui.q.guess=pt(e);redrawGuess(it);};
   svg.addEventListener('pointerdown',e=>{down=true;svg.setPointerCapture(e.pointerId);ui.q.guess=pt(e);redrawGuess(it);});
-  svg.addEventListener('pointermove',move);
+  svg.addEventListener('pointermove',e=>{if(!down)return;e.preventDefault();ui.q.guess=pt(e);redrawGuess(it);});
   svg.addEventListener('pointerup',()=>{down=false;});
   svg.addEventListener('pointercancel',()=>{down=false;});
 }
@@ -787,14 +865,14 @@ function redrawGuess(it){
 function showAnswer(){
   const it=curItem();if(!it.show)return;
   const st={pos:copyPos(it.pos),ball:it.ball};
-  const marks=ui.q.kind==='where'?`<circle cx="${it.ans[0]}" cy="${it.ans[1]}" r="${it.tol}" fill="rgba(255,210,90,.18)" stroke="#ffd25a" stroke-width=".3" stroke-dasharray="1 .6"/>`:'';
+  const marks=it.kind==='where'?`<circle cx="${it.ans[0]}" cy="${it.ans[1]}" r="${it.tol}" fill="rgba(255,210,90,.18)" stroke="#ffd25a" stroke-width=".3" stroke-dasharray="1 .6"/>`:'';
   animateSeq(st,it.show,f=>drawQ(Object.assign({marks},f)),en=>{
     drawQ({pos:en.pos,ball:en.ball,marks,arrows:[]});
   },350);
 }
 function record(kind,id,ok){
   const r=store[kind][id]||{tries:0,right:0};r.tries++;if(ok)r.right++;r.last=ok;store[kind][id]=r;save();
-  const it=(kind==='reads'?READS:WHERE).find(x=>x.id===id);
+  const it=qById(id);
   logEvent(kind,id,it?it.series:'',ok);
 }
 
@@ -866,7 +944,7 @@ async function loadBoard(force){
   if(!force&&store.board&&Date.now()-store.board.at<60000)return;
   boardBusy=true;
   try{const r=await apiGet({action:'board',who:store.player.login});
-    if(r.ok){store.board={at:Date.now(),week:r.week,players:r.players};save();boardBusy=false;if(store.tab==='team'&&!ui.coach)render(true);return;}
+    if(r.ok){store.board={at:Date.now(),week:r.week,players:r.players,focus:r.focus||''};save();boardBusy=false;if(!ui.coach&&(store.tab==='team'||(store.tab==='home'&&ui.nav.view==='home')))render(true);return;}
   }catch(e){}
   boardBusy=false;
 }
@@ -973,57 +1051,68 @@ window.addEventListener('online',()=>{flush();});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')flush();});
 
 /* ---------- events ---------- */
+function navBack(){
+  const n=ui.nav;
+  if(n.view==='play'){const p=curPlay();ui.play=null;go({view:'series',series:p.series});}
+  else if(n.view==='quiz'){ui.q=null;go(n.back||{view:'home'});}
+  else if(n.view==='series'){const c=catOf(n.series);go({view:'cat',cat:c.id});}
+  else go({view:'home'});
+}
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-act]');if(!b)return;
   const act=b.dataset.act,k=b.dataset.k;
-  if(act==='series'){store.series=k;ui.play=null;save();render();}
-  else if(act==='tab'){store.tab=k;ui.play=null;ui.coach=false;save();render();}
-  else if(act==='open-play'){ui.play=b.dataset.id;ui.step=0;render();}
-  else if(act==='close-play'){ui.play=null;render();}
+  if(act==='tab'){
+    if(store.tab===k&&k==='home'){ui.play=null;ui.q=null;ui.nav={view:'home'};}
+    store.tab=k;ui.coach=false;save();render();
+  }
+  else if(act==='nav-back'){navBack();}
+  else if(act==='open-cat'){go({view:'cat',cat:k});}
+  else if(act==='open-series'){go({view:'series',series:k});}
+  else if(act==='open-play'){ui.play=b.dataset.id;ui.step=0;go({view:'play'});}
   else if(act==='step-back'){stopAnim();ui.step=Math.max(0,ui.step-1);render();}
   else if(act==='step-next'||act==='play-all'){
     const p=curPlay();stopAnim();
     if(ui.step>=p.steps.length){ui.step=0;}
-    if(act==='play-all'&&ui.step===p.steps.length)ui.step=0;
     const runOne=()=>{
       const st=stateAt(p,ui.step);
       animateStep(st,p.steps[ui.step],f=>drawPlay(f),()=>{
         ui.step++;
         if(ui.step>=p.steps.length)markViewed(p);
-        const keep=ui.play;render();
-        if(act==='play-all'&&keep===ui.play&&ui.step<p.steps.length)setTimeout(()=>{if(ui.play===keep)runOne();},500);
+        const keep=ui.play;render(true);
+        if(act==='play-all'&&keep===ui.play&&ui.step<p.steps.length)setTimeout(()=>{if(ui.play===keep&&ui.nav.view==='play')runOne();},500);
       });
     };
-    if(act==='step-next'&&b.textContent.indexOf('Replay')>=0){render();return;}
+    if(act==='step-next'&&b.textContent.indexOf('Replay')>=0){render(true);return;}
     runOne();
   }
-  else if(act==='start'){startQuiz(store.tab);}
-  else if(act==='retry-missed'){startQuiz(store.tab,ui.q.missed.slice());}
-  else if(act==='quit'){ui.q=null;render();}
+  else if(act==='daily'){const ids=dailyIds();if(ids.length)startQuiz(ids,'Daily 5',{view:'home'});}
+  else if(act==='series-quiz'){const s=ui.nav.series;startQuiz(shuffle(QUIZ.filter(x=>x.series===s).map(x=>x.id)),s+' quiz',{view:'series',series:s});}
+  else if(act==='quiz-again'){const q=ui.q;
+    if(q.label==='Daily 5')startQuiz(dailyIds(),'Daily 5',q.back);else startQuiz(shuffle(q.items),q.label,q.back);}
+  else if(act==='retry-missed'){const q=ui.q;startQuiz(q.missed.slice(),q.label,q.back);}
+  else if(act==='quit'){navBack();}
   else if(act==='choose'){
     const q=ui.q,it=curItem();if(q.answered)return;
     q.answered=true;q.choice=Number(k);const ok=!!it.choices[q.choice].ok;
     if(ok)q.right++;else q.missed.push(it.id);record('reads',it.id,ok);
-    const order=q.order;render();ui.q.order=order;drawQ();showAnswer();
+    render(true);showAnswer();
   }
   else if(act==='check'){
     const q=ui.q,it=curItem();if(!q.guess||q.answered)return;
     const d=Math.hypot(q.guess[0]-it.ans[0],q.guess[1]-it.ans[1]);
     q.answered=true;q.ok=d<=it.tol;if(q.ok)q.right++;else q.missed.push(it.id);record('where',it.id,q.ok);
-    render();setTimeout(showAnswer,700);
+    render(true);setTimeout(showAnswer,700);
   }
   else if(act==='replay-show'){stopAnim();drawQ();setTimeout(showAnswer,300);}
   else if(act==='next-q'){
     const q=ui.q;q.i++;q.answered=false;q.choice=null;q.guess=null;q.order=null;q.ok=null;
     if(q.i>=q.items.length)q.done=true;render();
   }
-  else if(act==='si-yes'){store.player=signin.found;store.guest=false;signin.found=null;signin.msg='';store.board=null;save();render();}
+  else if(act==='si-yes'){store.player=signin.found;signin.found=null;signin.msg='';store.board=null;store.tab='home';ui.nav={view:'home'};save();render();}
   else if(act==='si-no'){signin.found=null;signin.msg='';render();}
-  else if(act==='si-guest'){store.guest=true;save();render();}
-  else if(act==='si-start'){store.guest=false;save();render();}
   else if(act==='switch'){
     if(confirm("Switch player? This phone's progress will be cleared. Your answers are already saved to the team board.")){
-      flush();store.player=null;store.guest=false;store.plays={};store.reads={};store.where={};store.board=null;save();render();}
+      flush();store.player=null;store.plays={};store.reads={};store.where={};store.board=null;ui.nav={view:'home'};save();render();}
   }
   else if(act==='board-refresh'){loadBoard(true);}
   else if(act==='coach-open'){ui.coach=true;render();if(store.coachKey)loadCoach();}
