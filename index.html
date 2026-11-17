@@ -12,7 +12,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-180.png">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-64.png" type="image/png">
 <style>
 :root{
   --bg:#eef4f0;--surface:#fff;--surface-2:#f3f8f5;--line:#d5e3db;--ink:#122019;--muted:#586b60;
@@ -45,6 +45,8 @@ header.band{background:var(--band);color:var(--band-ink);padding-top:env(safe-ar
 header .wrap{padding-top:14px;padding-bottom:12px}
 .eyebrow{font:500 12px/1 var(--font-display);letter-spacing:.16em;text-transform:uppercase;color:var(--band-muted)}
 header h1{font-size:26px;line-height:1.05;margin-top:6px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:56px;height:56px;flex:none}
 header h1 span{color:var(--band-muted);font-weight:500}
 .chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:12px;padding-bottom:2px}
 .chips::-webkit-scrollbar{display:none}
@@ -117,8 +119,9 @@ a{color:var(--brand)}
 </head>
 <body>
 <header class="band"><div class="wrap">
+  <div class="brand"><img src="logo-mark.png" alt="" width="56" height="56" onerror="this.remove()"><div>
   <div class="eyebrow">Stratton Eagles · Girls Basketball</div>
-  <h1>Playbook <span>Trainer</span></h1>
+  <h1>Playbook <span>Trainer</span></h1></div></div>
   <div class="chips" id="chips" role="group" aria-label="Series"></div>
 </div></header>
 <main><div class="wrap" id="view"></div></main>
