@@ -660,7 +660,7 @@ const HCM_RULES=[
   ['Two or more passes away: HELP.','Sink toward the lane.'],
   ['See man and ball.','Always.'],
   ['Sprint to your next spot.','Every pass, every player moves. If the ball is skipped and you go from guarding the ball to help, SPRINT to your help spot.'],
-  ['Front the post.','From the baseline side. If she catches, make her go middle.'],
+  ['Front the post.','From the baseline side. If you are caught behind and she catches, make her go middle.'],
   ['Switch every screen.','Ball screens, off-ball screens, and any interchange. Call "Switch!" Full court too: in 6 through 10, we can switch at any spot on the floor. If there is a player we do not switch on, Coach will tell you.'],
   ['Force the ball handler to the MIDDLE.','Into our help.']
 ];
@@ -1287,13 +1287,13 @@ function stopAnim(){animId++;}
 const PD_RULES=[
   ['FRONT the post.','Get all the way in front of her, between her and the ball.'],
   ['Front from the BASELINE side.','When the ball moves and you need to get in front, step around her on the baseline side.'],
-  ['If she catches, make her go MIDDLE.','Take away the baseline. Middle is where our help is.'],
+  ['Caught behind and she catches? Make her go MIDDLE.','If you are caught behind her and she gets the ball, take away the baseline. Middle is where our help is.'],
   ['Perimeter defenders can DIG.','Dig down on the post with your back to the baseline. If she kicks it out, sprint back to your player.']
 ];
 /* ball on the left wing, their post on the left block; 5 starts BEHIND her */
 const PD_BEHIND=with_(HCM_WING,{5:[-6.8,5.2]});
-/* their post has the ball on the left block */
-const PD_CATCH=with_(HCM_WING,{5:[-10.3,10.2]});
+/* 5 is caught behind their post on the left block, ball on the wing */
+const PD_CATCH=with_(HCM_WING,{5:[-6.8,5.2]});
 
 PLAYS.push(
  {id:'pd-front',series:'Post D',title:'Front the Post',sub:'Get in front from the baseline side',start:with_(PD_BEHIND,{1:[-5.1,23.6],3:[-17.2,18.8]}),ball:'o1',
@@ -1302,13 +1302,13 @@ PLAYS.push(
    {cap:'5 steps around her on the BASELINE side and gets all the way in front, between her and the ball. 4 is in help in the lane.',a:[C(5,[-10.3,10.2],[-10.6,5.6])]}
   ],end:'Front the post, and get there from the baseline side.'},
 
- {id:'pd-catch',series:'Post D',title:'If She Catches: Go Middle',sub:'Take away the baseline, perimeter digs',start:PD_CATCH,ball:'o3',
+ {id:'pd-catch',series:'Post D',title:'Caught Behind: Go Middle',sub:'She catches: take away the baseline, perimeter digs',start:PD_CATCH,ball:'o3',
   steps:[
-   {cap:'She sealed and got the ball on the block.',a:[P('o3','o5')]},
+   {cap:'5 got caught behind her, and she catches it on the block.',a:[P('o3','o5')]},
    {cap:'5 takes away the baseline so she has to go MIDDLE. 1 digs down with her back to the baseline. 4 is in help in the lane.',a:[C(5,[-9.2,5.6]),C(1,[-5,12.4]),C(4,[-1,6.5])]},
    {cap:'She turns middle, right into our help.',a:[D('o5',[-4.4,7.6])]},
    {cap:'She kicks it out. 1 SPRINTS back out to her player.',a:[P('o5','o1'),C(1,[-6.4,23.4])]}
-  ],end:'If she catches: make her go middle. Dig, then sprint back out on the kick.'}
+  ],end:'Caught behind and she catches: make her go middle. Dig, then sprint back out on the kick.'}
 );
 
 READS.push(
@@ -1322,10 +1322,10 @@ READS.push(
    {t:'Leave her and help on the ball',why:'Stay with the post and front her from the baseline side.'}],
   show:[{a:[C(5,[-10.3,10.2],[-10.6,5.6])]}]},
  {id:'pd-r-middle',series:'Post D',you:'5',ball:'o5',pos:with_(PD_CATCH,{o5:[-7.5,8]}),ctx:[P('o3','o5')],
-  sit:'Their post caught it on the block.',
+  sit:'You got caught behind their post, and she caught it on the block.',
   q:'Which way do you make her go?',
   choices:[
-   {t:'Middle',ok:true,why:'If she catches, make her go middle. That is where our help is.'},
+   {t:'Middle',ok:true,why:'Caught behind and she catches: make her go middle. That is where our help is.'},
    {t:'Baseline',why:'Take away the baseline. Make her go middle, into our help.'},
    {t:'Let her pick',why:'We decide: middle.'},
    {t:'Back her out to the wing',why:'Take away the baseline and make her go middle.'}],
@@ -1370,7 +1370,7 @@ const CATS=[
     {id:'mand',title:'Man Defenses',sub:'Half court and full court man-to-man',groups:[
       {id:'manrules',title:'Rules',sub:'The rules for all our man defenses',series:['Man Rules']},
       {id:'ballscreens',title:'Ball Screen Coverages',sub:'Switch or Fire, and where our help goes',series:['Ball Screens']},
-      {id:'postd',title:'Post Defense',sub:'Front from the baseline side, make her go middle',series:['Post D']},
+      {id:'postd',title:'Post Defense',sub:'Front from the baseline side. Caught behind? Make her go middle',series:['Post D']},
       {id:'m5',title:'5',sub:'All five pick up at half court',series:['5']},
       {id:'m6',title:'6',sub:'5+1: one is up turning',series:['6']},
       {id:'m7',title:'7',sub:'5+2: two are up turning',series:['7']},
@@ -1383,7 +1383,7 @@ const CATS=[
   {id:'slob',title:'SLOBs',sub:'Sideline Out-of-Bounds Plays',groups:[
     {id:'kansas',title:'Kansas',series:['Kansas','Kansas 2']}]}
 ];
-const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Man Rules':'The rules for all our man defenses','Ball Screens':'Switch or Fire, and where our help goes','Post D':'Front from the baseline side, make her go middle','Kansas':'Get it to the corner, then the lob','Kansas 2':'Looks like Kansas, then a back screen and lob','5':'All five pick up at half court','6':'5+1: one is up turning','7':'5+2: two are up turning','8':'5+3: three are up turning','9':'5+4: four are up turning','10':'5+5: all five are up turning'};
+const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Man Rules':'The rules for all our man defenses','Ball Screens':'Switch or Fire, and where our help goes','Post D':'Front from the baseline side. Caught behind? Make her go middle','Kansas':'Get it to the corner, then the lob','Kansas 2':'Looks like Kansas, then a back screen and lob','5':'All five pick up at half court','6':'5+1: one is up turning','7':'5+2: two are up turning','8':'5+3: three are up turning','9':'5+4: four are up turning','10':'5+5: all five are up turning'};
 const SERIES_TITLE={'Man Rules':'Man Defense Rules','Ball Screens':'Ball Screen Coverages','Post D':'Post Defense'};
 const stitle=x=>SERIES_TITLE[x]||x;
 const SERIES_RULES=Object.assign({Rules:RULES,'Man Rules':HCM_RULES,'Ball Screens':BS_RULES,'Post D':PD_RULES},NUM_RULES,KAN_RULES);
