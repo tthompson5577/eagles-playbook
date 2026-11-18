@@ -942,6 +942,85 @@ WHERE.push(
   show:[{a:[C(1,[-8.5,23.8])]}]}
 );
 
+
+/* ===== Ball Screen Coverages: SWITCH (base) and FIRE (trap the ball handler) ===== */
+const BS_RULES=[
+  ['SWITCH: our base.','The two defenders trade players. Call "Switch!" The low player on the help side sits in the lane, ready if the roller gets loose.'],
+  ['FIRE: trap the ball handler.','The ball defender and the screener\'s defender trap her. The screener rolls, so the low player on the help side steps in and picks her up. The next help-side player drops down to split the two on that side. Everyone else takes away the closest pass.'],
+  ['Coach calls the coverage.','If you don\'t hear a call, we switch.']
+];
+/* top ball screen: ball at the top, help side is the LEFT */
+const BS_TOP=Object.assign({o1:[0,28],o2:[-18,19],o3:[18,19],o4:[-21,5],o5:[7.5,8]},
+  {1:[0,24.6],2:[-15.2,20.7],3:[15.2,20.7],4:[-6.5,8],5:[9.6,10.2]});
+/* side ball screen: ball on the right wing, help side is the LEFT */
+const BS_SIDE=Object.assign({o1:[-2,28],o2:[-18,19],o3:[18,19],o4:[-21,5],o5:[7.5,8]},
+  {1:[1.4,25.6],2:[-7,15],3:[15.4,16.8],4:[-6.5,6.5],5:[9.6,10.2]});
+
+PLAYS.push(
+ {id:'bs-switch-top',series:'Ball Screens',title:'Switch: Top Ball Screen',sub:'Trade players, help sits in the lane',start:BS_TOP,ball:'o1',
+  steps:[
+   {cap:'Their post comes up to set a ball screen at the top. 5 follows her.',a:[C('o5',[3,25],[7,17]),C(5,[3.2,21.6],[7,15])]},
+   {cap:'She comes off the screen. SWITCH: 5 calls it and takes the ball. 1 takes the screener as she rolls. Help: 4, the low player on the help side, sits in the lane ready if the roller gets loose. 2 sinks toward the lane.',
+    a:[D('o1',[7,26.5]),C(5,[6.4,23]),C('o5',[2,13],[3,19]),C(1,[1.2,9.8],[2,17]),C(4,[-5,9]),C(2,[-11,17])]}
+  ],end:'Switch is our base. Low help-side player: in the lane, protecting the rim.'},
+
+ {id:'bs-fire-top',series:'Ball Screens',title:'Fire: Top Ball Screen',sub:'Trap the ball handler, low help takes the roller',start:BS_TOP,ball:'o1',
+  steps:[
+   {cap:'Coach calls FIRE. Their post comes up to set a ball screen at the top. 5 follows her.',a:[C('o5',[3,25],[7,17]),C(5,[3.2,21.6],[7,15])]},
+   {cap:'She comes off the screen: 1 and 5 TRAP her. The screener rolls: 4, the low player on the help side, steps in and picks her up. 2 drops down to split the two on the help side. 3 takes away the closest pass.',
+    a:[D('o1',[7,26.5]),C(1,[4,29]),C(5,[9.6,23.6]),C('o5',[2,13],[3,19]),C(4,[1,9.8]),C(2,[-12,12]),C(3,[15,22.5])]}
+  ],end:'Fire: trap the ball. Low help takes the roller. Next help drops to split. Take away the closest pass.'},
+
+ {id:'bs-switch-side',series:'Ball Screens',title:'Switch: Side Ball Screen',sub:'Wing ball screen: trade players',start:BS_SIDE,ball:'o3',
+  steps:[
+   {cap:'Their post comes up to set a ball screen on the wing. 5 follows her.',a:[C('o5',[14.4,22.2],[11,14]),C(5,[12.4,19.4],[10,13])]},
+   {cap:'She drives middle off the screen. SWITCH: 5 takes the ball, 3 takes the screener as she rolls. Help: 4, the low player on the help side, sits in the lane. 2 sinks.',
+    a:[D('o3',[10,25]),C(5,[9,21.8]),C('o5',[4,12],[9,17]),C(3,[2.8,8.9],[8,14]),C(4,[-3.5,8]),C(2,[-5,14])]}
+  ],end:'Same rule on the side: switch, and the low help-side player protects the rim.'},
+
+ {id:'bs-fire-side',series:'Ball Screens',title:'Fire: Side Ball Screen',sub:'Trap on the wing, low help takes the roller',start:BS_SIDE,ball:'o3',
+  steps:[
+   {cap:'Coach calls FIRE. Their post comes up to set a ball screen on the wing. 5 follows her.',a:[C('o5',[14.4,22.2],[11,14]),C(5,[12.4,19.4],[10,13])]},
+   {cap:'She comes off the screen: 3 and 5 TRAP her. The screener rolls: 4, the low player on the help side, steps in and picks her up. 2 drops down to split the two on the help side. 1 takes away the closest pass.',
+    a:[D('o3',[13,24]),C(3,[16,26.5]),C(5,[10.4,21.4]),C('o5',[4,12],[9,17]),C(4,[2.8,8.9]),C(2,[-12,12]),C(1,[1.4,25.6])]}
+  ],end:'Fire on the side works the same: trap, low help takes the roller, next help drops to split.'}
+);
+
+READS.push(
+ {id:'bs-r-fire5',series:'Ball Screens',you:'5',ball:'o1',pos:with_(BS_TOP,{o5:[3,25],5:[3.2,21.6]}),ctx:[C('o5',[3,25])],
+  sit:'Coach called FIRE. Your player (their post) just set a ball screen at the top.',
+  q:'What do you do?',
+  choices:[
+   {t:'Trap the ball handler with 1',ok:true,why:'Fire = trap the ball handler. You and 1 trap her; help takes your roller.'},
+   {t:'Switch onto the ball handler',why:'That is our base, but Coach called Fire. Trap.'},
+   {t:'Stay with your player as she rolls',why:'On Fire you trap the ball. The low help-side player takes the roller.'},
+   {t:'Drop back to the paint',why:'Fire means trap the ball handler.'}],
+  show:[{a:[D('o1',[7,26.5]),C(1,[4,29]),C(5,[9.6,23.6]),C('o5',[2,13],[3,19]),C(4,[1,9.8]),C(2,[-12,12]),C(3,[15,22.5])]}]},
+
+ {id:'bs-r-switchhelp',series:'Ball Screens',you:'4',ball:'o1',pos:BS_TOP,ctx:[C('o5',[3,25])],
+  sit:'No call from Coach. Their post is coming up to set a ball screen at the top. You are the low player on the help side.',
+  q:'What is your job?',
+  choices:[
+   {t:'Sit in the lane, ready if the roller gets loose',ok:true,why:'No call = Switch. Low help-side player protects the rim.'},
+   {t:'Run up and trap the ball',why:'That is Fire, and only the two screen defenders trap. No call means switch; you protect the rim.'},
+   {t:'Deny your player in the corner',why:'You are two passes away: help. Sit in the lane.'},
+   {t:'Switch onto the screener',why:'The two screen defenders switch. You protect the rim.'}],
+  show:[{a:[D('o1',[7,26.5]),C(5,[6.4,23]),C('o5',[2,13],[3,19]),C(1,[1.2,9.8],[2,17]),C(4,[-5,9]),C(2,[-11,17])]}]}
+);
+
+WHERE.push(
+ {id:'bs-w-firelow',series:'Ball Screens',you:'4',ball:'o1',
+  pos:with_(BS_TOP,{o1:[7,26.5],1:[4,29],5:[9.6,23.6],o5:[3,18]}),ctx:[C('o5',[2,13])],
+  q:'Fire! 1 and 5 trapped the ball handler and the screener is rolling to the rim. You are the low player on the help side. Where do you go?',
+  ans:[1,9.8],tol:4,why:'Low help takes the roller: step in between her and the rim.',
+  show:[{a:[C('o5',[2,13]),C(4,[1,9.8])]}]},
+ {id:'bs-w-firesplit',series:'Ball Screens',you:'2',ball:'o1',
+  pos:with_(BS_TOP,{o1:[7,26.5],1:[4,29],5:[9.6,23.6],o5:[2,13],4:[1,9.8]}),ctx:[C(4,[1,9.8])],
+  q:'Fire! 4 just left the corner player to take the roller. You are guarding the help-side wing. Where do you go?',
+  ans:[-12,12],tol:4.5,why:'Drop down and split the two on the help side: your player on the wing and 4\'s player in the corner.',
+  show:[{a:[C(2,[-12,12])]}]}
+);
+
 /* =====================================================================
    ENGINE
    ===================================================================== */
@@ -1091,6 +1170,7 @@ const CATS=[
   {id:'defense',title:'Defense',sub:'Man and Zone Defenses, Presses',sections:[
     {id:'mand',title:'Man Defenses',sub:'Half court and full court man-to-man',groups:[
       {id:'manrules',title:'Rules',sub:'The rules for all our man defenses',series:['Man Rules']},
+      {id:'ballscreens',title:'Ball Screen Coverages',sub:'Switch or Fire, and where our help goes',series:['Ball Screens']},
       {id:'m5',title:'5',sub:'All five pick up at half court',series:['5']},
       {id:'m6',title:'6',sub:'5+1: one is up turning',series:['6']},
       {id:'m7',title:'7',sub:'5+2: two are up turning',series:['7']},
@@ -1102,10 +1182,10 @@ const CATS=[
   {id:'blob',title:'BLOBs',sub:'Baseline Out-of-Bounds Plays',groups:[]},
   {id:'slob',title:'SLOBs',sub:'Sideline Out-of-Bounds Plays',groups:[]}
 ];
-const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Man Rules':'The rules for all our man defenses','5':'All five pick up at half court','6':'5+1: one is up turning','7':'5+2: two are up turning','8':'5+3: three are up turning','9':'5+4: four are up turning','10':'5+5: all five are up turning'};
-const SERIES_TITLE={'Man Rules':'Man Defense Rules'};
+const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Man Rules':'The rules for all our man defenses','Ball Screens':'Switch or Fire, and where our help goes','5':'All five pick up at half court','6':'5+1: one is up turning','7':'5+2: two are up turning','8':'5+3: three are up turning','9':'5+4: four are up turning','10':'5+5: all five are up turning'};
+const SERIES_TITLE={'Man Rules':'Man Defense Rules','Ball Screens':'Ball Screen Coverages'};
 const stitle=x=>SERIES_TITLE[x]||x;
-const SERIES_RULES=Object.assign({Rules:RULES,'Man Rules':HCM_RULES},NUM_RULES);
+const SERIES_RULES=Object.assign({Rules:RULES,'Man Rules':HCM_RULES,'Ball Screens':BS_RULES},NUM_RULES);
 const QUIZ=READS.map(x=>Object.assign({kind:'reads'},x)).concat(WHERE.map(x=>Object.assign({kind:'where'},x)));
 const qById=id=>QUIZ.find(x=>x.id===id);
 const allGroups=c=>c.sections?[].concat(...c.sections.map(s=>s.groups)):c.groups;
