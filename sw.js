@@ -1,5 +1,5 @@
 /* Offline cache for the Eagles Playbook Trainer. Bump VERSION whenever index.html changes. */
-const VERSION = 'eagles-playbook-v19';
+const VERSION = 'eagles-playbook-v20';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-180.png', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'logo-mark.png', 'favicon-64.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));

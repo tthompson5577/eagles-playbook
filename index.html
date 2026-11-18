@@ -664,11 +664,11 @@ const HCM_RULES=[
 ];
 const NUM_RULES={
   '5':[['All five pick up at half court.','Everything else follows our man rules.']],
-  '6':[['5+1: one picks up full court.','The other four wait at half court. Everything else follows our man rules.'],['Who goes? Coach tells you.','Coach names who picks up full court, or which of their players to take away (whoever is guarding her goes). Often both: "Layla, take away #23." Everyone else waits at half court.']],
-  '7':[['5+2: two pick up full court.','The other three wait at half court. Everything else follows our man rules.'],['Who goes? Coach tells you.','Coach names who picks up full court, or which of their players to take away (whoever is guarding her goes). Often both: "Layla, take away #23." Everyone else waits at half court.']],
-  '8':[['5+3: three pick up full court.','The other two wait at half court. Everything else follows our man rules.'],['Who goes? Coach tells you.','Coach names who picks up full court, or which of their players to take away (whoever is guarding her goes). Often both: "Layla, take away #23." Everyone else waits at half court.']],
-  '9':[['5+4: four pick up full court.','One waits at half court. Everything else follows our man rules.'],['Who goes? Coach tells you.','Coach names who picks up full court, or which of their players to take away (whoever is guarding her goes). Often both: "Layla, take away #23." Everyone else waits at half court.']],
-  '10':[['5+5: all five pick up full court.','Everything else follows our man rules.']]
+  '6':[['5+1: one is up turning.','The other four wait at half court. Everything else follows our man rules.'],['Who is up turning? Coach tells you.','Coach names who is up turning ("Layla and Rilynn, you are up turning in 7"), or which of their players to take away (whoever is guarding her is up turning). Often both. Everyone else waits at half court.']],
+  '7':[['5+2: two are up turning.','The other three wait at half court. Everything else follows our man rules.'],['Who is up turning? Coach tells you.','Coach names who is up turning ("Layla and Rilynn, you are up turning in 7"), or which of their players to take away (whoever is guarding her is up turning). Often both. Everyone else waits at half court.']],
+  '8':[['5+3: three are up turning.','The other two wait at half court. Everything else follows our man rules.'],['Who is up turning? Coach tells you.','Coach names who is up turning ("Layla and Rilynn, you are up turning in 7"), or which of their players to take away (whoever is guarding her is up turning). Often both. Everyone else waits at half court.']],
+  '9':[['5+4: four are up turning.','One waits at half court. Everything else follows our man rules.'],['Who is up turning? Coach tells you.','Coach names who is up turning ("Layla and Rilynn, you are up turning in 7"), or which of their players to take away (whoever is guarding her is up turning). Often both. Everyone else waits at half court.']],
+  '10':[['5+5: all five are up turning.','Everything else follows our man rules.']]
 };
 const THEM={o1:[-6,27],o2:[8,26],o3:[-20,17],o4:[20,17],o5:[-7.5,8]};
 /* ball at the left slot */
@@ -711,46 +711,46 @@ PLAYS.push(
 READS.push(
  {id:'d-num-6',series:'6',view:'full',you:'',ball:'o1',pos:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},
   sit:'Coach calls 6.',
-  q:'How many of us pick up full court?',
+  q:'How many of us are up turning?',
   choices:[
-   {t:'One. The other four wait at half court',ok:true,why:'6 = 5+1. One picks up full court, the other four wait at half court.'},
+   {t:'One. The other four wait at half court',ok:true,why:'6 = 5+1. One is up turning, the other four wait at half court.'},
    {t:'None. All five wait at half court',why:'That is 5. 6 = 5+1.'},
    {t:'Two',why:'That is 7. 6 = 5+1.'},
    {t:'All five',why:'That is 10. 6 = 5+1.'}],
   show:[]},
  {id:'d-num-8',series:'8',view:'full',you:'',ball:'o1',pos:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},
   sit:'Coach calls 8.',
-  q:'How many of us pick up full court?',
+  q:'How many of us are up turning?',
   choices:[
-   {t:'Three. The other two wait at half court',ok:true,why:'8 = 5+3. Three pick up full court, two wait at half court.'},
+   {t:'Three. The other two wait at half court',ok:true,why:'8 = 5+3. Three are up turning, two wait at half court.'},
    {t:'Two',why:'That is 7. 8 = 5+3.'},
    {t:'Four',why:'That is 9. 8 = 5+3.'},
    {t:'All five',why:'That is 10. 8 = 5+3.'}],
   show:[]},
  {id:'d-num-9',series:'9',view:'full',you:'',ball:'o1',pos:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},
   sit:'Coach calls 9.',
-  q:'How many of us pick up full court?',
+  q:'How many of us are up turning?',
   choices:[
-   {t:'Four. One waits at half court',ok:true,why:'9 = 5+4. Four pick up full court, one waits at half court.'},
+   {t:'Four. One waits at half court',ok:true,why:'9 = 5+4. Four are up turning, one waits at half court.'},
    {t:'Three',why:'That is 8. 9 = 5+4.'},
    {t:'All five',why:'That is 10. 9 = 5+4.'},
    {t:'One',why:'That is 6. 9 = 5+4.'}],
   show:[]},
  {id:'d-num-10',series:'10',view:'full',you:'',ball:'o1',pos:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},
   sit:'Coach calls 10.',
-  q:'How many of us pick up full court?',
+  q:'How many of us are up turning?',
   choices:[
-   {t:'All five pick up full court',ok:true,why:'10 = 5+5. All five pick up full court.'},
+   {t:'All five are up turning',ok:true,why:'10 = 5+5. All five are up turning.'},
    {t:'None',why:'That is 5. 10 = 5+5.'},
    {t:'Four',why:'That is 9. 10 = 5+5.'},
    {t:'Just the player guarding the ball',why:'That is 6. 10 = 5+5.'}],
   show:[]},
  {id:'d-who-wait',series:'6',view:'full',you:'4',ball:'o1',pos:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},
-  sit:'Coach calls 6: "Layla, take away #23." You are not Layla, and you are not guarding #23.',
+  sit:'Coach says: "Layla, you are up turning in 6. Take away #23." You are not Layla, and you are not guarding #23.',
   q:'What do you do?',
   choices:[
-   {t:'Wait at half court and pick up my player there',ok:true,why:'Only the player Coach named goes full court. Everyone else waits at half court.'},
-   {t:'Pick up my player full court',why:'Only the player Coach named goes. 6 = 5+1: one goes, you wait at half court.'},
+   {t:'Wait at half court and pick up my player there',ok:true,why:'Only the player Coach named is up turning. Everyone else waits at half court.'},
+   {t:'Pick up my player full court',why:'Only the player Coach named is up turning. 6 = 5+1: one is up turning, you wait at half court.'},
    {t:'Go help trap #23',why:'Wait at half court. Layla has #23.'},
    {t:'Drop back to the paint',why:'Wait at half court and pick up your player there.'}],
   show:[]},
@@ -758,16 +758,16 @@ READS.push(
   sit:'Coach calls 6 and says "take away #23." You are the one guarding #23.',
   q:'What do you do?',
   choices:[
-   {t:'Pick her up full court and take her away',ok:true,why:'Whoever is guarding the player Coach names goes full court. That is you.'},
-   {t:'Wait at half court',why:'You are guarding #23, so you are the one who goes full court.'},
+   {t:'I am up turning: pick her up full court and take her away',ok:true,why:'Whoever is guarding the player Coach names is up turning. That is you.'},
+   {t:'Wait at half court',why:'You are guarding #23, so you are up turning.'},
    {t:'Switch onto the ball',why:'Stay with #23 and take her away, full court.'},
-   {t:'Wait for Coach to say your name',why:'"Take away #23" means whoever is guarding #23 goes. That is you.'}],
+   {t:'Wait for Coach to say your name',why:'"Take away #23" means whoever is guarding #23 is up turning. That is you.'}],
   show:[]},
  {id:'d-num-7',series:'7',view:'full',you:'',ball:'o1',pos:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},
   sit:'Coach calls 7.',
-  q:'How many of us pick up full court?',
+  q:'How many of us are up turning?',
   choices:[
-   {t:'Two. The other three wait at half court',ok:true,why:'7 = 5+2. Two pick up full court, three wait at half court.'},
+   {t:'Two. The other three wait at half court',ok:true,why:'7 = 5+2. Two are up turning, three wait at half court.'},
    {t:'One',why:'That is 6. 7 = 5+2.'},
    {t:'Three',why:'That is 8. 7 = 5+2.'},
    {t:'None',why:'That is 5. 7 = 5+2.'}],
@@ -1004,17 +1004,17 @@ const CATS=[
     {id:'mand',title:'Man Defenses',sub:'Half court and full court man-to-man',groups:[
       {id:'manrules',title:'Rules',sub:'The rules for all our man defenses',series:['Man Rules']},
       {id:'m5',title:'5',sub:'All five pick up at half court',series:['5']},
-      {id:'m6',title:'6',sub:'5+1: one picks up full court',series:['6']},
-      {id:'m7',title:'7',sub:'5+2: two pick up full court',series:['7']},
-      {id:'m8',title:'8',sub:'5+3: three pick up full court',series:['8']},
-      {id:'m9',title:'9',sub:'5+4: four pick up full court',series:['9']},
-      {id:'m10',title:'10',sub:'5+5: all five pick up full court',series:['10']}]},
+      {id:'m6',title:'6',sub:'5+1: one is up turning',series:['6']},
+      {id:'m7',title:'7',sub:'5+2: two are up turning',series:['7']},
+      {id:'m8',title:'8',sub:'5+3: three are up turning',series:['8']},
+      {id:'m9',title:'9',sub:'5+4: four are up turning',series:['9']},
+      {id:'m10',title:'10',sub:'5+5: all five are up turning',series:['10']}]},
     {id:'zoned',title:'Zone Defenses',sub:'2-3, 1-3-1 and our jumps',groups:[]},
     {id:'press',title:'Presses',sub:'Full-court traps',groups:[]}]},
   {id:'blob',title:'BLOBs',sub:'Baseline Out-of-Bounds Plays',groups:[]},
   {id:'slob',title:'SLOBs',sub:'Sideline Out-of-Bounds Plays',groups:[]}
 ];
-const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Man Rules':'The rules for all our man defenses','5':'All five pick up at half court','6':'5+1: one picks up full court','7':'5+2: two pick up full court','8':'5+3: three pick up full court','9':'5+4: four pick up full court','10':'5+5: all five pick up full court'};
+const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Man Rules':'The rules for all our man defenses','5':'All five pick up at half court','6':'5+1: one is up turning','7':'5+2: two are up turning','8':'5+3: three are up turning','9':'5+4: four are up turning','10':'5+5: all five are up turning'};
 const SERIES_TITLE={'Man Rules':'Man Defense Rules'};
 const stitle=x=>SERIES_TITLE[x]||x;
 const SERIES_RULES=Object.assign({Rules:RULES,'Man Rules':HCM_RULES},NUM_RULES);
