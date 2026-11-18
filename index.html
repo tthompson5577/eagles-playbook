@@ -1241,7 +1241,7 @@ function arrowSvg(a,st,en,opt){
 function playerSvg(id,xy,you){
   const x=f2(xy[0]),y=f2(xy[1]);
   if(id[0]==='o')return `<circle cx="${x}" cy="${y}" r="1.55" fill="#0b2318" stroke="#ffb3a7" stroke-width=".3"/>`;
-  if(id[0]==='x'){const r=.95;return `<g stroke="#ffe08a" stroke-width=".42" stroke-linecap="round"><path d="M${f2(xy[0]-r)} ${f2(xy[1]-r)}L${f2(xy[0]+r)} ${f2(xy[1]+r)}M${f2(xy[0]+r)} ${f2(xy[1]-r)}L${f2(xy[0]-r)} ${f2(xy[1]+r)}"/></g>`;}
+  if(id[0]==='x'){const r=.95;return `<g stroke="#ffe08a" stroke-width=".42" stroke-linecap="round"><path d="M${f2(xy[0]-r)} ${f2(xy[1]-r)}L${f2(xy[0]+r)} ${f2(xy[1]+r)}M${f2(xy[0]+r)} ${f2(xy[1]-r)}L${f2(xy[0]-r)} ${f2(xy[1]+r)}"/></g><text x="${f2(xy[0]-1.2)}" y="${f2(xy[1]+.6)}" text-anchor="end" font-family="Arial,sans-serif" font-size="1.75" font-weight="700" fill="#ffe08a">${id.slice(1)}</text>`;}
   return (you?`<circle cx="${x}" cy="${y}" r="2.55" fill="none" stroke="#ff9a3c" stroke-width=".35" class="pulse"/><text x="${x}" y="${f2(xy[1]-3)}" text-anchor="middle" font-size="1.5" font-weight="800" fill="#ff9a3c" font-family="system-ui,sans-serif" letter-spacing=".1">YOU</text>`:'')+
     `<circle cx="${x}" cy="${y}" r="1.75" fill="${you?'#ff9a3c':'#fff'}" stroke="${you?'#fff':'#0f3d28'}" stroke-width=".25"/>`+
     `<text x="${x}" y="${f2(xy[1]+.08)}" text-anchor="middle" dominant-baseline="central" font-size="2.1" font-weight="800" fill="${you?'#1b0d03':'#0f3d28'}" font-family="system-ui,sans-serif">${esc(id)}</text>`;
@@ -1383,23 +1383,23 @@ WHERE.push(
 
 /* ===== BLOBs (Coach's playbook; BLOB 3 unchanged from 2021-22). 1 inbounds right of the rim. Shown vs a 2-3 zone. ===== */
 const ZONE23={x4:[-9.5,6.8],x5:[0,6.2],x3:[9.5,6.8],x1:[-6.5,15.5],x2:[6.5,15.5]};
-const B3=Object.assign({1:[3.5,-2.2],4:[-5.6,5.4],3:[0,10],5:[5.6,5.4],2:[0,24]},ZONE23);
+const B3=Object.assign({1:[8.6,-2.4],4:[-5.6,5.4],3:[0,10],5:[5.6,5.4],2:[6,19]},ZONE23);
 const BLOB_RULES={
   'BLOB 3':[
-    ['Three across the bottom.','4, 3 and 5 line up across the bottom. 2 is behind the three point line.'],
-    ['5 screens the middle of the zone.','As close to the basket as possible.'],
+    ['Three across the bottom.','4, 3 and 5 line up across the bottom. 2 starts on the ball-side elbow, then pops out to the three point line.'],
+    ['5 screens the middle of the zone.','The middle defender (X5), as close to the basket as possible.'],
     ['3 cuts hard to the corner.','Be ready to shoot. 2 occupies the top defender.'],
-    ['4 cuts hard to the ball.','If the middle defender fights hard over 5\'s screen, LET HER GO, and look for the ball.'],
-    ['Read the help.','Corner defender helps down? 3 shoots. Top defender helps down? 2 gets open and shoots.'],
+    ['4 cuts hard to the ball, over the top of 5\'s screen.','If the middle defender fights hard over 5\'s screen, LET HER GO, and look for the ball.'],
+    ['Read the help.','Corner defender (X3) helps down? 3 shoots. Top defender (X2) helps down? 2 gets open and shoots.'],
     ['1 crashes.','After passing the ball in, 1 immediately goes to the backside block for the rebound.']]
 };
 PLAYS.push(
  {id:'blob-3',series:'BLOB 3',title:'BLOB 3',sub:'Three across: screen the middle, 4 cuts to the ball',view:'blob',start:B3,ball:'1',
   steps:[
-   {cap:'Three across the bottom, 2 behind the line. 5 screens the middle defender of the zone, as close to the basket as possible. 3 cuts hard to the corner, ready to shoot. 2 occupies the top defender.',
-    a:[S(5,[1.7,6.6]),C(3,[21.5,3.5],[10,10.5]),C(2,[3,23])]},
-   {cap:'4 cuts hard to the ball.',a:[C(4,[3.8,3.2],[-1,2.6]),P(1,4)]},
-   {cap:'After passing it in, 1 immediately goes to the backside block for the rebound.',a:[C(1,[-6.5,4.2],[-3,-0.8])]}
+   {cap:'Three across the bottom, 2 on the ball-side elbow. 5 screens the middle defender (X5), as close to the basket as possible. 3 cuts hard to the corner, ready to shoot. 2 pops out to the three point line and occupies the top defender (X2).',
+    a:[S(5,[1.7,6.6]),C(3,[21.5,3.5],[10,10.5]),C(2,[10.5,22.6])]},
+   {cap:'4 cuts hard to the ball, over the top of 5\'s screen.',a:[C(4,[5.6,9.2],[-0.5,10.4]),P(1,4)]},
+   {cap:'After passing it in, 1 immediately goes to the backside block for the rebound.',a:[C(1,[-6.5,4.2],[0,-1])]}
   ],end:'Middle defender fights over the screen? Let her go and look for the ball. Corner helps down: 3 shoots. Top helps down: 2 shoots.'}
 );
 READS.push(
@@ -1407,11 +1407,11 @@ READS.push(
   sit:'BLOB 3. 5 just screened the middle of the zone and 3 cut to the corner. You are 4.',
   q:'What do you do?',
   choices:[
-   {t:'Cut hard to the ball',ok:true,why:'4 cuts hard to the ball off 5\'s screen.'},
+   {t:'Cut hard to the ball, over the top of 5\'s screen',ok:true,why:'4 cuts hard to the ball, over the top of 5\'s screen.'},
    {t:'Pop out to the wing',why:'Cut hard to the ball.'},
-   {t:'Go screen for 3',why:'5 already screened. You cut hard to the ball.'},
+   {t:'Cut under 5\'s screen, along the baseline',why:'Go over the top of 5\'s screen, then to the ball.'},
    {t:'Stay on the block and wait',why:'Cut hard to the ball.'}],
-  show:[{a:[C(4,[3.8,3.2],[-1,2.6]),P(1,4)]}]},
+  show:[{a:[C(4,[5.6,9.2],[-0.5,10.4]),P(1,4)]}]},
  {id:'blob3-r-fight',series:'BLOB 3',view:'blob',you:'5',ball:'1',pos:with_(B3,{5:[1.7,6.6],3:[21.5,3.5]}),
   sit:'BLOB 3. You are screening the middle defender, and she is fighting hard over your screen.',
   q:'What do you do?',
@@ -1438,8 +1438,8 @@ READS.push(
    {t:'Cut to the basket',why:'Get open behind the line and look for the shot.'},
    {t:'Stay still',why:'Get open and look for the shot.'},
    {t:'Go screen the middle defender',why:'5 has that. Get open for your shot.'}],
-  show:[{a:[C(2,[4,23.5])]},{a:[P(1,2)]}]},
- {id:'blob3-r-1',series:'BLOB 3',view:'blob',you:'1',ball:'4',pos:with_(B3,{5:[1.7,6.6],3:[21.5,3.5],4:[3.8,3.2],2:[3,23]}),ctx:[P(1,4)],
+  show:[{a:[C(2,[12.5,21.6])]},{a:[P(1,2)]}]},
+ {id:'blob3-r-1',series:'BLOB 3',view:'blob',you:'1',ball:'4',pos:with_(B3,{5:[1.7,6.6],3:[21.5,3.5],4:[5.6,9.2],2:[10.5,22.6]}),ctx:[P(1,4)],
   sit:'BLOB 3. You just passed the ball in to 4.',
   q:'Where do you go?',
   choices:[
@@ -1447,17 +1447,17 @@ READS.push(
    {t:'Out to the top of the key',why:'Crash the backside block for the rebound.'},
    {t:'Stay out of bounds',why:'Step in and go straight to the backside block.'},
    {t:'To the ball-side corner',why:'3 is there. Go to the backside block.'}],
-  show:[{a:[C(1,[-6.5,4.2],[-3,-0.8])]}]}
+  show:[{a:[C(1,[-6.5,4.2],[0,-1])]}]}
 );
 WHERE.push(
  {id:'blob3-w-3',series:'BLOB 3',view:'blob',you:'3',ball:'1',pos:B3,ctx:[S(5,[1.7,6.6])],
   q:'BLOB 3. 5 is screening the middle of the zone. You are 3. Where do you go?',
   ans:[21.5,3.5],tol:4.5,why:'Cut hard to the corner, ready to shoot.',
   show:[{a:[C(3,[21.5,3.5],[10,10.5])]}]},
- {id:'blob3-w-1',series:'BLOB 3',view:'blob',you:'1',ball:'4',pos:with_(B3,{5:[1.7,6.6],3:[21.5,3.5],4:[3.8,3.2],2:[3,23]}),ctx:[P(1,4)],
+ {id:'blob3-w-1',series:'BLOB 3',view:'blob',you:'1',ball:'4',pos:with_(B3,{5:[1.7,6.6],3:[21.5,3.5],4:[5.6,9.2],2:[10.5,22.6]}),ctx:[P(1,4)],
   q:'BLOB 3. You passed it in. Where do you go?',
   ans:[-6.5,4.2],tol:3.5,why:'Straight to the backside block for the rebound.',
-  show:[{a:[C(1,[-6.5,4.2],[-3,-0.8])]}]}
+  show:[{a:[C(1,[-6.5,4.2],[0,-1])]}]}
 );
 
 const CATS=[
