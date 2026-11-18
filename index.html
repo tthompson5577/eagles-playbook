@@ -654,7 +654,7 @@ const WHERE=[
 /* ===================== DEFENSE: Half Court Man =====================
    On defense, OUR players are the numbered circles "1".."5"; the other team is "o1".."o5" (dark circles). */
 const HCM_RULES=[
-  ['Pick up at half court.','Pick up their point guard right at half court, or sooner if they clear out.'],
+  ['All five pick up at half court.','That is what makes it 5. Everything else is the same in all our man defenses.'],
   ['Always pressure the ball.',''],
   ['One pass away: DENY.','Hand and foot in the passing lane.'],
   ['Two or more passes away: HELP.','Sink toward the lane.'],
@@ -670,7 +670,7 @@ const HCM_TOP=Object.assign({},THEM,{1:[-5.1,23.6],2:[4.8,24.6],3:[-17.2,18.8],4
 const HCM_WING=Object.assign({},THEM,{1:[-8.5,23.8],2:[1,17],3:[-17.6,14.2],4:[4,9],5:[-10.3,10.2]});
 
 PLAYS.push(
- {id:'hcm-shell',series:'Half Court Man',title:'Positions & Jump to the Ball',sub:'Pressure, deny, help, front the post',start:HCM_TOP,ball:'o1',
+ {id:'hcm-shell',series:'5 - Half Court Man',title:'Positions & Jump to the Ball',sub:'Pressure, deny, help, front the post',start:HCM_TOP,ball:'o1',
   steps:[
    {cap:'Ball at the slot: 1 pressures, 2 and 3 deny (one pass away), 4 helps (two away), 5 fronts the post. Now the ball goes to the wing, and everyone jumps to the ball.',
     a:[P('o1','o3'),C(3,[-17.6,14.2]),C(1,[-8.5,23.8]),C(2,[1,17]),C(4,[4,9]),C(5,[-10.3,10.2])]},
@@ -678,29 +678,32 @@ PLAYS.push(
     a:[P('o3','o1'),C(3,[-17.2,18.8]),C(1,[-5.1,23.6]),C(2,[4.8,24.6]),C(4,[6,13]),C(5,[-6.4,11.2])]}
   ],end:'Ball moves, we move. On the ball: pressure. One pass away: deny. Two away: help. Post: front.'},
 
- {id:'hcm-force-middle',series:'Half Court Man',title:'Force to the Middle',sub:'Take away the baseline, drive her into help',start:HCM_WING,ball:'o3',
+ {id:'hcm-force-middle',series:'5 - Half Court Man',title:'Force to the Middle',sub:'Take away the baseline, drive her into help',start:HCM_WING,ball:'o3',
   steps:[
    {cap:'3 is on the ball on the wing, shading the baseline side to take it away. Watch her drive.',
     a:[D('o3',[-11,19]),C(3,[-12,16.5]),C(2,[-7.5,16])]}
   ],end:'She drove middle, right where we want her: 3 stayed on her hip and 2 stepped up from help. Force the ball handler to the MIDDLE, into our help.'},
 
- {id:'hcm-ball-screen',series:'Half Court Man',title:'Hedge & Trap Ball Screens',sub:'Trap every ball screen',start:HCM_TOP,ball:'o1',
+ {id:'hcm-ball-screen',series:'5 - Half Court Man',title:'Hedge & Trap Ball Screens',sub:'Trap every ball screen',start:HCM_TOP,ball:'o1',
   steps:[
    {cap:'Their post comes up to set a ball screen for the ball handler. 5 follows her up.',a:[C('o5',[-3.6,25.2],[-6,18]),C(5,[-3.4,22.4],[-4,16])]},
    {cap:'She dribbles off the screen. 5 jumps out and traps with 1. Everyone else: see man and ball, ready to help.',
     a:[D('o1',[0,27.5]),C(1,[-1.7,29.7]),C(5,[1.8,25.4])]}
   ],end:'Hedge and trap ALL ball screens.'},
 
- {id:'hcm-pickup',series:'Half Court Man',title:'Pick Up at Half Court',sub:'Meet their point guard at half court',view:'full',
-  start:Object.assign({},THEM,{o1:[-2,47],1:[-2,44.2],2:[4.8,24.6],3:[-17.2,18.8],4:[6,13],5:[-6.4,11.2]}),ball:'o1',
+ {id:'hcm-pickup',series:'5 - Half Court Man',title:'All Five Pick Up at Half Court',sub:'Meet them at half court, then get to your spot',view:'full',
+  start:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},ball:'o1',
   steps:[
-   {cap:'1 picks up their point guard right at half court (sooner if they clear out) and pressures the ball the whole way.',a:[D('o1',[-6,30]),C(1,[-5.2,27.4])]}
-  ],end:'Pick up at half court. Always pressure the ball.'}
+   {cap:'In 5, all five of us pick up our players right at half court.',a:[]},
+   {cap:'As they get into their offense, we get to our spots: 1 pressures the ball, 2 and 3 deny, 4 helps, 5 fronts the post.',
+    a:[D('o1',[-6,27]),C('o2',[8,26]),C('o3',[-20,17]),C('o4',[20,17]),C('o5',[-7.5,8],[-8,26]),
+       C(1,[-5.1,23.6]),C(2,[4.8,24.6]),C(3,[-17.2,18.8]),C(4,[6,13]),C(5,[-6.4,11.2],[-7,24])]}
+  ],end:'All five pick up at half court. Always pressure the ball.'}
 );
 
 READS.push(
- {id:'d-deny',series:'Half Court Man',you:'3',ball:'o1',pos:with_(HCM_TOP,{3:[-18.5,15.5]}),
-  sit:'Half Court Man. The ball is at the slot. Your player is on the wing, one pass away.',
+ {id:'d-deny',series:'5 - Half Court Man',you:'3',ball:'o1',pos:with_(HCM_TOP,{3:[-18.5,15.5]}),
+  sit:'We are in 5. The ball is at the slot. Your player is on the wing, one pass away.',
   q:'Where should you be?',
   choices:[
    {t:'Deny: hand and foot in the passing lane',ok:true,why:'One pass away = DENY. Make them throw it over you or go backdoor into our help.'},
@@ -709,17 +712,17 @@ READS.push(
    {t:'Stand right next to your player',why:'Get in the passing lane, between her and the ball. Deny.'}],
   show:[{a:[C(3,[-17.2,18.8])]}]},
 
- {id:'d-help',series:'Half Court Man',you:'2',ball:'o3',pos:with_(HCM_WING,{2:[4.8,24.6]}),ctx:[P('o1','o3')],
+ {id:'d-help',series:'5 - Half Court Man',you:'2',ball:'o3',pos:with_(HCM_WING,{2:[4.8,24.6]}),ctx:[P('o1','o3')],
   sit:'The ball just went to the left wing. Your player is at the right slot, two passes away.',
   q:'What do you do?',
   choices:[
    {t:'Sink to help: toward the lane, see man and ball',ok:true,why:'Two or more passes away = HELP. Sink toward the lane, see man and ball.'},
    {t:'Stay out and deny your player',why:'Deny is for one pass away. You\'re two away: help.'},
-   {t:'Run to trap the ball',why:'Not in Half Court Man (unless it\'s a ball screen). Help.'},
+   {t:'Run to trap the ball',why:'Not in our man defense (unless it\'s a ball screen). Help.'},
    {t:'Watch the ball only',why:'See man AND ball, always.'}],
   show:[{a:[C(2,[1,17])]}]},
 
- {id:'d-front',series:'Half Court Man',you:'5',ball:'o3',pos:with_(HCM_WING,{5:[-6,6.5]}),
+ {id:'d-front',series:'5 - Half Court Man',you:'5',ball:'o3',pos:with_(HCM_WING,{5:[-6,6.5]}),
   sit:'The ball is on the wing. Their post is on the ball-side block. You are guarding her.',
   q:'How do you guard her?',
   choices:[
@@ -729,7 +732,7 @@ READS.push(
    {t:'Stand on her baseline side',why:'Get all the way in front, between her and the ball.'}],
   show:[{a:[C(5,[-10.3,10.2])]}]},
 
- {id:'d-ballscreen',series:'Half Court Man',you:'5',ball:'o1',
+ {id:'d-ballscreen',series:'5 - Half Court Man',you:'5',ball:'o1',
   pos:with_(HCM_TOP,{o5:[-3.6,25.2],5:[-3.4,22.4]}),ctx:[C('o5',[-3.6,25.2])],
   sit:'Your player (their post) just came up to set a ball screen on 1\'s player.',
   q:'What do you do?',
@@ -740,42 +743,42 @@ READS.push(
    {t:'Yell "Screen" and stay with your player',why:'Call it AND trap. Hedge and trap all ball screens.'}],
   show:[{a:[D('o1',[0,27.5]),C(1,[-1.7,29.7]),C(5,[1.8,25.4])]}]},
 
- {id:'d-force',series:'Half Court Man',you:'3',ball:'o3',pos:HCM_WING,
+ {id:'d-force',series:'5 - Half Court Man',you:'3',ball:'o3',pos:HCM_WING,
   sit:'You are guarding the ball on the left wing.',
   q:'Which way do you force her?',
   choices:[
    {t:'To the middle, into our help',ok:true,why:'Force the ball handler to the MIDDLE. Take away the baseline.'},
-   {t:'To the baseline',why:'Not in our Half Court Man. Take away the baseline and force middle.'},
+   {t:'To the baseline',why:'Not in our man defense. Take away the baseline and force middle.'},
    {t:'Let her go either way',why:'Force middle, every time.'},
    {t:'Back off and give her the shot',why:'Always pressure the ball, and force middle.'}],
   show:[{a:[D('o3',[-11,19]),C(3,[-12,16.5]),C(2,[-7.5,16])]}]},
 
- {id:'d-pickup',series:'Half Court Man',view:'full',you:'1',ball:'o1',
+ {id:'d-pickup',series:'5 - Half Court Man',view:'full',you:'1',ball:'o1',
   pos:Object.assign({},THEM,{o1:[-2,50],1:[-3,40],2:[4.8,24.6],3:[-17.2,18.8],4:[6,13],5:[-6.4,11.2]}),ctx:[D('o1',[-2,46])],
-  sit:'Half Court Man. Their point guard is bringing it up.',
-  q:'Where do you pick her up?',
+  sit:'We are in 5. Their point guard is bringing it up.',
+  q:'Where do we pick up?',
   choices:[
-   {t:'Right at half court',ok:true,why:'Pick up at half court, or sooner if they clear out.'},
-   {t:'At the 3-point line',why:'That lets her walk into the offense. Pick up at half court.'},
-   {t:'Full court, as soon as she catches it',why:'That\'s our full-court man. In Half Court Man, pick up at half court.'},
-   {t:'Wait in the paint',why:'Always pressure the ball. Pick up at half court.'}],
+   {t:'All five pick up at half court',ok:true,why:'5 = all five pick up at half court.'},
+   {t:'At the 3-point line',why:'That lets them walk into their offense. In 5, all five pick up at half court.'},
+   {t:'Full court, as soon as she catches it',why:'That is a different number. In 5, all five pick up at half court.'},
+   {t:'Wait in the paint',why:'Always pressure the ball. In 5, all five pick up at half court.'}],
   show:[{a:[C(1,[-2.5,44.2])]},{a:[D('o1',[-6,30]),C(1,[-5.2,27.4])]}]}
 );
 
 WHERE.push(
- {id:'dw-deny',series:'Half Court Man',you:'2',ball:'o1',pos:with_(HCM_TOP,{2:[8,22]}),
+ {id:'dw-deny',series:'5 - Half Court Man',you:'2',ball:'o1',pos:with_(HCM_TOP,{2:[8,22]}),
   q:'The ball is at the left slot. Your player is at the right slot, one pass away. Where do you go?',
   ans:[4.8,24.6],tol:3,why:'One pass away = DENY: in the passing lane, hand and foot in the lane, close to your player.',
   show:[{a:[C(2,[4.8,24.6])]}]},
- {id:'dw-help',series:'Half Court Man',you:'4',ball:'o3',pos:with_(HCM_WING,{4:[17,15]}),ctx:[P('o1','o3')],
+ {id:'dw-help',series:'5 - Half Court Man',you:'4',ball:'o3',pos:with_(HCM_WING,{4:[17,15]}),ctx:[P('o1','o3')],
   q:'The ball went to the left wing. Your player is on the right wing, the farthest pass away. Where do you go?',
   ans:[4,9],tol:4.5,why:'Two or more passes away = HELP: sink to the lane, see man and ball.',
   show:[{a:[C(4,[4,9])]}]},
- {id:'dw-front',series:'Half Court Man',you:'5',ball:'o3',pos:with_(HCM_WING,{5:[-6,6.5]}),ctx:[P('o1','o3')],
+ {id:'dw-front',series:'5 - Half Court Man',you:'5',ball:'o3',pos:with_(HCM_WING,{5:[-6,6.5]}),ctx:[P('o1','o3')],
   q:'The ball went to the wing. Your player is posting on the ball-side block. Where do you go?',
   ans:[-10.3,10.2],tol:2.5,why:'Front the post: between her and the ball.',
   show:[{a:[C(5,[-10.3,10.2])]}]},
- {id:'dw-jump',series:'Half Court Man',you:'1',ball:'o3',pos:with_(HCM_WING,{1:[-5.1,23.6]}),ctx:[P('o1','o3')],
+ {id:'dw-jump',series:'5 - Half Court Man',you:'1',ball:'o3',pos:with_(HCM_WING,{1:[-5.1,23.6]}),ctx:[P('o1','o3')],
   q:'Your player just passed to the wing. Where do you go?',
   ans:[-8.5,23.8],tol:3,why:'Jump to the ball: she\'s one pass away now, so DENY the pass back.',
   show:[{a:[C(1,[-8.5,23.8])]}]}
@@ -929,14 +932,14 @@ const CATS=[
     {id:'zone',title:'Zone Offenses',sub:'Attacking a 2-3, 1-3-1 and other zones',groups:[]}]},
   {id:'defense',title:'Defense',sub:'Man, zones and presses',sections:[
     {id:'mand',title:'Man Defense',sub:'Half court and full court man-to-man',groups:[
-      {id:'hcm',title:'Half Court Man',sub:'Pressure, deny, help, front the post',series:['Half Court Man']}]},
+      {id:'hcm',title:'5 - Half Court Man',sub:'Pressure, deny, help, front the post',series:['5 - Half Court Man']}]},
     {id:'zoned',title:'Zone Defense',sub:'2-3, 1-3-1 and our jumps',groups:[]},
     {id:'press',title:'Presses',sub:'Full-court traps',groups:[]}]},
   {id:'blob',title:'BLOBs',sub:'Baseline out of bounds',groups:[]},
   {id:'slob',title:'SLOBs',sub:'Sideline out of bounds',groups:[]}
 ];
-const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Half Court Man':'Pressure, deny, help, front the post'};
-const SERIES_RULES={Rules:RULES,'Half Court Man':HCM_RULES};
+const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','5 - Half Court Man':'All five pick up at half court. Pressure, deny, help, front the post'};
+const SERIES_RULES={Rules:RULES,'5 - Half Court Man':HCM_RULES};
 const QUIZ=READS.map(x=>Object.assign({kind:'reads'},x)).concat(WHERE.map(x=>Object.assign({kind:'where'},x)));
 const qById=id=>QUIZ.find(x=>x.id===id);
 const allGroups=c=>c.sections?[].concat(...c.sections.map(s=>s.groups)):c.groups;
@@ -1190,7 +1193,7 @@ function record(kind,id,ok){
 /* ---------- Tracker: sign-in, offline outbox, team board ---------- */
 const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const SERIES4=[].concat(...CATS.map(catSeries));
-const BADGE_SHORT={'5 Out':'5 OUT','Half Court Man':'HC MAN'};
+const BADGE_SHORT={'5 Out':'5 OUT','5 - Half Court Man':'5 MAN'};
 function logEvent(kind,item,series,ok){
   if(!API_URL||!store.player)return;
   store.outbox.push({who:store.player.login,id:newId(),t:Date.now(),kind,item,series,ok});
