@@ -1288,7 +1288,7 @@ const PD_RULES=[
   ['FRONT the post.','Get all the way in front of her, between her and the ball.'],
   ['Front from the BASELINE side.','When the ball moves and you need to get in front, step around her on the baseline side.'],
   ['Caught behind and she catches? Make her go MIDDLE.','If you are caught behind her and she gets the ball, take away the baseline. Middle is where our help is.'],
-  ['Perimeter defenders can DIG.','Dig down on the post with your back to the baseline. If she kicks it out, sprint back to your player.']
+  ['Perimeter defenders can DIG, one at a time.','Any of us can be the digger, but only ONE digs at a time. Dig down on the post with your back to the baseline. If she kicks it out, sprint back to your player.']
 ];
 /* ball on the left wing, their post on the left block; 5 starts BEHIND her */
 const PD_BEHIND=with_(HCM_WING,{5:[-6.8,5.2]});
@@ -1305,7 +1305,7 @@ PLAYS.push(
  {id:'pd-catch',series:'Post D',title:'Caught Behind: Go Middle',sub:'She catches: take away the baseline, perimeter digs',start:PD_CATCH,ball:'o3',
   steps:[
    {cap:'5 got caught behind her, and she catches it on the block.',a:[P('o3','o5')]},
-   {cap:'5 takes away the baseline so she has to go MIDDLE. 1 digs down with her back to the baseline. 4 is in help in the lane.',a:[C(5,[-9.2,5.6]),C(1,[-5,12.4]),C(4,[-1,6.5])]},
+   {cap:'5 takes away the baseline so she has to go MIDDLE. 1 digs down with her back to the baseline. Only one digger at a time. 4 is in help in the lane.',a:[C(5,[-9.2,5.6]),C(1,[-5,12.4]),C(4,[-1,6.5])]},
    {cap:'She turns middle, right into our help.',a:[D('o5',[-4.4,7.6])]},
    {cap:'She kicks it out. 1 SPRINTS back out to her player.',a:[P('o5','o1'),C(1,[-6.4,23.4])]}
   ],end:'Caught behind and she catches: make her go middle. Dig, then sprint back out on the kick.'}
@@ -1336,7 +1336,7 @@ READS.push(
   choices:[
    {t:'Dig down on the post with my back to the baseline',ok:true,why:'Perimeter defenders can dig, with your back to the baseline. Sprint back out if she kicks it.'},
    {t:'Run down and double team her from the baseline side',why:'Dig with your back to the baseline. We want her going middle.'},
-   {t:'Turn and watch',why:'You can dig. Back to the baseline, then sprint back out on the kick.'},
+   {t:'Dig, and so do the other perimeter defenders',why:'One digger at a time. If a teammate is already digging, stay with your player.'},
    {t:'Leave your player for good',why:'Dig, then recover. If she kicks it out, sprint back to your player.'}],
   show:[{a:[C(1,[-5,12.4])]},{a:[P('o5','o1'),C(1,[-6.4,23.4])]}]},
  {id:'pd-r-kick',series:'Post D',you:'1',ball:'o1',pos:with_(PD_CATCH,{1:[-5,12.4],5:[-9.2,5.6],4:[-1,6.5],o5:[-4.4,7.6]}),ctx:[P('o5','o1')],
