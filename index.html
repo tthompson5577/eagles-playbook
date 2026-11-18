@@ -224,13 +224,13 @@ const PLAYS=[
  {id:'low-transition',series:'Low',stage:1,title:'Transition into Low',sub:'Rebound, outlet, kick it ahead, rim runner',view:'full94',
   video:'https://www.youtube.com/watch?v=OtEbuDo6Yac',start:REB,ball:'4',
   steps:[
-   {cap:'4 rebounds and outlets to 1 on the wing. Rim runner 5 takes off down the middle. First two down, 3 and 2, sprint wide to the wings with eyes on the ball.',
-    a:[P(4,1),C(5,[0,52],[2,70]),C(3,[-21.5,47],[-20,63]),C(2,[21.5,50],[20,63])]},
-   {cap:'1 pushes up the sideline. 3 and 2 get to the wing spots, outside the 3-point line. 5 sprints to the rim and seals on the ball-side block. 4 trails.',
-    a:[D(1,[-19,50]),C(3,[-20.5,19.5],[-22.5,32]),C(5,SP.lb,[-2,18]),C(2,SP.rw,[22,32]),C(4,[3,50])]},
+   {cap:'4 rebounds, outlets left to 1 on the wing, then gets wide on the right side. Rim runner 5 takes off down the middle. First two down, 3 and 2, sprint wide to the wings with eyes on the ball.',
+    a:[P(4,1),C(4,[13,74],[6,84]),C(5,[0,52],[2,70]),C(3,[-21.5,47],[-20,63]),C(2,[21.5,50],[20,63])]},
+   {cap:'1 pushes up the sideline. 3 and 2 get to the wing spots, outside the 3-point line. 5 sprints to the rim and seals on the ball-side block. 4 trails, wide on the right side.',
+    a:[D(1,[-19,50]),C(3,[-20.5,19.5],[-22.5,32]),C(5,SP.lb,[-2,18]),C(2,SP.rw,[22,32]),C(4,[15,50],[15,62])]},
    {cap:'1 kicks it ahead up the sideline to 3. Catch it at the wing spot, never inside the 3-point line.',a:[P(1,3)]},
    {cap:'3 faces up and looks inside first: 5 is sealed on the ball-side block for the layup. Next two down, 1 and 4, fill the slots.',
-    a:[P(3,5),C(1,SP.ls,[-15,36]),C(4,SP.rs,[6,38])]}
+    a:[P(3,5),C(1,SP.ls,[-15,36]),C(4,SP.rs,[13,36])]}
   ],end:'No layup? You\'re in Low, and every spot is filled. Spots matter, not numbers: whoever trails fills the open slot. Play out of it (next plays). If 5 gets the rebound, she outlets right away so she can run; a guard who rebounds can push it on the dribble.'},
 
  {id:'low-transition-dribble',series:'Low',stage:1,title:'Transition: Guard Push',sub:'Guard rebounds and dribbles: same lanes',view:'full94',
@@ -651,6 +651,136 @@ const WHERE=[
   show:[{a:[C(5,[0,8],[5,18])]}]}
 ];
 
+/* ===================== DEFENSE: Half Court Man =====================
+   On defense, OUR players are the numbered circles "1".."5"; the other team is "o1".."o5" (dark circles). */
+const HCM_RULES=[
+  ['Pick up at half court.','Pick up their point guard right at half court, or sooner if they clear out.'],
+  ['Always pressure the ball.',''],
+  ['One pass away: DENY.','Hand and foot in the passing lane.'],
+  ['Two or more passes away: HELP.','Sink toward the lane.'],
+  ['See man and ball.','Always.'],
+  ['Front the post.',''],
+  ['Hedge and trap all ball screens.',''],
+  ['Force the ball handler to the MIDDLE.','Into our help.']
+];
+const THEM={o1:[-6,27],o2:[8,26],o3:[-20,17],o4:[20,17],o5:[-7.5,8]};
+/* ball at the left slot */
+const HCM_TOP=Object.assign({},THEM,{1:[-5.1,23.6],2:[4.8,24.6],3:[-17.2,18.8],4:[6,13],5:[-6.4,11.2]});
+/* ball on the left wing */
+const HCM_WING=Object.assign({},THEM,{1:[-8.5,23.8],2:[1,17],3:[-17.6,14.2],4:[4,9],5:[-10.3,10.2]});
+
+PLAYS.push(
+ {id:'hcm-shell',series:'Half Court Man',title:'Positions & Jump to the Ball',sub:'Pressure, deny, help, front the post',start:HCM_TOP,ball:'o1',
+  steps:[
+   {cap:'Ball at the slot: 1 pressures, 2 and 3 deny (one pass away), 4 helps (two away), 5 fronts the post. Now the ball goes to the wing, and everyone jumps to the ball.',
+    a:[P('o1','o3'),C(3,[-17.6,14.2]),C(1,[-8.5,23.8]),C(2,[1,17]),C(4,[4,9]),C(5,[-10.3,10.2])]},
+   {cap:'Ball on the wing: 3 pressures and forces middle, 1 denies the pass back, 2 and 4 sink to help, 5 fronts from the ball side. Now it goes back to the slot.',
+    a:[P('o3','o1'),C(3,[-17.2,18.8]),C(1,[-5.1,23.6]),C(2,[4.8,24.6]),C(4,[6,13]),C(5,[-6.4,11.2])]}
+  ],end:'Ball moves, we move. On the ball: pressure. One pass away: deny. Two away: help. Post: front.'},
+
+ {id:'hcm-force-middle',series:'Half Court Man',title:'Force to the Middle',sub:'Take away the baseline, drive her into help',start:HCM_WING,ball:'o3',
+  steps:[
+   {cap:'3 is on the ball on the wing, shading the baseline side to take it away. Watch her drive.',
+    a:[D('o3',[-11,19]),C(3,[-12,16.5]),C(2,[-7.5,16])]}
+  ],end:'She drove middle, right where we want her: 3 stayed on her hip and 2 stepped up from help. Force the ball handler to the MIDDLE, into our help.'},
+
+ {id:'hcm-ball-screen',series:'Half Court Man',title:'Hedge & Trap Ball Screens',sub:'Trap every ball screen',start:HCM_TOP,ball:'o1',
+  steps:[
+   {cap:'Their post comes up to set a ball screen for the ball handler. 5 follows her up.',a:[C('o5',[-3.6,25.2],[-6,18]),C(5,[-3.4,22.4],[-4,16])]},
+   {cap:'She dribbles off the screen. 5 jumps out and traps with 1. Everyone else: see man and ball, ready to help.',
+    a:[D('o1',[0,27.5]),C(1,[-1.7,29.7]),C(5,[1.8,25.4])]}
+  ],end:'Hedge and trap ALL ball screens.'},
+
+ {id:'hcm-pickup',series:'Half Court Man',title:'Pick Up at Half Court',sub:'Meet their point guard at half court',view:'full',
+  start:Object.assign({},THEM,{o1:[-2,47],1:[-2,44.2],2:[4.8,24.6],3:[-17.2,18.8],4:[6,13],5:[-6.4,11.2]}),ball:'o1',
+  steps:[
+   {cap:'1 picks up their point guard right at half court (sooner if they clear out) and pressures the ball the whole way.',a:[D('o1',[-6,30]),C(1,[-5.2,27.4])]}
+  ],end:'Pick up at half court. Always pressure the ball.'}
+);
+
+READS.push(
+ {id:'d-deny',series:'Half Court Man',you:'3',ball:'o1',pos:with_(HCM_TOP,{3:[-18.5,15.5]}),
+  sit:'Half Court Man. The ball is at the slot. Your player is on the wing, one pass away.',
+  q:'Where should you be?',
+  choices:[
+   {t:'Deny: hand and foot in the passing lane',ok:true,why:'One pass away = DENY. Make them throw it over you or go backdoor into our help.'},
+   {t:'Sag back into the lane to help',why:'Help is for two or more passes away. You\'re one pass away: deny.'},
+   {t:'Go double the ball',why:'Stay home and deny. 1 has the ball.'},
+   {t:'Stand right next to your player',why:'Get in the passing lane, between her and the ball. Deny.'}],
+  show:[{a:[C(3,[-17.2,18.8])]}]},
+
+ {id:'d-help',series:'Half Court Man',you:'2',ball:'o3',pos:with_(HCM_WING,{2:[4.8,24.6]}),ctx:[P('o1','o3')],
+  sit:'The ball just went to the left wing. Your player is at the right slot, two passes away.',
+  q:'What do you do?',
+  choices:[
+   {t:'Sink to help: toward the lane, see man and ball',ok:true,why:'Two or more passes away = HELP. Sink toward the lane, see man and ball.'},
+   {t:'Stay out and deny your player',why:'Deny is for one pass away. You\'re two away: help.'},
+   {t:'Run to trap the ball',why:'Not in Half Court Man (unless it\'s a ball screen). Help.'},
+   {t:'Watch the ball only',why:'See man AND ball, always.'}],
+  show:[{a:[C(2,[1,17])]}]},
+
+ {id:'d-front',series:'Half Court Man',you:'5',ball:'o3',pos:with_(HCM_WING,{5:[-6,6.5]}),
+  sit:'The ball is on the wing. Their post is on the ball-side block. You are guarding her.',
+  q:'How do you guard her?',
+  choices:[
+   {t:'Front the post',ok:true,why:'Front the post: get between her and the ball so the wing can\'t feed her.'},
+   {t:'Play behind her',why:'We front the post. Behind lets them throw it in.'},
+   {t:'Leave her to help on the ball',why:'Stay with the post and front her.'},
+   {t:'Stand on her baseline side',why:'Get all the way in front, between her and the ball.'}],
+  show:[{a:[C(5,[-10.3,10.2])]}]},
+
+ {id:'d-ballscreen',series:'Half Court Man',you:'5',ball:'o1',
+  pos:with_(HCM_TOP,{o5:[-3.6,25.2],5:[-3.4,22.4]}),ctx:[C('o5',[-3.6,25.2])],
+  sit:'Your player (their post) just came up to set a ball screen on 1\'s player.',
+  q:'What do you do?',
+  choices:[
+   {t:'Hedge and trap the ball with 1',ok:true,why:'Hedge and trap ALL ball screens.'},
+   {t:'Switch onto the ball handler',why:'We don\'t switch. Hedge and trap with 1.'},
+   {t:'Stay back in the paint',why:'Jump out and trap. Hedge and trap all ball screens.'},
+   {t:'Yell "Screen" and stay with your player',why:'Call it AND trap. Hedge and trap all ball screens.'}],
+  show:[{a:[D('o1',[0,27.5]),C(1,[-1.7,29.7]),C(5,[1.8,25.4])]}]},
+
+ {id:'d-force',series:'Half Court Man',you:'3',ball:'o3',pos:HCM_WING,
+  sit:'You are guarding the ball on the left wing.',
+  q:'Which way do you force her?',
+  choices:[
+   {t:'To the middle, into our help',ok:true,why:'Force the ball handler to the MIDDLE. Take away the baseline.'},
+   {t:'To the baseline',why:'Not in our Half Court Man. Take away the baseline and force middle.'},
+   {t:'Let her go either way',why:'Force middle, every time.'},
+   {t:'Back off and give her the shot',why:'Always pressure the ball, and force middle.'}],
+  show:[{a:[D('o3',[-11,19]),C(3,[-12,16.5]),C(2,[-7.5,16])]}]},
+
+ {id:'d-pickup',series:'Half Court Man',view:'full',you:'1',ball:'o1',
+  pos:Object.assign({},THEM,{o1:[-2,50],1:[-3,40],2:[4.8,24.6],3:[-17.2,18.8],4:[6,13],5:[-6.4,11.2]}),ctx:[D('o1',[-2,46])],
+  sit:'Half Court Man. Their point guard is bringing it up.',
+  q:'Where do you pick her up?',
+  choices:[
+   {t:'Right at half court',ok:true,why:'Pick up at half court, or sooner if they clear out.'},
+   {t:'At the 3-point line',why:'That lets her walk into the offense. Pick up at half court.'},
+   {t:'Full court, as soon as she catches it',why:'That\'s our full-court man. In Half Court Man, pick up at half court.'},
+   {t:'Wait in the paint',why:'Always pressure the ball. Pick up at half court.'}],
+  show:[{a:[C(1,[-2.5,44.2])]},{a:[D('o1',[-6,30]),C(1,[-5.2,27.4])]}]}
+);
+
+WHERE.push(
+ {id:'dw-deny',series:'Half Court Man',you:'2',ball:'o1',pos:with_(HCM_TOP,{2:[8,22]}),
+  q:'The ball is at the left slot. Your player is at the right slot, one pass away. Where do you go?',
+  ans:[4.8,24.6],tol:3,why:'One pass away = DENY: in the passing lane, hand and foot in the lane, close to your player.',
+  show:[{a:[C(2,[4.8,24.6])]}]},
+ {id:'dw-help',series:'Half Court Man',you:'4',ball:'o3',pos:with_(HCM_WING,{4:[17,15]}),ctx:[P('o1','o3')],
+  q:'The ball went to the left wing. Your player is on the right wing, the farthest pass away. Where do you go?',
+  ans:[4,9],tol:4.5,why:'Two or more passes away = HELP: sink to the lane, see man and ball.',
+  show:[{a:[C(4,[4,9])]}]},
+ {id:'dw-front',series:'Half Court Man',you:'5',ball:'o3',pos:with_(HCM_WING,{5:[-6,6.5]}),ctx:[P('o1','o3')],
+  q:'The ball went to the wing. Your player is posting on the ball-side block. Where do you go?',
+  ans:[-10.3,10.2],tol:2.5,why:'Front the post: between her and the ball.',
+  show:[{a:[C(5,[-10.3,10.2])]}]},
+ {id:'dw-jump',series:'Half Court Man',you:'1',ball:'o3',pos:with_(HCM_WING,{1:[-5.1,23.6]}),ctx:[P('o1','o3')],
+  q:'Your player just passed to the wing. Where do you go?',
+  ans:[-8.5,23.8],tol:3,why:'Jump to the ball: she\'s one pass away now, so DENY the pass back.',
+  show:[{a:[C(1,[-8.5,23.8])]}]}
+);
+
 /* =====================================================================
    ENGINE
    ===================================================================== */
@@ -740,6 +870,7 @@ function arrowSvg(a,st,en,opt){
 }
 function playerSvg(id,xy,you){
   const x=f2(xy[0]),y=f2(xy[1]);
+  if(id[0]==='o')return `<circle cx="${x}" cy="${y}" r="1.55" fill="#0b2318" stroke="#ffb3a7" stroke-width=".3"/>`;
   if(id[0]==='x'){const r=.95;return `<g stroke="#ffe08a" stroke-width=".42" stroke-linecap="round"><path d="M${f2(xy[0]-r)} ${f2(xy[1]-r)}L${f2(xy[0]+r)} ${f2(xy[1]+r)}M${f2(xy[0]+r)} ${f2(xy[1]-r)}L${f2(xy[0]-r)} ${f2(xy[1]+r)}"/></g>`;}
   return (you?`<circle cx="${x}" cy="${y}" r="2.55" fill="none" stroke="#ff9a3c" stroke-width=".35" class="pulse"/><text x="${x}" y="${f2(xy[1]-3)}" text-anchor="middle" font-size="1.5" font-weight="800" fill="#ff9a3c" font-family="system-ui,sans-serif" letter-spacing=".1">YOU</text>`:'')+
     `<circle cx="${x}" cy="${y}" r="1.75" fill="${you?'#ff9a3c':'#fff'}" stroke="${you?'#fff':'#0f3d28'}" stroke-width=".25"/>`+
@@ -796,11 +927,16 @@ const CATS=[
     {id:'man',title:'Man Offenses',sub:'Motion and sets vs. man-to-man',groups:[
       {id:'motion',title:'Motion',sub:'Our motion offense: Low, Point and 5 Out',series:['Rules','Low','Point','5 Out']}]},
     {id:'zone',title:'Zone Offenses',sub:'Attacking a 2-3, 1-3-1 and other zones',groups:[]}]},
-  {id:'defense',title:'Defense',sub:'Man, zones and presses',groups:[]},
+  {id:'defense',title:'Defense',sub:'Man, zones and presses',sections:[
+    {id:'mand',title:'Man Defense',sub:'Half court and full court man-to-man',groups:[
+      {id:'hcm',title:'Half Court Man',sub:'Pressure, deny, help, front the post',series:['Half Court Man']}]},
+    {id:'zoned',title:'Zone Defense',sub:'2-3, 1-3-1 and our jumps',groups:[]},
+    {id:'press',title:'Presses',sub:'Full-court traps',groups:[]}]},
   {id:'blob',title:'BLOBs',sub:'Baseline out of bounds',groups:[]},
   {id:'slob',title:'SLOBs',sub:'Sideline out of bounds',groups:[]}
 ];
-const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top'};
+const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Half Court Man':'Pressure, deny, help, front the post'};
+const SERIES_RULES={Rules:RULES,'Half Court Man':HCM_RULES};
 const QUIZ=READS.map(x=>Object.assign({kind:'reads'},x)).concat(WHERE.map(x=>Object.assign({kind:'where'},x)));
 const qById=id=>QUIZ.find(x=>x.id===id);
 const allGroups=c=>c.sections?[].concat(...c.sections.map(s=>s.groups)):c.groups;
@@ -909,22 +1045,22 @@ function groupsHtml(groups,noHead){
 }
 
 /* ---------- series ---------- */
-function rulesCard(open){
-  return `<details class="card"${open?' open':''}><summary><h3>Our rules</h3></summary><ol class="rules">${RULES.map(r=>`<li><b>${esc(r[0])}</b> <span class="muted">${esc(r[1])}</span></li>`).join('')}</ol></details>`;
+function rulesCard(open,list){
+  return `<details class="card"${open?' open':''}><summary><h3>Our rules</h3></summary><ol class="rules">${(list||RULES).map(r=>`<li><b>${esc(r[0])}</b> <span class="muted">${esc(r[1])}</span></li>`).join('')}</ol></details>`;
 }
 function seriesView(){
   const s=ui.nav.series,c=catOf(s),sec=secOf(s),st=seriesStats(s),pl=PLAYS.filter(p=>p.series===s),qs=QUIZ.filter(x=>x.series===s);
   const grp=grpOf(s);
-  let out=`<button class="back" data-act="nav-back">‹ ${esc(grp&&grp.id?grp.title:sec?sec.title:c.title)}</button>
+  let out=`<button class="back" data-act="nav-back">‹ ${esc(grp&&grp.id&&grp.series.length>1?grp.title:sec?sec.title:c.title)}</button>
     <div class="row spread"><h2>${esc(s)}</h2>${ring(pct(st))}</div><p class="muted small" style="margin:2px 0 14px">${esc(SERIES_SUB[s]||'')}</p>`;
-  if(s==='Rules')out+=rulesCard(true);
+  if(SERIES_RULES[s])out+=rulesCard(true,SERIES_RULES[s]);
   if(pl.length){
     out+=`<div class="grp">Learn · ${st.seen} of ${pl.length} watched</div><div class="list">`+pl.map(p=>
       `<button class="item" data-act="open-play" data-id="${p.id}"><span class="ck${store.plays[p.id]?' on':''}" aria-label="${store.plays[p.id]?'Watched':'Not watched yet'}">✓</span><span><div class="t">${esc(p.title)}</div><div class="s">${esc(p.sub)}</div></span><span class="go">›</span></button>`).join('')+'</div>';
   }
   if(qs.length){
     out+=`<div class="grp">Quiz · ${st.right} of ${qs.length} right</div>
-      <div class="card"><p class="muted small" style="margin:0 0 10px">Read the defense and pick what you do, or tap the court where you go. Close counts.</p>
+      <div class="card"><p class="muted small" style="margin:0 0 10px">Read the play and pick what you do, or tap the court where you go. Close counts.</p>
       <div class="bar" style="margin-bottom:14px"><span style="width:${qs.length?st.right/qs.length*100:0}%"></span></div>
       <button class="btn primary block" data-act="series-quiz">Start the quiz (${qs.length})</button></div>`;
   }
@@ -935,7 +1071,7 @@ function seriesView(){
 /* ---------- play ---------- */
 function legend(){
   const l=(d,extra)=>`<svg width="34" height="12" viewBox="0 0 34 12"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.8" ${extra||''}/></svg>`;
-  return `<div class="legend"><span>${l('M2 6H30','stroke-dasharray="4 3"')}Pass</span><span>${l('M2 6H30')}Cut</span><span>${l('M2 6l3-3 4 6 4-6 4 6 4-6 4 6 3-3h4')}Dribble</span><span>${l('M2 6H28M28 1V11')}Screen</span><span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5" fill="#ff7a1a"/></svg>Ball</span><span style="color:#b98a00">✕ Defender</span></div>`;
+  return `<div class="legend"><span>${l('M2 6H30','stroke-dasharray="4 3"')}Pass</span><span>${l('M2 6H30')}Cut</span><span>${l('M2 6l3-3 4 6 4-6 4 6 4-6 4 6 3-3h4')}Dribble</span><span>${l('M2 6H28M28 1V11')}Screen</span><span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5" fill="#ff7a1a"/></svg>Ball</span><span style="color:#b98a00">✕ Defender</span><span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5" fill="#0b2318" stroke="#ffb3a7" stroke-width="1.5"/></svg>Them (on defense)</span></div>`;
 }
 function curPlay(){return PLAYS.find(p=>p.id===ui.play);}
 function playView(){
@@ -1053,7 +1189,8 @@ function record(kind,id,ok){
 
 /* ---------- Tracker: sign-in, offline outbox, team board ---------- */
 const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
-const SERIES4=['Rules','Low','Point','5 Out'];
+const SERIES4=[].concat(...CATS.map(catSeries));
+const BADGE_SHORT={'5 Out':'5 OUT','Half Court Man':'HC MAN'};
 function logEvent(kind,item,series,ok){
   if(!API_URL||!store.player)return;
   store.outbox.push({who:store.player.login,id:newId(),t:Date.now(),kind,item,series,ok});
@@ -1108,7 +1245,7 @@ function myBadge(series){
   ['reads','where'].forEach(k=>{for(const id in store[k])last[id]=store[k][id].last?1:0;});
   return mastered(series,plays,last);
 }
-function badgesHtml(has){return `<span class="bdgs">${SERIES4.map(s=>`<span class="bdg${has(s)?' on':''}" title="${esc(s)}${has(s)?' mastered':''}">${esc(s==='5 Out'?'5 OUT':s.toUpperCase())}</span>`).join('')}</span>`;}
+function badgesHtml(has){return `<span class="bdgs">${SERIES4.map(s=>`<span class="bdg${has(s)?' on':''}" title="${esc(s)}${has(s)?' mastered':''}">${esc(BADGE_SHORT[s]||s.toUpperCase())}</span>`).join('')}</span>`;}
 function isMe(p){return !!store.player&&String(p.wnba||'').toLowerCase()===String(store.player.login).toLowerCase();}
 function nameOf(p){return esc(p.name)+(p.number?` <span class="muted">#${esc(p.number)}</span>`:'');}
 function parseLocalDate(s){const p=String(s||'').split('-').map(Number);if(p.length<3)return '';return new Date(p[0],p[1]-1,p[2]).toLocaleDateString([],{month:'short',day:'numeric'});}
@@ -1196,7 +1333,7 @@ function coachView(){
     <p style="margin:6px 0 10px"><b>${on} of ${ps.length}</b> players have practiced this week.</p>
     <div class="tbl"><table><thead><tr><th>Player</th><th>Week</th><th>All</th><th>Last on</th><th>Badges</th></tr></thead><tbody>
     ${ps.map(p=>{const n=SERIES4.filter(s=>mastered(s,p.plays||[],p.last||{})).length;
-      return `<tr><td><b>${esc(p.name)}</b><br><span class="muted small">${esc(p.wnba)}</span></td><td>${p.reps}</td><td>${p.total}</td><td class="small">${p.lastActive?parseLocalDate(p.lastActive):'<span class="muted">never</span>'}</td><td>${n}/4</td></tr>`;}).join('')}
+      return `<tr><td><b>${esc(p.name)}</b><br><span class="muted small">${esc(p.wnba)}</span></td><td>${p.reps}</td><td>${p.total}</td><td class="small">${p.lastActive?parseLocalDate(p.lastActive):'<span class="muted">never</span>'}</td><td>${n}/${SERIES4.length}</td></tr>`;}).join('')}
     </tbody></table></div></div>`;
   const all=READS.concat(WHERE),miss=Object.keys(d.items).map(id=>({id,it:d.items[id],q:all.find(x=>x.id===id)})).filter(x=>x.q&&x.it.tries>=3)
     .sort((a,c)=>c.it.wrong/c.it.tries-a.it.wrong/a.it.tries).slice(0,8);
@@ -1231,7 +1368,7 @@ function navBack(){
   if(n.view==='play'){const p=curPlay();ui.play=null;go({view:'series',series:p.series});}
   else if(n.view==='quiz'){ui.q=null;go(n.back||{view:'home'});}
   else if(n.view==='series'){const c=catOf(n.series),s=secOf(n.series),g=grpOf(n.series);
-    go(g&&g.id&&s?{view:'grp',cat:c.id,sec:s.id,grp:g.id}:s?{view:'sec',cat:c.id,sec:s.id}:{view:'cat',cat:c.id});}
+    go(g&&g.id&&s&&g.series.length>1?{view:'grp',cat:c.id,sec:s.id,grp:g.id}:s?{view:'sec',cat:c.id,sec:s.id}:{view:'cat',cat:c.id});}
   else if(n.view==='grp'){go({view:'sec',cat:n.cat,sec:n.sec});}
   else if(n.view==='sec'){go({view:'cat',cat:n.cat});}
   else go({view:'home'});
@@ -1246,7 +1383,8 @@ document.addEventListener('click',e=>{
   else if(act==='nav-back'){navBack();}
   else if(act==='open-cat'){go({view:'cat',cat:k});}
   else if(act==='open-sec'){go({view:'sec',cat:ui.nav.cat,sec:k});}
-  else if(act==='open-grp'){go({view:'grp',cat:ui.nav.cat,sec:ui.nav.sec,grp:k});}
+  else if(act==='open-grp'){const g=allGroups(CATS.find(c=>c.id===ui.nav.cat)).find(x=>x.id===k);
+    if(g&&g.series.length===1)go({view:'series',series:g.series[0]});else go({view:'grp',cat:ui.nav.cat,sec:ui.nav.sec,grp:k});}
   else if(act==='open-series'){go({view:'series',series:k});}
   else if(act==='open-play'){ui.play=b.dataset.id;ui.step=0;go({view:'play'});}
   else if(act==='step-back'){stopAnim();ui.step=Math.max(0,ui.step-1);render();}
