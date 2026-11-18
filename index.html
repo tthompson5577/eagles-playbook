@@ -1182,7 +1182,7 @@ function qpt(a,b,c,t){if(!c)return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];const
 const f2=n=>Math.round(n*100)/100;
 
 const COURT=`
-<rect x="-26" y="-2" width="52" height="52" fill="#1f5d3e"/>
+<rect x="-26" y="-7" width="52" height="57" fill="#1f5d3e"/>
 <rect x="-6" y="0" width="12" height="19" fill="#194f34"/>
 <text x="0" y="44.6" text-anchor="middle" font-family="Oswald,Arial Narrow,Arial,sans-serif" font-weight="700" font-size="4" letter-spacing=".6" fill="rgba(255,255,255,.10)">EAGLES</text>
 <g fill="none" stroke="rgba(255,255,255,.85)" stroke-width=".22">
@@ -1201,7 +1201,7 @@ const DEFS=`<defs>
 <marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#fff"/></marker>
 <marker id="ahg" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ffd25a"/></marker>
 </defs>`;
-const VIEWS={half:'-26 -1.5 52 36.5',full:'-26 -1.5 52 50',full94:'-26 -1.5 52 99.5',slob:'-26 -1.5 54.5 60'};
+const VIEWS={half:'-26 -1.5 52 36.5',full:'-26 -1.5 52 50',full94:'-26 -1.5 52 99.5',slob:'-26 -1.5 54.5 60',blob:'-26 -6 52 41'};
 const noFloor=c=>c.replace(/<rect x="-26"[^>]*\/>/,'').replace(/<text[\s\S]*?<\/text>/,'');
 const COURT_FULL='<rect x="-26" y="-2" width="52" height="99" fill="#1f5d3e"/>'+COURT.replace(/<rect x="-26"[^>]*\/>/,'')+'<g transform="matrix(1 0 0 -1 0 94)">'+noFloor(COURT)+'</g>';
 
@@ -1381,6 +1381,85 @@ WHERE.push(
   show:[{a:[C(1,[-5,12.4])]}]}
 );
 
+/* ===== BLOBs (Coach's playbook; BLOB 3 unchanged from 2021-22). 1 inbounds right of the rim. Shown vs a 2-3 zone. ===== */
+const ZONE23={x4:[-9.5,6.8],x5:[0,6.2],x3:[9.5,6.8],x1:[-6.5,15.5],x2:[6.5,15.5]};
+const B3=Object.assign({1:[3.5,-2.2],4:[-5.6,5.4],3:[0,10],5:[5.6,5.4],2:[0,24]},ZONE23);
+const BLOB_RULES={
+  'BLOB 3':[
+    ['Three across the bottom.','4, 3 and 5 line up across the bottom. 2 is behind the three point line.'],
+    ['5 screens the middle of the zone.','As close to the basket as possible.'],
+    ['3 cuts hard to the corner.','Be ready to shoot. 2 occupies the top defender.'],
+    ['4 cuts hard to the ball.','If the middle defender fights hard over 5\'s screen, LET HER GO, and look for the ball.'],
+    ['Read the help.','Corner defender helps down? 3 shoots. Top defender helps down? 2 gets open and shoots.'],
+    ['1 crashes.','After passing the ball in, 1 immediately goes to the backside block for the rebound.']]
+};
+PLAYS.push(
+ {id:'blob-3',series:'BLOB 3',title:'BLOB 3',sub:'Three across: screen the middle, 4 cuts to the ball',view:'blob',start:B3,ball:'1',
+  steps:[
+   {cap:'Three across the bottom, 2 behind the line. 5 screens the middle defender of the zone, as close to the basket as possible. 3 cuts hard to the corner, ready to shoot. 2 occupies the top defender.',
+    a:[S(5,[1.7,6.6]),C(3,[21.5,3.5],[10,10.5]),C(2,[3,23])]},
+   {cap:'4 cuts hard to the ball.',a:[C(4,[3.8,3.2],[-1,2.6]),P(1,4)]},
+   {cap:'After passing it in, 1 immediately goes to the backside block for the rebound.',a:[C(1,[-6.5,4.2],[-3,-0.8])]}
+  ],end:'Middle defender fights over the screen? Let her go and look for the ball. Corner helps down: 3 shoots. Top helps down: 2 shoots.'}
+);
+READS.push(
+ {id:'blob3-r-4',series:'BLOB 3',view:'blob',you:'4',ball:'1',pos:with_(B3,{5:[1.7,6.6],3:[21.5,3.5]}),ctx:[S(5,[1.7,6.6])],
+  sit:'BLOB 3. 5 just screened the middle of the zone and 3 cut to the corner. You are 4.',
+  q:'What do you do?',
+  choices:[
+   {t:'Cut hard to the ball',ok:true,why:'4 cuts hard to the ball off 5\'s screen.'},
+   {t:'Pop out to the wing',why:'Cut hard to the ball.'},
+   {t:'Go screen for 3',why:'5 already screened. You cut hard to the ball.'},
+   {t:'Stay on the block and wait',why:'Cut hard to the ball.'}],
+  show:[{a:[C(4,[3.8,3.2],[-1,2.6]),P(1,4)]}]},
+ {id:'blob3-r-fight',series:'BLOB 3',view:'blob',you:'5',ball:'1',pos:with_(B3,{5:[1.7,6.6],3:[21.5,3.5]}),
+  sit:'BLOB 3. You are screening the middle defender, and she is fighting hard over your screen.',
+  q:'What do you do?',
+  choices:[
+   {t:'Let her go, and look for the ball',ok:true,why:'If the middle defender fights hard over the screen, LET HER GO and look for the ball.'},
+   {t:'Hold her and keep screening',why:'No holding. Let her go and look for the ball.'},
+   {t:'Move with her to keep the screen',why:'No moving screens. Let her go and look for the ball.'},
+   {t:'Run out to the corner',why:'Let her go and look for the ball.'}],
+  show:[]},
+ {id:'blob3-r-corner',series:'BLOB 3',view:'blob',you:'3',ball:'1',pos:with_(B3,{5:[1.7,6.6],3:[21.5,3.5],x3:[5,5]}),
+  sit:'BLOB 3. You cut to the corner. The corner defender helped down on 4.',
+  q:'What do you do?',
+  choices:[
+   {t:'Look for my shot',ok:true,why:'Corner defender helps down? 3 looks for the shot. Be ready to shoot.'},
+   {t:'Cut back to the basket',why:'She left you. Be ready to shoot.'},
+   {t:'Come up to the top for the outlet',why:'2 is up top. You are open in the corner: shoot.'},
+   {t:'Go set a screen',why:'You are open. Look for the shot.'}],
+  show:[{a:[P(1,3)]}]},
+ {id:'blob3-r-top',series:'BLOB 3',view:'blob',you:'2',ball:'1',pos:with_(B3,{5:[1.7,6.6],3:[21.5,3.5],x2:[3,9]}),
+  sit:'BLOB 3. The top defender you were occupying just helped down into the lane.',
+  q:'What do you do?',
+  choices:[
+   {t:'Get open and look for my shot',ok:true,why:'Top defender helps down? 2 gets open and looks for the shot.'},
+   {t:'Cut to the basket',why:'Get open behind the line and look for the shot.'},
+   {t:'Stay still',why:'Get open and look for the shot.'},
+   {t:'Go screen the middle defender',why:'5 has that. Get open for your shot.'}],
+  show:[{a:[C(2,[4,23.5])]},{a:[P(1,2)]}]},
+ {id:'blob3-r-1',series:'BLOB 3',view:'blob',you:'1',ball:'4',pos:with_(B3,{5:[1.7,6.6],3:[21.5,3.5],4:[3.8,3.2],2:[3,23]}),ctx:[P(1,4)],
+  sit:'BLOB 3. You just passed the ball in to 4.',
+  q:'Where do you go?',
+  choices:[
+   {t:'Straight to the backside block for the rebound',ok:true,why:'After passing it in, 1 immediately goes to the backside block, looking for the rebound.'},
+   {t:'Out to the top of the key',why:'Crash the backside block for the rebound.'},
+   {t:'Stay out of bounds',why:'Step in and go straight to the backside block.'},
+   {t:'To the ball-side corner',why:'3 is there. Go to the backside block.'}],
+  show:[{a:[C(1,[-6.5,4.2],[-3,-0.8])]}]}
+);
+WHERE.push(
+ {id:'blob3-w-3',series:'BLOB 3',view:'blob',you:'3',ball:'1',pos:B3,ctx:[S(5,[1.7,6.6])],
+  q:'BLOB 3. 5 is screening the middle of the zone. You are 3. Where do you go?',
+  ans:[21.5,3.5],tol:4.5,why:'Cut hard to the corner, ready to shoot.',
+  show:[{a:[C(3,[21.5,3.5],[10,10.5])]}]},
+ {id:'blob3-w-1',series:'BLOB 3',view:'blob',you:'1',ball:'4',pos:with_(B3,{5:[1.7,6.6],3:[21.5,3.5],4:[3.8,3.2],2:[3,23]}),ctx:[P(1,4)],
+  q:'BLOB 3. You passed it in. Where do you go?',
+  ans:[-6.5,4.2],tol:3.5,why:'Straight to the backside block for the rebound.',
+  show:[{a:[C(1,[-6.5,4.2],[-3,-0.8])]}]}
+);
+
 const CATS=[
   {id:'offense',title:'Offense',sub:'Man and Zone Offenses',sections:[
     {id:'man',title:'Man Offenses',sub:'Motion and sets vs. man-to-man',groups:[
@@ -1399,14 +1478,15 @@ const CATS=[
       {id:'m10',title:'10',sub:'5+5: all five are up turning',series:['10']}]},
     {id:'zoned',title:'Zone Defenses',sub:'2-3, 1-3-1 and our jumps',groups:[]},
     {id:'press',title:'Presses',sub:'Full-court traps',groups:[]}]},
-  {id:'blob',title:'BLOBs',sub:'Baseline Out-of-Bounds Plays',groups:[]},
+  {id:'blob',title:'BLOBs',sub:'Baseline Out-of-Bounds Plays',groups:[
+    {id:'b3',title:'BLOB 3',sub:'Three across: screen the middle, 4 cuts to the ball',series:['BLOB 3']}]},
   {id:'slob',title:'SLOBs',sub:'Sideline Out-of-Bounds Plays',groups:[
     {id:'kansas',title:'Kansas',series:['Kansas','Kansas 2']}]}
 ];
-const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Man Rules':'The rules for all our man defenses','Ball Screens':'Switch or Fire, and where our help goes','Post D':'Front from the baseline side. Caught behind? Make her go middle','Kansas':'Get it to the corner, then the lob','Kansas 2':'Looks like Kansas, then a back screen and lob','5':'All five pick up at half court','6':'5+1: one is up turning','7':'5+2: two are up turning','8':'5+3: three are up turning','9':'5+4: four are up turning','10':'5+5: all five are up turning'};
+const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Man Rules':'The rules for all our man defenses','Ball Screens':'Switch or Fire, and where our help goes','Post D':'Front from the baseline side. Caught behind? Make her go middle','Kansas':'Get it to the corner, then the lob','BLOB 3':'Three across: screen the middle, 4 cuts to the ball','Kansas 2':'Looks like Kansas, then a back screen and lob','5':'All five pick up at half court','6':'5+1: one is up turning','7':'5+2: two are up turning','8':'5+3: three are up turning','9':'5+4: four are up turning','10':'5+5: all five are up turning'};
 const SERIES_TITLE={'Man Rules':'Man Defense Rules','Ball Screens':'Ball Screen Coverages','Post D':'Post Defense'};
 const stitle=x=>SERIES_TITLE[x]||x;
-const SERIES_RULES=Object.assign({Rules:RULES,'Man Rules':HCM_RULES,'Ball Screens':BS_RULES,'Post D':PD_RULES},NUM_RULES,KAN_RULES);
+const SERIES_RULES=Object.assign({Rules:RULES,'Man Rules':HCM_RULES,'Ball Screens':BS_RULES,'Post D':PD_RULES},NUM_RULES,KAN_RULES,BLOB_RULES);
 const QUIZ=READS.map(x=>Object.assign({kind:'reads'},x)).concat(WHERE.map(x=>Object.assign({kind:'where'},x)));
 const qById=id=>QUIZ.find(x=>x.id===id);
 const allGroups=c=>c.sections?[].concat(...c.sections.map(s=>s.groups)):c.groups;
