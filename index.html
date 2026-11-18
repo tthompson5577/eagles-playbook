@@ -660,7 +660,7 @@ const HCM_RULES=[
   ['Two or more passes away: HELP.','Sink toward the lane.'],
   ['See man and ball.','Always.'],
   ['Front the post.',''],
-  ['Hedge and trap all ball screens.',''],
+  ['Switch every screen.','Ball screens, off-ball screens, and any interchange. Call "Switch!" Full court too: in 6 through 10, we can switch at any spot on the floor. If there is a player we do not switch on, Coach will tell you.'],
   ['Force the ball handler to the MIDDLE.','Into our help.']
 ];
 const NUM_RULES={
@@ -692,12 +692,19 @@ PLAYS.push(
     a:[D('o3',[-11,19]),C(3,[-12,16.5]),C(2,[-7.5,16])]}
   ],end:'She drove middle, right where we want her: 3 stayed on her hip and 2 stepped up from help. Force the ball handler to the MIDDLE, into our help.'},
 
- {id:'hcm-ball-screen',series:'Man Rules',title:'Hedge & Trap Ball Screens',sub:'Trap every ball screen',start:HCM_TOP,ball:'o1',
+ {id:'hcm-ball-screen',series:'Man Rules',title:'Switch: Ball Screen',sub:'We switch every screen',start:HCM_TOP,ball:'o1',
   steps:[
    {cap:'Their post comes up to set a ball screen for the ball handler. 5 follows her up.',a:[C('o5',[-3.6,25.2],[-6,18]),C(5,[-3.4,22.4],[-4,16])]},
-   {cap:'She dribbles off the screen. 5 jumps out and traps with 1. Everyone else: see man and ball, ready to help.',
-    a:[D('o1',[0,27.5]),C(1,[-1.7,29.7]),C(5,[1.8,25.4])]}
-  ],end:'Hedge and trap ALL ball screens.'},
+   {cap:'She dribbles off the screen. SWITCH: 5 calls "Switch!" and takes the ball handler. 1 takes the screener as she rolls to the rim.',
+    a:[D('o1',[0,27.5]),C(5,[0.4,24]),C('o5',[-3,13],[-4,20]),C(1,[-2.2,10],[-6,16])]}
+  ],end:'Switch every screen: ball screens, off-ball screens, and any interchange. Coach will tell you if there is a player we do not switch on.'},
+
+ {id:'hcm-offball-screen',series:'Man Rules',title:'Switch: Off-Ball Screen',sub:'Screen away from the ball? Still switch',start:HCM_TOP,ball:'o1',
+  steps:[
+   {cap:'Their player at the right slot goes down to screen for the right wing. 2 goes with her.',a:[C('o2',[16.5,19],[13,24]),C(2,[13,21.5],[10,24])]},
+   {cap:'SWITCH: the wing comes up off the screen and 2 takes her. 4 takes the screener. Call "Switch!"',
+    a:[C('o4',[8,26],[14,24]),C(2,[4.8,24.6]),C(4,[13,16])]}
+  ],end:'Off-ball screens and interchanges too: switch, and talk.'},
 
  {id:'hcm-pickup',series:'5',title:'All Five Pick Up at Half Court',sub:'Meet them at half court, then get to your spot',view:'full',
   start:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},ball:'o1',
@@ -858,7 +865,7 @@ READS.push(
   choices:[
    {t:'Sink to help: toward the lane, see man and ball',ok:true,why:'Two or more passes away = HELP. Sink toward the lane, see man and ball.'},
    {t:'Stay out and deny your player',why:'Deny is for one pass away. You\'re two away: help.'},
-   {t:'Run to trap the ball',why:'Not in our man defense (unless it\'s a ball screen). Help.'},
+   {t:'Run to trap the ball',why:'Not in our man defense. Help.'},
    {t:'Watch the ball only',why:'See man AND ball, always.'}],
   show:[{a:[C(2,[1,17])]}]},
 
@@ -877,11 +884,22 @@ READS.push(
   sit:'Your player (their post) just came up to set a ball screen on 1\'s player.',
   q:'What do you do?',
   choices:[
-   {t:'Hedge and trap the ball with 1',ok:true,why:'Hedge and trap ALL ball screens.'},
-   {t:'Switch onto the ball handler',why:'We don\'t switch. Hedge and trap with 1.'},
-   {t:'Stay back in the paint',why:'Jump out and trap. Hedge and trap all ball screens.'},
-   {t:'Yell "Screen" and stay with your player',why:'Call it AND trap. Hedge and trap all ball screens.'}],
-  show:[{a:[D('o1',[0,27.5]),C(1,[-1.7,29.7]),C(5,[1.8,25.4])]}]},
+   {t:'Switch: call "Switch!" and take the ball handler',ok:true,why:'We switch every screen. You take the ball; 1 takes your player.'},
+   {t:'Hedge and trap the ball with 1',why:'Not our rule. We switch every screen.'},
+   {t:'Stay back in the paint',why:'Switch and take the ball handler. Always pressure the ball.'},
+   {t:'Stay with your player no matter what',why:'We switch every screen, unless Coach names a player we do not switch on.'}],
+  show:[{a:[D('o1',[0,27.5]),C(5,[0.4,24]),C('o5',[-3,13],[-4,20]),C(1,[-2.2,10],[-6,16])]}]},
+
+ {id:'d-offball',series:'Man Rules',you:'4',ball:'o1',
+  pos:with_(HCM_TOP,{o2:[16.5,19],2:[13,21.5],4:[16,14.5]}),ctx:[C('o2',[16.5,19])],
+  sit:'2\'s player just came down to screen for your player on the right wing.',
+  q:'What do you do?',
+  choices:[
+   {t:'Switch: call it and take the screener',ok:true,why:'Off-ball screens too: we switch. 2 takes your player, you take the screener.'},
+   {t:'Fight through the screen and stay with your player',why:'We switch every screen, on or off the ball.'},
+   {t:'Leave and help on the ball',why:'Switch and pick up the screener.'},
+   {t:'Switch, but say nothing',why:'Always call "Switch!" so 2 knows to take your player.'}],
+  show:[{a:[C('o4',[8,26],[14,24]),C(2,[4.8,24.6]),C(4,[13,16])]}]},
 
  {id:'d-force',series:'Man Rules',you:'3',ball:'o3',pos:HCM_WING,
   sit:'You are guarding the ball on the left wing.',
