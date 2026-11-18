@@ -133,7 +133,8 @@ a{color:var(--brand)}
 .bdgs{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
 .bdg{font:500 10px/1 var(--font-display);letter-spacing:.08em;padding:5px 6px;border-radius:999px;border:1px dashed var(--line);color:var(--muted);white-space:nowrap}
 .bdg.on{background:var(--brand);border:1px solid var(--brand);color:var(--on-brand)}
-.lb.bd li{flex-wrap:wrap}
+.lb.bd li{flex-wrap:wrap;row-gap:6px}
+.lb.bd .bdgs{flex-basis:100%;justify-content:flex-start;padding-left:44px}
 .tbl{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
 th{font:500 11px/1 var(--font-display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px;border-bottom:1px solid var(--line)}
@@ -707,6 +708,30 @@ PLAYS.push(
        C(1,[-5.1,23.6]),C(2,[4.8,24.6]),C(3,[-17.2,18.8]),C(4,[6,13]),C(5,[-6.4,11.2],[-7,24])]}
   ],end:'All five pick up at half court. Always pressure the ball.'}
 );
+
+/* 6-10 diagrams: N-5 of ours are "up turning" (example: 1, then 2, then 3...). Full court; we defend the top basket. */
+(function(){
+  const OPP0={o1:[-3,82],o2:[11,80],o3:[-17,74],o4:[17,74],o5:[2,66]};
+  const OPP1={o1:[-3,49.6],o2:[10,49.6],o3:[-16,48.6],o4:[16,48.6],o5:[2,47.6]};
+  const UP0={1:[-3,78.6],2:[10,76.8],3:[-16,70.8],4:[16,70.8],5:[2,62.8]};
+  const WAIT={1:[-3,46],2:[10,46],3:[-16,45],4:[16,45],5:[2,44]};
+  const WORD={6:'one is',7:'two are',8:'three are',9:'four are',10:'all five are'};
+  const NAMES=['1','2','3','4','5'];
+  for(let n=6;n<=10;n++){
+    const k=n-5,up=NAMES.slice(0,k),wait=NAMES.slice(k);
+    const start=Object.assign({},OPP0);
+    up.forEach(p=>start[p]=UP0[p]);wait.forEach(p=>start[p]=WAIT[p]);
+    const list=up.length===1?up[0]:up.length===5?'all five of us':up.slice(0,-1).join(', ')+' and '+up[up.length-1];
+    const steps=[
+      {cap:n+' = 5+'+k+': '+WORD[n]+' up turning. In this example Coach has '+list+' up turning'+(k<5?'; everyone else waits at half court.':'.')+' Up turners pick up full court and pressure the whole way.',
+       a:[D('o1',OPP1.o1),C('o2',OPP1.o2),C('o3',OPP1.o3),C('o4',OPP1.o4),C('o5',OPP1.o5)].concat(up.map(p=>C(p,WAIT[p])))},
+      {cap:(k<5?'Everyone is matched up at half court. ':'All five pressured them all the way up the floor. ')+'Now everyone gets into our man rules: pressure the ball, deny one pass away, help two away, front the post.',
+       a:[D('o1',THEM.o1),C('o2',THEM.o2),C('o3',THEM.o3),C('o4',THEM.o4),C('o5',THEM.o5,[-8,22])].concat(NAMES.map(p=>C(p,HCM_TOP[p])))}
+    ];
+    PLAYS.push({id:'upturn-'+n,series:String(n),title:n+': Up Turning',sub:'5+'+k+': '+WORD[n]+' up turning',view:'full94',start,ball:'o1',steps,
+      end:'Coach tells you who is up turning: by name, or by which of their players to take away. Everyone else waits at half court.'+(k===5?' In 10, all five are up turning.':'')});
+  }
+})();
 
 READS.push(
  {id:'d-num-6',series:'6',view:'full',you:'',ball:'o1',pos:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},
