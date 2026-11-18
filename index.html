@@ -664,10 +664,10 @@ const HCM_RULES=[
 ];
 const NUM_RULES={
   '5':[['All five pick up at half court.','Everything else follows our man rules.']],
-  '6':[['5+1: one picks up full court.','The other four wait at half court. Everything else follows our man rules.']],
-  '7':[['5+2: two pick up full court.','The other three wait at half court. Everything else follows our man rules.']],
-  '8':[['5+3: three pick up full court.','The other two wait at half court. Everything else follows our man rules.']],
-  '9':[['5+4: four pick up full court.','One waits at half court. Everything else follows our man rules.']],
+  '6':[['5+1: one picks up full court.','The other four wait at half court. Everything else follows our man rules.'],['Who goes? Coach tells you.','Coach names who picks up full court, or which of their players to take away (whoever is guarding her goes). Often both: "Layla, take away #23." Everyone else waits at half court.']],
+  '7':[['5+2: two pick up full court.','The other three wait at half court. Everything else follows our man rules.'],['Who goes? Coach tells you.','Coach names who picks up full court, or which of their players to take away (whoever is guarding her goes). Often both: "Layla, take away #23." Everyone else waits at half court.']],
+  '8':[['5+3: three pick up full court.','The other two wait at half court. Everything else follows our man rules.'],['Who goes? Coach tells you.','Coach names who picks up full court, or which of their players to take away (whoever is guarding her goes). Often both: "Layla, take away #23." Everyone else waits at half court.']],
+  '9':[['5+4: four pick up full court.','One waits at half court. Everything else follows our man rules.'],['Who goes? Coach tells you.','Coach names who picks up full court, or which of their players to take away (whoever is guarding her goes). Often both: "Layla, take away #23." Everyone else waits at half court.']],
   '10':[['5+5: all five pick up full court.','Everything else follows our man rules.']]
 };
 const THEM={o1:[-6,27],o2:[8,26],o3:[-20,17],o4:[20,17],o5:[-7.5,8]};
@@ -744,6 +744,24 @@ READS.push(
    {t:'None',why:'That is 5. 10 = 5+5.'},
    {t:'Four',why:'That is 9. 10 = 5+5.'},
    {t:'Just the player guarding the ball',why:'That is 6. 10 = 5+5.'}],
+  show:[]},
+ {id:'d-who-wait',series:'6',view:'full',you:'4',ball:'o1',pos:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},
+  sit:'Coach calls 6: "Layla, take away #23." You are not Layla, and you are not guarding #23.',
+  q:'What do you do?',
+  choices:[
+   {t:'Wait at half court and pick up my player there',ok:true,why:'Only the player Coach named goes full court. Everyone else waits at half court.'},
+   {t:'Pick up my player full court',why:'Only the player Coach named goes. 6 = 5+1: one goes, you wait at half court.'},
+   {t:'Go help trap #23',why:'Wait at half court. Layla has #23.'},
+   {t:'Drop back to the paint',why:'Wait at half court and pick up your player there.'}],
+  show:[]},
+ {id:'d-who-go',series:'6',view:'full',you:'2',ball:'o1',pos:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},
+  sit:'Coach calls 6 and says "take away #23." You are the one guarding #23.',
+  q:'What do you do?',
+  choices:[
+   {t:'Pick her up full court and take her away',ok:true,why:'Whoever is guarding the player Coach names goes full court. That is you.'},
+   {t:'Wait at half court',why:'You are guarding #23, so you are the one who goes full court.'},
+   {t:'Switch onto the ball',why:'Stay with #23 and take her away, full court.'},
+   {t:'Wait for Coach to say your name',why:'"Take away #23" means whoever is guarding #23 goes. That is you.'}],
   show:[]},
  {id:'d-num-7',series:'7',view:'full',you:'',ball:'o1',pos:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},
   sit:'Coach calls 7.',
