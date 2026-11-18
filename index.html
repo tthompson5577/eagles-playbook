@@ -73,6 +73,7 @@ main .wrap{padding-top:16px;padding-bottom:24px}
 .grp{font:500 13px/1 var(--font-display);letter-spacing:.14em;text-transform:uppercase;color:var(--brand);margin:18px 0 8px}
 .court-wrap{background:var(--floor);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);touch-action:none;user-select:none;-webkit-user-select:none}
 svg.court{display:block;width:100%;height:auto}
+svg.court.tall{height:min(44vh,520px);width:auto;max-width:100%;margin:0 auto}
 .cap{font-size:17px;margin:12px 0 4px;min-height:3em}
 .stepno{font:500 12px/1 var(--font-display);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .dots{display:flex;gap:6px;margin:8px 0 12px}
@@ -195,6 +196,10 @@ const LOW  ={1:SP.ls,2:SP.rs,3:SP.lw,4:SP.rw,5:SP.lb};
 const POINT={1:SP.ls,2:SP.rs,3:SP.lw,4:SP.rw,5:SP.hp};
 const FIVE ={1:[-14,25],2:[14,25],3:[-21,8],4:[21,8],5:[0,29]};
 const TRANS={1:[0,42],2:[7,46],3:[-19,40],4:[19,40],5:[-4,37]};
+/* Full-court transition (view 'full94'): their basket is at the bottom (rim at y = 88.75). */
+const REB={1:[-19,76],2:[13,74],3:[-12,73],4:[-3,85],5:[4,83]};
+const TRANS_MID={1:[-19,60],2:[21.5,50],3:[-21.5,47],4:[3,66],5:[0,52]};
+const ARC=19.75,RIM=[0,5.25];
 const with_=(base,extra)=>Object.assign({},base,extra);
 
 const SERIES=['All','Rules','Low','Point','5 Out'];
@@ -205,22 +210,45 @@ const RULES=[
   ['Pass and move.','After you pass, cut or screen. Never stand and watch.'],
   ['Fill the empty spot.','When someone cuts, the next player replaces her.'],
   ['Post feed on the block = cut off the post.','Split, Split Backcut, or Curl.'],
-  ['Ball reversal = post flashes high.','Duck in if her defender is behind her. High-post catch = Point.'],
+  ['Ball reversal = post flashes high.','High-post catch = Point. Duck in if her defender is behind her. If the ball moves too fast, she goes block to block and flashes on the next reversal. The offense never stops.'],
   ['Ball at the high post = read Away or Over.','Away is our base. Ball-side wing denied = backdoor.'],
   ['Every catch faces the rim.','Catch & Shoot / Go / Rip / Pump Fake.'],
   ['Shots we want.','Layups, post catches in the paint, open 3s.'],
-  ['Talk.','"Back!" on a backcut, "Hand!" on a handoff.']
+  ['Talk.','"Back!" on a backcut, "Hand!" on a handoff.'],
+  ['Transition: kick it ahead.','Rim runner outlets right away and runs the middle. Wings sprint wide and catch at the wing spot, never inside the 3-point line.']
 ];
 
 const PLAYS=[
- {id:'low-transition',series:'Low',stage:1,title:'Transition into Low',sub:'Run, kick it ahead, feed the post',view:'full',
-  video:'https://www.youtube.com/watch?v=OtEbuDo6Yac',start:TRANS,ball:'1',
+ {id:'low-transition',series:'Low',stage:1,title:'Transition into Low',sub:'Rebound, outlet, kick it ahead, rim runner',view:'full94',
+  video:'https://www.youtube.com/watch?v=OtEbuDo6Yac',start:REB,ball:'4',
   steps:[
-   {cap:'Rim runner (5) sprints straight to the rim and seals on the ball-side block. Wings sprint wide up the sidelines. 1 pushes the ball up the left side; 2 trails.',
-    a:[C(5,SP.lb,[-3,16]),C(3,SP.lw,[-21,30]),C(4,SP.rw,[21,30]),D(1,[-8,27]),C(2,SP.rs)]},
-   {cap:'1 kicks it ahead to the wing. Every catch faces the rim.',a:[P(1,3)]},
-   {cap:'3 feeds the post on the block. 5 seals: wide base, target hand away from her defender.',a:[P(3,5)]}
-  ],end:'Ball is in the post. Now cut off the post: Split, Split Backcut or Curl (next plays).'},
+   {cap:'4 rebounds and outlets to 1 on the wing. Rim runner 5 takes off down the middle. 3 and 2 sprint wide up the sidelines.',
+    a:[P(4,1),C(5,[0,52],[2,70]),C(3,[-21.5,47],[-20,63]),C(2,[21.5,50],[20,63])]},
+   {cap:'1 pushes up the sideline. 3 gets to the wing spot, outside the 3-point line. 5 sprints to the rim and seals on the ball-side block. 2 fills the other wing; 4 trails.',
+    a:[D(1,[-19,50]),C(3,[-20.5,19.5],[-22.5,32]),C(5,SP.lb,[-2,18]),C(2,SP.rw,[22,32]),C(4,[3,50])]},
+   {cap:'1 kicks it ahead up the sideline to 3. Catch it at the wing spot, never inside the 3-point line.',a:[P(1,3)]},
+   {cap:'3 faces up and looks inside first: 5 is sealed on the ball-side block for the layup. 1 and 4 fill the slots.',
+    a:[P(3,5),C(1,SP.ls,[-15,36]),C(4,SP.rs,[6,38])]}
+  ],end:'No layup? You\'re in Low. Spots matter, not numbers: whoever trails fills the open slot. Play out of it (next plays), and on the reversal 5 flashes high into Point. If 5 gets the rebound, she outlets right away so she can run; a guard who rebounds can push it on the dribble.'},
+
+ {id:'low-pass-cut',series:'Low',stage:1,title:'Low: Pass, Cut, Fill',sub:'Give-and-go, clear out, everyone fills',
+  start:LOW,ball:'1',
+  steps:[
+   {cap:'1 passes to the wing.',a:[P(1,3)]},
+   {cap:'Pass and cut: 1 cuts hard to the rim looking for the give-and-go.',a:[C(1,[-2,9],[-5,20])]},
+   {cap:'No pass? 1 clears out to the opposite wing. Everyone fills: 2 slides over to the slot 1 left, 4 lifts to the open slot.',
+    a:[C(1,[20,16],[9,7]),C(2,SP.ls,[0,28]),C(4,SP.rs,[17,24])]},
+   {cap:'3 can swing it to 2 in the slot. Spots are full again.',a:[P(3,2)]}
+  ],end:'Pass, cut, fill. The ball side always has a slot to swing it to.'},
+
+ {id:'low-screen-away',series:'Low',stage:1,title:'Low: Pass & Screen Away',sub:'Screen for the other guard, pop back',
+  start:LOW,ball:'1',
+  steps:[
+   {cap:'1 passes to the wing.',a:[P(1,3)]},
+   {cap:'Pass and screen away: 1 goes to screen for 2.',a:[S(1,[4,25])]},
+   {cap:'2 comes off the screen to the ball-side slot. 1 pops back out to 2\'s old spot.',a:[C(2,SP.ls,[0,22.5]),C(1,SP.rs,[6,28])]},
+   {cap:'3 swings it to 2.',a:[P(3,2)]}
+  ],end:'The screener always pops back so the spots stay full. If 2\'s defender cheats over the screen, 2 backcuts.'},
 
  {id:'low-split',series:'Low',stage:1,title:'Low: Split',sub:'Passer screens, cutter pops to the wing',
   video:'https://www.youtube.com/watch?v=7KBun_5cNPc',start:LOW,ball:'3',
@@ -249,13 +277,21 @@ const PLAYS=[
    {cap:'5 hands it off. 1 finishes at the rim.',a:[H(5,1)]}
   ],end:'Curl when the defender trails you around the screen.'},
 
+ {id:'low-block-to-block',series:'Low',stage:1,title:'Low: Block to Block',sub:'Ball moved too fast? Post crosses the lane',
+  start:LOW,ball:'3',
+  steps:[
+   {cap:'No post feed. 3 swings it to 1.',a:[P(3,1)]},
+   {cap:'1 reverses it fast to 2, before 5 can get to the high post. 5 goes block to block instead, across the lane to the new ball-side block.',a:[P(1,2),C(5,SP.rb,[0,6.5])]},
+   {cap:'2 swings it to the wing. 5 seals on the block for the post feed.',a:[P(2,4)]}
+  ],end:'The offense never waits on the post. On the next reversal, she flashes high and we\'re in Point.'},
+
  {id:'low-reversal',series:'Low',stage:2,title:'Low to Point: Reversal',sub:'Swing it, post flashes high',
   video:'https://www.youtube.com/watch?v=F04sPDeFRuw',start:LOW,ball:'3',
   steps:[
    {cap:'No post feed? Swing it. 3 passes back to 1.',a:[P(3,1)]},
    {cap:'1 reverses it to 2. On the reversal, 5 flashes to the high post.',a:[P(1,2),C(5,SP.hp,[-5,13])]},
    {cap:'2 hits 5 at the high post.',a:[P(2,5)]}
-  ],end:'High-post catch = POINT. Every reversal turns Low into Point without a call.'},
+  ],end:'High-post catch = POINT. If the ball moves too fast for her, she goes block to block and flashes on the next reversal.'},
 
  {id:'point-away',series:'Point',stage:2,title:'Point Away (Base)',sub:'Pass to the high post, screen away',
   video:'https://www.youtube.com/watch?v=fJxH3z4j49k',start:POINT,ball:'1',
@@ -398,6 +434,38 @@ const READS=[
    {t:'Post up next to 5',why:'That crowds her. Cut off the post instead.'}],
   show:[{a:[S(3,[-12,23])]},{a:[C(1,[-20,16],[-14,25.5]),C(3,SP.ls,[-10,26])]},{a:[P(5,1)]}]},
 
+ {id:'r-outlet',series:'Low',view:'full94',you:'5',ball:'5',pos:with_(REB,{4:[-1,80],5:[-3,85]}),
+  sit:'They miss. You\'re 5, the rim runner, and you grab the rebound.',
+  q:'What do you do?',
+  choices:[
+   {t:'Outlet it right away and sprint the middle',ok:true,why:'Get it out of your hands so you can run. You\'re the rim runner: first one to the rim.'},
+   {t:'Dribble it up the floor yourself',why:'If you dribble, nobody runs the rim. Outlet and go.'},
+   {t:'Wait for a guard to come get it',why:'Waiting kills the break. Outlet to the guard on the wing right away.'},
+   {t:'Hold it until the defense sets up',why:'We want to run. Outlet it and sprint the middle.'}],
+  show:[{a:[P(5,1)]},{a:[C(5,[0,52],[2,70]),C(3,[-21.5,47],[-20,63]),C(2,[21.5,50],[20,63])]}]},
+
+ {id:'r-kick',series:'Low',view:'full94',you:'3',ball:'1',pos:TRANS_MID,ctx:[D(1,[-19,50])],
+  sit:'Transition. You\'re 3 sprinting up the left sideline. 1 has it near half court.',
+  q:'Where do you want to catch the kick-ahead?',
+  choices:[
+   {t:'At the wing spot, outside the 3-point line',ok:true,why:'Wing spot, free-throw line extended, outside the arc. Then look inside for the rim runner.'},
+   {t:'Cut inside the 3-point line toward the rim',why:'Never inside the 3-point line on the kick-ahead. It crowds the rim runner and the lane.'},
+   {t:'Come back toward 1 for a short pass',why:'Sprint wide and deep. The kick-ahead beats the defense down the floor.'},
+   {t:'Run all the way to the corner',why:'Wing spot first, so you can feed the post on the block.'}],
+  show:[{a:[C(3,[-20.5,19.5],[-22.5,32]),C(5,SP.lb,[-2,18])]},{a:[P(1,3)]}]},
+
+ {id:'r-quick-rev',series:'Low',you:'5',ball:'2',
+  pos:with_(LOW,{x1:[-7,23],x2:[7,22.5],x3:[-17,16],x4:[17,16],x5:[-6.5,10.5]}),
+  ctx:[P(3,1),P(1,2)],
+  sit:'The ball went 3 to 1 to 2 so fast you couldn\'t flash high in time. You\'re 5 on the left block.',
+  q:'What now?',
+  choices:[
+   {t:'Go block to block and seal on the new ball side',ok:true,why:'The offense never waits on the post. Seal on the new ball-side block, then flash high on the next reversal.'},
+   {t:'Flash high anyway, even though you\'re late',why:'A late flash makes the offense wait on you. Go block to block.'},
+   {t:'Stay where you are on the left block',why:'The ball left your side. Go block to block.'},
+   {t:'Run out to the corner',why:'Stay inside: block to block, then flash on the next reversal.'}],
+  show:[{a:[C(5,SP.rb,[0,6.5])]},{a:[P(2,4)]}]},
+
  {id:'r-flash',series:'Low',you:'5',ball:'2',
   pos:with_(LOW,{x1:[-7,23],x2:[7,22.5],x3:[-17,16],x4:[17,16],x5:[-6.5,10.5]}),
   ctx:[P(1,2)],
@@ -473,14 +541,18 @@ const READS=[
 
 /* Where do you go? Tap or drag YOUR player to the spot. Graded within tol (feet). */
 const WHERE=[
- {id:'w-rimrun',series:'Low',view:'full',you:'5',ball:'1',pos:TRANS,ctx:[D(1,[-8,27])],
-  q:'Transition! 1 is pushing it up the left side. You\'re the rim runner (5). Where do you run?',
-  ans:SP.lb,tol:5,why:'Rim runner sprints straight to the rim, then seals on the BALL-SIDE block.',
-  show:[{a:[C(5,SP.lb,[-3,16])]}]},
- {id:'w-wing-run',series:'Low',view:'full',you:'4',ball:'1',pos:TRANS,ctx:[D(1,[-8,27])],
-  q:'Transition. You\'re 4 on the right. Where do you run?',
-  ans:SP.rw,tol:6,why:'Wings sprint wide up the sideline to the wing (free-throw line extended).',
-  show:[{a:[C(4,SP.rw,[21,30])]}]},
+ {id:'w-rimrun',series:'Low',view:'full94',you:'5',ball:'1',pos:TRANS_MID,ctx:[D(1,[-19,50])],
+  q:'Transition! 1 is pushing it up the left sideline. You\'re the rim runner (5). Where do you run?',
+  ans:SP.lb,tol:5,why:'Rim runner sprints the middle to the rim, then seals on the BALL-SIDE block looking for the layup.',
+  show:[{a:[C(5,SP.lb,[-2,18])]}]},
+ {id:'w-wing-run',series:'Low',view:'full94',you:'3',ball:'1',pos:TRANS_MID,ctx:[D(1,[-19,50])],
+  q:'You\'re 3 sprinting up the left sideline. 1 is about to kick it ahead. Where do you catch it?',
+  ans:[-20.5,19.5],tol:5,out3:true,why:'At the wing spot (free-throw line extended), outside the 3-point line. Never inside the arc on the kick-ahead.',
+  show:[{a:[C(3,[-20.5,19.5],[-22.5,32])]},{a:[P(1,3)]}]},
+ {id:'w-block2block',series:'Low',you:'5',ball:'2',pos:with_(LOW,{x5:[-6.5,10.5]}),ctx:[P(3,1),P(1,2)],
+  q:'The ball went 3 to 1 to 2 so fast you couldn\'t get to the high post. Where do you go?',
+  ans:SP.rb,tol:4.5,why:'Block to block: seal on the new ball-side block. Flash high on the next reversal. The offense never stops.',
+  show:[{a:[C(5,SP.rb,[0,6.5])]},{a:[P(2,4)]}]},
  {id:'w-fill',series:'Rules',you:'2',ball:'3',pos:with_(LOW,{1:[-4,13]}),ctx:[C(1,[-2,7])],
   q:'1 just backcut out of the left slot. You\'re 2. Where do you go?',
   ans:SP.ls,tol:5,why:'Fill the empty spot. 3 needs an outlet in the slot.',
@@ -490,7 +562,7 @@ const WHERE=[
   ans:[-12,23],tol:5,why:'Split: the passer runs up toward the slot and screens for 1.',
   show:[{a:[S(3,[-12,23])]}]},
  {id:'w-flash',series:'Low',you:'5',ball:'2',pos:with_(LOW,{x5:[-6.5,10.5]}),ctx:[P(1,2)],
-  q:'The ball got reversed to 2. Your defender is on your high side. Where do you go?',
+  q:'1 is swinging it to 2, and you have time. Your defender is on your high side. Where do you go?',
   ans:SP.hp,tol:4.5,why:'Ball reversal = flash to the high post. High-post catch = Point.',
   show:[{a:[C(5,SP.hp,[-5,14])]}]},
  {id:'w-over',series:'Point',you:'1',ball:'5',pos:with_(POINT,{x1:[-3.5,21.5]}),ctx:[P(1,5)],
@@ -561,7 +633,9 @@ const DEFS=`<defs>
 <marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#fff"/></marker>
 <marker id="ahg" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ffd25a"/></marker>
 </defs>`;
-const VIEWS={half:'-26 -1.5 52 36.5',full:'-26 -1.5 52 50'};
+const VIEWS={half:'-26 -1.5 52 36.5',full:'-26 -1.5 52 50',full94:'-26 -1.5 52 97'};
+const noFloor=c=>c.replace(/<rect x="-26"[^>]*\/>/,'').replace(/<text[\s\S]*?<\/text>/,'');
+const COURT_FULL='<rect x="-26" y="-2" width="52" height="99" fill="#1f5d3e"/>'+COURT.replace(/<rect x="-26"[^>]*\/>/,'')+'<g transform="matrix(1 0 0 -1 0 94)">'+noFloor(COURT)+'</g>';
 
 function shorten(a,b,s0,s1){const dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy)||1;return [[a[0]+dx/L*s0,a[1]+dy/L*s0],[b[0]-dx/L*s1,b[1]-dy/L*s1]];}
 function zig(a,b){
@@ -610,7 +684,7 @@ function courtSvg(f){
   const offs=ids.filter(k=>k[0]!=='x').map(k=>playerSvg(k,f.pos[k],k===f.you)).join('');
   let bxy=f.ballXY;if(!bxy&&f.ball&&f.pos[f.ball])bxy=[f.pos[f.ball][0]+BALL_OFF[0],f.pos[f.ball][1]+BALL_OFF[1]];
   const ball=bxy?`<circle cx="${f2(bxy[0])}" cy="${f2(bxy[1])}" r=".85" fill="#ff7a1a" stroke="#5a2600" stroke-width=".15"/>`:'';
-  return `<svg class="court" viewBox="${VIEWS[f.view||'half']}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Half-court diagram">${DEFS}${COURT}${f.under||''}${(f.arrows||[]).join('')}${defs}${offs}${ball}${f.marks||''}</svg>`;
+  return `<svg class="court${f.view==='full94'?' tall':''}" viewBox="${VIEWS[f.view||'half']}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Half-court diagram">${DEFS}${f.view==='full94'?COURT_FULL:COURT}${f.under||''}${(f.arrows||[]).join('')}${defs}${offs}${ball}${f.marks||''}</svg>`;
 }
 
 /* animate one step from st; calls onFrame(frame) and done(en) */
@@ -881,7 +955,7 @@ function drawQ(frame){
 }
 function bindTap(el,it){
   const svg=el.querySelector('svg');let down=false;
-  const pt=e=>{const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const r=p.matrixTransform(svg.getScreenCTM().inverse());return [f2(clamp(r.x,-24,24)),f2(clamp(r.y,.5,46.5))];};
+  const pt=e=>{const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const r=p.matrixTransform(svg.getScreenCTM().inverse());return [f2(clamp(r.x,-24,24)),f2(clamp(r.y,.5,it.view==='full94'?93.5:46.5))];};
   svg.addEventListener('pointerdown',e=>{down=true;svg.setPointerCapture(e.pointerId);ui.q.guess=pt(e);redrawGuess(it);});
   svg.addEventListener('pointermove',e=>{if(!down)return;e.preventDefault();ui.q.guess=pt(e);redrawGuess(it);});
   svg.addEventListener('pointerup',()=>{down=false;});
@@ -1138,7 +1212,7 @@ document.addEventListener('click',e=>{
   else if(act==='check'){
     const q=ui.q,it=curItem();if(!q.guess||q.answered)return;
     const d=Math.hypot(q.guess[0]-it.ans[0],q.guess[1]-it.ans[1]);
-    q.answered=true;q.ok=d<=it.tol;if(q.ok)q.right++;else q.missed.push(it.id);record('where',it.id,q.ok);
+    q.answered=true;q.ok=d<=it.tol&&(!it.out3||Math.hypot(q.guess[0]-RIM[0],q.guess[1]-RIM[1])>ARC);if(q.ok)q.right++;else q.missed.push(it.id);record('where',it.id,q.ok);
     render(true);setTimeout(showAnswer,700);
   }
   else if(act==='replay-show'){stopAnim();drawQ();setTimeout(showAnswer,300);}
