@@ -231,7 +231,7 @@ const PLAYS=[
    {cap:'1 kicks it ahead up the sideline to 3. Catch it at the wing spot, never inside the 3-point line.',a:[P(1,3)]},
    {cap:'3 faces up and looks inside first: 5 is sealed on the ball-side block for the layup. Next two down, 1 and 4, fill the slots.',
     a:[P(3,5),C(1,SP.ls,[-15,36]),C(4,SP.rs,[6,38])]}
-  ],end:'No layup? You\'re in Low, and every spot is filled. Spots matter, not numbers: whoever trails fills the open slot. Play out of it (next plays), and on the reversal 5 flashes high into Point. If 5 gets the rebound, she outlets right away so she can run; a guard who rebounds can push it on the dribble.'},
+  ],end:'No layup? You\'re in Low, and every spot is filled. Spots matter, not numbers: whoever trails fills the open slot. Play out of it (next plays). If 5 gets the rebound, she outlets right away so she can run; a guard who rebounds can push it on the dribble.'},
 
  {id:'low-transition-dribble',series:'Low',stage:1,title:'Transition: Guard Push',sub:'Guard rebounds and dribbles: same lanes',view:'full94',
   start:REB_G,ball:'1',
@@ -297,15 +297,15 @@ const PLAYS=[
    {cap:'No post feed. 3 swings it to 1.',a:[P(3,1)]},
    {cap:'1 reverses it fast to 2, before 5 can get to the high post. 5 goes block to block instead, across the lane to the new ball-side block.',a:[P(1,2),C(5,SP.rb,[0,6.5])]},
    {cap:'2 swings it to the wing. 5 seals on the block for the post feed.',a:[P(2,4)]}
-  ],end:'The offense never waits on the post. On the next reversal, she flashes high and we\'re in Point.'},
+  ],end:'The offense never waits on the post. Keep playing: pass-cut-fill or pass and screen away.'},
 
- {id:'low-reversal',series:'Low',stage:2,title:'Low to Point: Reversal',sub:'Swing it, post flashes high',
+ {id:'low-reversal',series:'Low',stage:2,title:'Leaving Low: Post Flashes High',sub:'What the floor looks like next',
   video:'https://www.youtube.com/watch?v=F04sPDeFRuw',start:LOW,ball:'3',
   steps:[
    {cap:'No post feed? Swing it. 3 passes back to 1.',a:[P(3,1)]},
    {cap:'1 reverses it to 2. On the reversal, 5 flashes to the high post.',a:[P(1,2),C(5,SP.hp,[-5,13])]},
    {cap:'2 hits 5 at the high post.',a:[P(2,5)]}
-  ],end:'High-post catch = POINT. If the ball moves too fast for her, she goes block to block and flashes on the next reversal.'},
+  ],end:'Nobody calls it. When the post is at the high post, the floor looks like Point. If the ball moves too fast for her, she goes block to block and flashes on the next reversal.'},
 
  {id:'point-away',series:'Point',stage:2,title:'Point Away (Base)',sub:'Pass to the high post, screen away',
   video:'https://www.youtube.com/watch?v=fJxH3z4j49k',start:POINT,ball:'1',
@@ -377,6 +377,42 @@ const READS=[
    {t:'Nothing. Just go.',why:'Talk is a team rule. Yell "Back!" so the passer is ready.'}],
   show:[{a:[C(3,[-3,6],[-12,9])]},{a:[P(1,3)]}]},
 
+ {id:'r-look-low',series:'Rules',you:'',ball:'1',pos:with_(LOW,OVERPLAY),
+  sit:'Look at where everyone is.',
+  q:'Nobody called anything. What does the floor look like?',
+  choices:[
+   {t:'Low',ok:true,why:'Post on the block, two in the slots, two on the wings: that\'s Low.'},
+   {t:'Point',why:'Not quite. Point looks like this: post at the high post, everyone else spaced around her.'},
+   {t:'5 Out',why:'Not quite. 5 Out looks like this: all five outside, with the post up top.'},
+   {t:'Transition',why:'Not transition: we are already set up in the half court.'}],
+  show:[]},
+ {id:'r-look-point',series:'Rules',you:'',ball:'1',pos:with_(POINT,{x1:[-7,23.5],x2:[6.5,23],x3:[-17.5,16],x4:[17.5,16],x5:[0,15.5]}),
+  sit:'Look at where everyone is.',
+  q:'Nobody called anything. What does the floor look like?',
+  choices:[
+   {t:'Low',why:'Not quite. Low looks like this: post on the block, two in the slots, two on the wings.'},
+   {t:'Point',ok:true,why:'Post at the high post with everyone spaced around her: that\'s Point.'},
+   {t:'5 Out',why:'Not quite. 5 Out looks like this: all five outside, with the post up top.'},
+   {t:'Transition',why:'Not transition: we are already set up in the half court.'}],
+  show:[]},
+ {id:'r-look-5out',series:'Rules',you:'',ball:'5',pos:with_(FIVE,{x1:[-12,22],x2:[12,22],x3:[-18,9],x4:[18,9],x5:[0,25.5]}),
+  sit:'Look at where everyone is.',
+  q:'Nobody called anything. What does the floor look like?',
+  choices:[
+   {t:'Low',why:'Not quite. Low looks like this: post on the block, two in the slots, two on the wings.'},
+   {t:'Point',why:'Not quite. Point looks like this: post at the high post, everyone else spaced around her.'},
+   {t:'5 Out',ok:true,why:'All five outside, post up top: that\'s 5 Out.'},
+   {t:'Transition',why:'Not transition: we are already set up in the half court.'}],
+  show:[]},
+ {id:'r-look-b2b',series:'Rules',you:'',ball:'4',pos:with_(LOW,{5:[7.5,8],x5:[6,10],x1:[-7,23],x2:[7,22.5],x3:[-17,16],x4:[17,16]}),
+  sit:'The post just went block to block.',
+  q:'Nobody called anything. What does the floor look like?',
+  choices:[
+   {t:'Low',ok:true,why:'Still Low: the post is on the block (the new ball side). She flashes high on the next reversal.'},
+   {t:'Point',why:'Not quite. Point looks like this: post at the high post, everyone else spaced around her.'},
+   {t:'5 Out',why:'Not quite. 5 Out looks like this: all five outside, with the post up top.'},
+   {t:'Transition',why:'Not transition: we are already set up in the half court.'}],
+  show:[]},
  {id:'r-dribat-trail',series:'Rules',you:'3',ball:'1',
   pos:with_(LOW,{1:[-12,24.5],x1:[-11,22],x2:[6.5,22.5],x3:[-18.5,13.5],x4:[13,14],x5:[-6,10]}),
   ctx:[D(1,[-15,22.5])],
@@ -713,7 +749,7 @@ function playerSvg(id,xy,you){
 function courtSvg(f){
   const ids=Object.keys(f.pos);
   const defs=ids.filter(k=>k[0]==='x').map(k=>playerSvg(k,f.pos[k])).join('');
-  const offs=ids.filter(k=>k[0]!=='x').map(k=>playerSvg(k,f.pos[k],k===f.you)).join('');
+  const offs=ids.filter(k=>k[0]!=='x').map(k=>playerSvg(k,f.pos[k],!!f.you&&k===f.you)).join('');
   let bxy=f.ballXY;if(!bxy&&f.ball&&f.pos[f.ball])bxy=[f.pos[f.ball][0]+BALL_OFF[0],f.pos[f.ball][1]+BALL_OFF[1]];
   const ball=bxy?`<circle cx="${f2(bxy[0])}" cy="${f2(bxy[1])}" r=".85" fill="#ff7a1a" stroke="#5a2600" stroke-width=".15"/>`:'';
   return `<svg class="court${f.view==='full94'?' tall':''}" viewBox="${VIEWS[f.view||'half']}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Half-court diagram">${DEFS}${f.view==='full94'?COURT_FULL:COURT}${f.under||''}${(f.arrows||[]).join('')}${defs}${offs}${ball}${f.marks||''}</svg>`;
@@ -764,7 +800,7 @@ const CATS=[
   {id:'blob',title:'BLOBs',sub:'Baseline out of bounds',groups:[]},
   {id:'slob',title:'SLOBs',sub:'Sideline out of bounds',groups:[]}
 ];
-const SERIES_SUB={Rules:'The rules every play is built on',Low:'Out of transition: fills every spot, then we flow into Point',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top'};
+const SERIES_SUB={Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top'};
 const QUIZ=READS.map(x=>Object.assign({kind:'reads'},x)).concat(WHERE.map(x=>Object.assign({kind:'where'},x)));
 const qById=id=>QUIZ.find(x=>x.id===id);
 const allGroups=c=>c.sections?[].concat(...c.sections.map(s=>s.groups)):c.groups;
