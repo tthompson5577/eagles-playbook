@@ -733,6 +733,51 @@ PLAYS.push(
   }
 })();
 
+/* 5-10 vs. their two common press breaks. We defend the TOP basket; they inbound under the bottom basket (baseline y = 94). */
+(function(){
+  const ALIGN={
+    across:{name:'1-4 Across',sub:'Inbounder + four across',
+      opp:{o1:[-3,96],o2:[-19,77],o3:[-6,78],o4:[6,78],o5:[19,77]},
+      who:{1:'o3',2:'o4',3:'o2',4:'o5',5:'o1'},
+      look:'They line up 1-4: the inbounder and four across near their free-throw line.'},
+    diamond:{name:'Diamond (1-2-1-1)',sub:'Inbounder, two at the elbows, one middle, one deep',
+      opp:{o1:[-3,96],o2:[-9,79],o3:[9,79],o4:[0,60],o5:[0,20]},
+      who:{1:'o2',2:'o3',3:'o4',4:'o5',5:'o1'},
+      look:'They line up in a diamond (1-2-1-1): the inbounder, two at the elbows, one in the middle, and one deep by our basket.'}
+  };
+  const WORD={5:'none of us are',6:'one is',7:'two are',8:'three are',9:'four are',10:'all five are'};
+  const HALF=45;
+  function deny(man,ball){const dx=ball[0]-man[0],dy=ball[1]-man[1],L=Math.hypot(dx,dy)||1;return [Math.round((man[0]+dx/L*3.3)*10)/10,Math.round((man[1]+dy/L*3.3)*10)/10];}
+  function list(a){return a.length===1?a[0]:a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
+  Object.keys(ALIGN).forEach(key=>{
+    const A=ALIGN[key];
+    for(let n=5;n<=10;n++){
+      const k=n-5,up=['1','2','3','4','5'].slice(0,k),pos=Object.assign({},A.opp),wait=[];
+      ['1','2','3','4','5'].forEach(p=>{
+        const man=A.opp[A.who[p]];
+        if(up.indexOf(p)>=0){
+          pos[p]=A.who[p]==='o1'?[man[0],man[1]-4]:deny(man,A.opp.o1);
+        }else if(man[1]<HALF){            /* her player is already in our half (the deep player) */
+          pos[p]=deny(man,A.opp.o1);
+        }else{
+          pos[p]=[Math.max(-22,Math.min(22,man[0])),HALF];wait.push(p);
+        }
+      });
+      /* spread the half-court waiters evenly so nobody overlaps */
+      wait.sort((x,y)=>A.opp[A.who[x]][0]-A.opp[A.who[y]][0]).forEach((p,i)=>{pos[p]=[Math.round((i-(wait.length-1)/2)*10),HALF];});
+      const ws=wait.slice().sort();
+      let cap;
+      if(k===0)cap='5: nobody up turning. All five wait and pick up at half court.';
+      else if(k===5)cap='10 = 5+5: all five up turning. 5 guards the inbounder (get a tip); everyone else denies, between her player and the ball.';
+      else cap=n+' = 5+'+k+'. Up turning (example): '+list(up)+', denying between her player and the ball.'+(ws.length?' Waiting at half court: '+list(ws)+'.':'');
+      if(key==='diamond'&&k<4)cap+=' Deep player: 4 guards her in our half.';
+      PLAYS.push({id:'pb-'+key+'-'+n,series:String(n),title:n+' vs. '+A.name,sub:A.sub,view:'full94',start:pos,ball:'o1',
+        steps:[{cap:cap,a:[]}],
+        end:'Up turners deny full court. Everyone else picks up at half court. Then it is our man rules.'});
+    }
+  });
+})();
+
 READS.push(
  {id:'d-num-6',series:'6',view:'full',you:'',ball:'o1',pos:{o1:[-2,47.5],o2:[10,46.5],o3:[-18,45.5],o4:[18,45.5],o5:[-6,44.5],1:[-2,44.3],2:[9.5,43.2],3:[-17.5,42.2],4:[17.5,42.2],5:[-5.6,41.2]},
   sit:'Coach calls 6.',
@@ -929,7 +974,7 @@ const DEFS=`<defs>
 <marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#fff"/></marker>
 <marker id="ahg" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ffd25a"/></marker>
 </defs>`;
-const VIEWS={half:'-26 -1.5 52 36.5',full:'-26 -1.5 52 50',full94:'-26 -1.5 52 97'};
+const VIEWS={half:'-26 -1.5 52 36.5',full:'-26 -1.5 52 50',full94:'-26 -1.5 52 99.5'};
 const noFloor=c=>c.replace(/<rect x="-26"[^>]*\/>/,'').replace(/<text[\s\S]*?<\/text>/,'');
 const COURT_FULL='<rect x="-26" y="-2" width="52" height="99" fill="#1f5d3e"/>'+COURT.replace(/<rect x="-26"[^>]*\/>/,'')+'<g transform="matrix(1 0 0 -1 0 94)">'+noFloor(COURT)+'</g>';
 
