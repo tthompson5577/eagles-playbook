@@ -659,6 +659,7 @@ const HCM_RULES=[
   ['One pass away: DENY.','Hand and foot in the passing lane.'],
   ['Two or more passes away: HELP.','Sink toward the lane.'],
   ['See man and ball.','Always.'],
+  ['Sprint to your next spot.','Every pass, every player moves. If the ball is skipped and you go from guarding the ball to help, SPRINT to your help spot.'],
   ['Front the post.',''],
   ['Switch every screen.','Ball screens, off-ball screens, and any interchange. Call "Switch!" Full court too: in 6 through 10, we can switch at any spot on the floor. If there is a player we do not switch on, Coach will tell you.'],
   ['Force the ball handler to the MIDDLE.','Into our help.']
@@ -786,6 +787,15 @@ PLAYS.push(
 })();
 
 READS.push(
+ {id:'d-skip',series:'Man Rules',you:'3',ball:'o4',pos:HCM_WING,ctx:[P('o3','o4')],
+  sit:'You were guarding the ball on the left wing. She just skipped it all the way to the right wing.',
+  q:'What do you do?',
+  choices:[
+   {t:'SPRINT to my help spot',ok:true,why:'Your player is two passes away now: help. Sprint there, do not jog.'},
+   {t:'Stay up on my player and deny',why:'She is two passes away now, so help. And sprint to get there.'},
+   {t:'Jog back toward the lane',why:'Right spot, wrong speed. SPRINT to your next spot.'},
+   {t:'Chase the ball to the other side',why:'4 has the ball. You sprint to help.'}],
+  show:[{a:[C(3,[-5,12.5])]}]},
  {id:'d-onball',series:'Man Rules',you:'1',ball:'o1',pos:HCM_TOP,
   sit:'You are guarding the ball.',
   q:'What does it look like?',
