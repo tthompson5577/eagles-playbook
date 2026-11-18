@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Eagles Playbook</title>
-<meta name="description" content="Stratton Girls Basketball playbook trainer: learn the Princeton motion and quiz your reads.">
+<meta name="description" content="Stratton Girls Basketball playbook trainer: learn our offense and quiz your reads.">
 <meta name="theme-color" content="#0f3d28">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -652,7 +652,7 @@ function stopAnim(){animId++;}
 const CATS=[
   {id:'offense',title:'Offense',sub:'Man and zone offenses',sections:[
     {id:'man',title:'Man Offenses',sub:'Motion and sets vs. man-to-man',groups:[
-      {title:'Motion (Princeton)',series:['Rules','Low','Point','5 Out']}]},
+      {id:'motion',title:'Motion',sub:'Our motion offense: Low, Point and 5 Out',series:['Rules','Low','Point','5 Out']}]},
     {id:'zone',title:'Zone Offenses',sub:'Attacking a 2-3, 1-3-1 and other zones',groups:[]}]},
   {id:'defense',title:'Defense',sub:'Man, zones and presses',groups:[]},
   {id:'blob',title:'BLOBs',sub:'Baseline out of bounds',groups:[]},
@@ -663,6 +663,7 @@ const QUIZ=READS.map(x=>Object.assign({kind:'reads'},x)).concat(WHERE.map(x=>Obj
 const qById=id=>QUIZ.find(x=>x.id===id);
 const allGroups=c=>c.sections?[].concat(...c.sections.map(s=>s.groups)):c.groups;
 const catOf=series=>CATS.find(c=>allGroups(c).some(g=>g.series.indexOf(series)>=0));
+const grpOf=series=>{for(const c of CATS)for(const g of allGroups(c))if(g.series.indexOf(series)>=0)return g;return null;};
 const secOf=series=>{const c=catOf(series);return c&&c.sections?c.sections.find(s=>s.groups.some(g=>g.series.indexOf(series)>=0)):null;};
 const catSeries=c=>[].concat(...allGroups(c).map(g=>g.series));
 const secSeries=s=>[].concat(...s.groups.map(g=>g.series));
@@ -689,6 +690,7 @@ function render(keepScroll){
   else if(n.view==='series')v.innerHTML=seriesView();
   else if(n.view==='cat')v.innerHTML=catView();
   else if(n.view==='sec')v.innerHTML=secView();
+  else if(n.view==='grp')v.innerHTML=grpView();
   else{v.innerHTML=homeView();loadBoard();}
   $('#view').querySelector('.court-wrap');
   if(!keepScroll)window.scrollTo(0,0);
@@ -742,12 +744,20 @@ function catView(){
 }
 function secView(){
   const c=CATS.find(x=>x.id===ui.nav.cat),s=c.sections.find(x=>x.id===ui.nav.sec);
-  return `<button class="back" data-act="nav-back">‹ ${esc(c.title)}</button><h2 style="margin-bottom:4px">${esc(s.title)}</h2><p class="muted small" style="margin:0 0 6px">${esc(s.sub)}</p>`+groupsHtml(s.groups);
+  return `<button class="back" data-act="nav-back">‹ ${esc(c.title)}</button><h2 style="margin-bottom:4px">${esc(s.title)}</h2><p class="muted small" style="margin:0 0 12px">${esc(s.sub)}</p>`+
+    '<div class="list cats">'+s.groups.map(g=>{
+      const st=g.series.map(seriesStats).reduce((a,x)=>({tot:a.tot+x.tot,got:a.got+x.got}),{tot:0,got:0});
+      return `<button class="item cat" data-act="open-grp" data-k="${esc(g.id)}"><span><div class="t">${esc(g.title)}</div><div class="s">${esc(g.sub||'')}</div></span>${ring(st.tot?Math.round(st.got/st.tot*100):0)}<span class="go">›</span></button>`;
+    }).join('')+'</div>';
 }
-function groupsHtml(groups){
+function grpView(){
+  const g=allGroups(CATS.find(x=>x.id===ui.nav.cat)).find(x=>x.id===ui.nav.grp),s=secOf(g.series[0]);
+  return `<button class="back" data-act="nav-back">‹ ${esc(s?s.title:'Back')}</button><h2 style="margin-bottom:4px">${esc(g.title)}</h2><p class="muted small" style="margin:0 0 6px">${esc(g.sub||'')}</p>`+groupsHtml([g],true);
+}
+function groupsHtml(groups,noHead){
   let out='';
   groups.forEach(g=>{
-    out+=`<div class="grp">${esc(g.title)}</div><div class="list">`+g.series.map(s=>{
+    out+=(noHead?'':`<div class="grp">${esc(g.title)}</div>`)+`<div class="list" style="margin-top:10px">`+g.series.map(s=>{
       const st=seriesStats(s),done=st.tot&&st.got===st.tot;
       return `<button class="item" data-act="open-series" data-k="${esc(s)}"><span style="flex:1;min-width:0"><div class="t">${esc(s)}${done?' <span class="pill good">Mastered</span>':''}</div><div class="s">${esc(SERIES_SUB[s]||'')}</div>
         <div class="bar thin" style="margin-top:8px"><span style="width:${pct(st)}%"></span></div></span><span class="go">›</span></button>`;
@@ -762,7 +772,8 @@ function rulesCard(open){
 }
 function seriesView(){
   const s=ui.nav.series,c=catOf(s),sec=secOf(s),st=seriesStats(s),pl=PLAYS.filter(p=>p.series===s),qs=QUIZ.filter(x=>x.series===s);
-  let out=`<button class="back" data-act="nav-back">‹ ${esc(sec?sec.title:c.title)}</button>
+  const grp=grpOf(s);
+  let out=`<button class="back" data-act="nav-back">‹ ${esc(grp&&grp.id?grp.title:sec?sec.title:c.title)}</button>
     <div class="row spread"><h2>${esc(s)}</h2>${ring(pct(st))}</div><p class="muted small" style="margin:2px 0 14px">${esc(SERIES_SUB[s]||'')}</p>`;
   if(s==='Rules')out+=rulesCard(true);
   if(pl.length){
@@ -1077,7 +1088,9 @@ function navBack(){
   const n=ui.nav;
   if(n.view==='play'){const p=curPlay();ui.play=null;go({view:'series',series:p.series});}
   else if(n.view==='quiz'){ui.q=null;go(n.back||{view:'home'});}
-  else if(n.view==='series'){const c=catOf(n.series),s=secOf(n.series);go(s?{view:'sec',cat:c.id,sec:s.id}:{view:'cat',cat:c.id});}
+  else if(n.view==='series'){const c=catOf(n.series),s=secOf(n.series),g=grpOf(n.series);
+    go(g&&g.id&&s?{view:'grp',cat:c.id,sec:s.id,grp:g.id}:s?{view:'sec',cat:c.id,sec:s.id}:{view:'cat',cat:c.id});}
+  else if(n.view==='grp'){go({view:'sec',cat:n.cat,sec:n.sec});}
   else if(n.view==='sec'){go({view:'cat',cat:n.cat});}
   else go({view:'home'});
 }
@@ -1091,6 +1104,7 @@ document.addEventListener('click',e=>{
   else if(act==='nav-back'){navBack();}
   else if(act==='open-cat'){go({view:'cat',cat:k});}
   else if(act==='open-sec'){go({view:'sec',cat:ui.nav.cat,sec:k});}
+  else if(act==='open-grp'){go({view:'grp',cat:ui.nav.cat,sec:ui.nav.sec,grp:k});}
   else if(act==='open-series'){go({view:'series',series:k});}
   else if(act==='open-play'){ui.play=b.dataset.id;ui.step=0;go({view:'play'});}
   else if(act==='step-back'){stopAnim();ui.step=Math.max(0,ui.step-1);render();}

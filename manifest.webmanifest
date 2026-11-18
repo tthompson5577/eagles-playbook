@@ -1,7 +1,7 @@
 {
   "name": "Eagles Playbook Trainer",
   "short_name": "Eagles Playbook",
-  "description": "Stratton Girls Basketball: learn the Princeton motion and quiz your reads.",
+  "description": "Stratton Girls Basketball: learn our offense and quiz your reads.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
