@@ -1598,9 +1598,9 @@ function signInView(){
       <button class="btn primary block" data-act="si-yes">Yes, that's me</button>
       <button class="btn block" data-act="si-no" style="margin-top:8px">No, that's not me</button></div>`;}
   return `<div class="card signin"><img src="logo-mark.png" alt="" width="84" height="84" onerror="this.remove()">
-    <h2>Sign in</h2><p class="muted">Type the name of the WNBA player Coach gave you.</p>
+    <h2>Sign in</h2><p class="muted">Type the WNBA sign-in Coach gave you.</p>
     <form data-form="signin"><label class="sr" for="si-who">Your WNBA player</label>
-      <input id="si-who" name="who" class="inp" type="text" autocomplete="off" autocapitalize="words" spellcheck="false" placeholder="e.g. Angel Reese" required>
+      <input id="si-who" name="who" class="inp" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="e.g. jsmith" required>
       <button class="btn primary block" type="submit" ${signin.busy?'disabled':''}>${signin.busy?'Checking…':'Sign in'}</button></form>
     ${signin.msg?`<p class="err" role="alert">${esc(signin.msg)}</p>`:''}
     <p class="muted small" style="margin:14px 0 0">Don't know your player? Ask Coach.</p></div>`;
