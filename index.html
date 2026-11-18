@@ -662,7 +662,8 @@ const HCM_RULES=[
   ['Sprint to your next spot.','Every pass, every player moves. If the ball is skipped and you go from guarding the ball to help, SPRINT to your help spot.'],
   ['Front the post.','From the baseline side. If you are caught behind and she catches, make her go middle.'],
   ['Switch every screen.','Ball screens, off-ball screens, and any interchange. Call "Switch!" Full court too: in 6 through 10, we can switch at any spot on the floor. If there is a player we do not switch on, Coach will tell you.'],
-  ['Force the ball handler to the MIDDLE.','Into our help.']
+  ['Force the ball handler to the MIDDLE.','Into our help.'],
+  ['Never more than TWO on the ball.','Any time two of us are guarding the ball (a dig, a trap, Fire), the other three sit in the gaps, ready to help at the other three spots.']
 ];
 const NUM_RULES={
   '5':[['All five pick up at half court.','Everything else follows our man rules.']],
@@ -888,6 +889,15 @@ READS.push(
    {t:'Watch the ball only',why:'See man AND ball, always.'}],
   show:[{a:[C(2,[1,17])]}]},
 
+ {id:'d-two',series:'Man Rules',you:'2',ball:'o1',pos:HCM_TOP,
+  sit:'Two of your teammates are guarding the ball (a trap or a dig). You are one of the other three.',
+  q:'What is your job?',
+  choices:[
+   {t:'Sit in the gap, ready to help at the other three spots',ok:true,why:'Never more than two on the ball. The other three sit in the gaps, ready to help.'},
+   {t:'Go help them on the ball',why:'Never more than two on the ball.'},
+   {t:'Deny your player out on the floor',why:'Sit in the gaps, so you can help at the other spots.'},
+   {t:'Sprint back to the rim and stay there',why:'Sit in the gap between the ball and your player, ready to help.'}],
+  show:[]},
  {id:'d-front',series:'Man Rules',you:'5',ball:'o3',pos:with_(HCM_WING,{5:[-6,6.5]}),
   sit:'The ball is on the wing. Their post is on the ball-side block. You are guarding her.',
   q:'How do you guard her?',
@@ -965,7 +975,7 @@ WHERE.push(
 /* ===== Ball Screen Coverages: SWITCH (base) and FIRE (trap the ball handler) ===== */
 const BS_RULES=[
   ['SWITCH: our base.','The two defenders trade players. Call "Switch!" The low player on the help side sits in the lane, ready if the roller gets loose.'],
-  ['FIRE: trap the ball handler.','The ball defender and the screener\'s defender trap her. The screener rolls, so the low player on the help side steps in and picks her up. The next help-side player drops down to split the two on that side. Everyone else takes away the closest pass.'],
+  ['FIRE: trap the ball handler.','The ball defender and the screener\'s defender trap her. The screener rolls, so the low player on the help side steps in and picks her up. The next help-side player drops down to split the two on that side. Everyone else takes away the closest pass. Never more than two on the ball.'],
   ['Coach calls the coverage.','If you don\'t hear a call, we switch.']
 ];
 /* top ball screen: ball at the top, help side is the LEFT */
@@ -1288,7 +1298,8 @@ const PD_RULES=[
   ['FRONT the post.','Get all the way in front of her, between her and the ball.'],
   ['Front from the BASELINE side.','When the ball moves and you need to get in front, step around her on the baseline side.'],
   ['Caught behind and she catches? Make her go MIDDLE.','If you are caught behind her and she gets the ball, take away the baseline. Middle is where our help is.'],
-  ['Perimeter defenders can DIG, one at a time.','Any of us can be the digger, but only ONE digs at a time. Dig down on the post with your back to the baseline. If she kicks it out, sprint back to your player.']
+  ['Perimeter defenders can DIG, one at a time.','Any of us can be the digger, but only ONE digs at a time. Dig down on the post with your back to the baseline. If she kicks it out, sprint back to your player.'],
+  ['Never more than two on the ball.','A dig while 5 is behind her means two of us are on the post, even if it is only for a split second. The other three step and react with it: sit in the gaps, ready to help at the other three spots.']
 ];
 /* ball on the left wing, their post on the left block; 5 starts BEHIND her */
 const PD_BEHIND=with_(HCM_WING,{5:[-6.8,5.2]});
@@ -1305,7 +1316,7 @@ PLAYS.push(
  {id:'pd-catch',series:'Post D',title:'Caught Behind: Go Middle',sub:'She catches: take away the baseline, perimeter digs',start:PD_CATCH,ball:'o3',
   steps:[
    {cap:'5 got caught behind her, and she catches it on the block.',a:[P('o3','o5')]},
-   {cap:'5 takes away the baseline so she has to go MIDDLE. 1 digs down with her back to the baseline. Only one digger at a time. 4 is in help in the lane.',a:[C(5,[-9.2,5.6]),C(1,[-5,12.4]),C(4,[-1,6.5])]},
+   {cap:'5 takes away the baseline so she has to go MIDDLE. 1 digs down with her back to the baseline. Only one digger at a time. That is two on the post, even for a split second, so the other three step and react with it: sit in the gaps, ready to help.',a:[C(5,[-9.2,5.6]),C(1,[-5,12.4]),C(4,[-1,6.5])]},
    {cap:'She turns middle, right into our help.',a:[D('o5',[-4.4,7.6])]},
    {cap:'She kicks it out. 1 SPRINTS back out to her player.',a:[P('o5','o1'),C(1,[-6.4,23.4])]}
   ],end:'Caught behind and she catches: make her go middle. Dig, then sprint back out on the kick.'}
@@ -1339,6 +1350,15 @@ READS.push(
    {t:'Dig, and so do the other perimeter defenders',why:'One digger at a time. If a teammate is already digging, stay with your player.'},
    {t:'Leave your player for good',why:'Dig, then recover. If she kicks it out, sprint back to your player.'}],
   show:[{a:[C(1,[-5,12.4])]},{a:[P('o5','o1'),C(1,[-6.4,23.4])]}]},
+ {id:'pd-r-third',series:'Post D',you:'3',ball:'o5',pos:with_(PD_CATCH,{1:[-5,12.4],5:[-9.2,5.6],4:[-1,6.5]}),ctx:[P('o3','o5')],
+  sit:'Their post caught it on the block. 5 is on her and 1 is digging. You just guarded the passer on the wing.',
+  q:'What do you do?',
+  choices:[
+   {t:'Sit in the gap, ready to help on the other spots',ok:true,why:'5 and 1 are both on her, even if only for a split second. Never more than two on the ball, so step and react: sit in the gap, ready to help.'},
+   {t:'Dig on the post too',why:'1 is already digging. Never more than two on the ball.'},
+   {t:'Run down and trap from the baseline side',why:'Two are already on the ball. Sit in the gap, ready to help.'},
+   {t:'Chase your player out to the corner',why:'Sit in the gap: see your player and the ball, ready to help.'}],
+  show:[]},
  {id:'pd-r-kick',series:'Post D',you:'1',ball:'o1',pos:with_(PD_CATCH,{1:[-5,12.4],5:[-9.2,5.6],4:[-1,6.5],o5:[-4.4,7.6]}),ctx:[P('o5','o1')],
   sit:'You dug on the post. She kicked it out to your player.',
   q:'What do you do?',
