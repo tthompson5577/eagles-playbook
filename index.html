@@ -1569,9 +1569,11 @@ WHERE.push(
 );
 
 const CATS=[
-  {id:'offense',title:'Offense',sub:'Man and Zone Offenses',sections:[
+  {id:'offense',title:'Offense',sub:'Transition, Man and Zone Offenses',sections:[
+    {id:'trans',title:'Transition',sub:'Same break against man or zone',groups:[
+      {id:'transition',title:'Transition',sub:'Primary break first, then rim runner, wings and slots',series:['Transition']}]},
     {id:'man',title:'Man Offenses',sub:'Motion and sets vs. man-to-man',groups:[
-      {id:'motion',title:'Motion',sub:'Our motion offense: Transition, Low, Point and 5 Out',series:['Transition','Rules','Low','Point','5 Out']}]},
+      {id:'motion',title:'Motion',sub:'Our motion offense: Low, Point and 5 Out',series:['Rules','Low','Point','5 Out']}]},
     {id:'zone',title:'Zone Offenses',sub:'Attacking a 2-3, 1-3-1 and other zones',groups:[]}]},
   {id:'defense',title:'Defense',sub:'Man and Zone Defenses, Presses',sections:[
     {id:'mand',title:'Man Defenses',sub:'Half court and full court man-to-man',groups:[
@@ -1602,6 +1604,7 @@ const catOf=series=>CATS.find(c=>allGroups(c).some(g=>g.series.indexOf(series)>=
 const grpOf=series=>{for(const c of CATS)for(const g of allGroups(c))if(g.series.indexOf(series)>=0)return g;return null;};
 const secOf=series=>{const c=catOf(series);return c&&c.sections?c.sections.find(s=>s.groups.some(g=>g.series.indexOf(series)>=0)):null;};
 const catSeries=c=>[].concat(...allGroups(c).map(g=>g.series));
+const soloSec=s=>!!s&&s.groups.length===1&&s.groups[0].series.length===1;
 const secSeries=s=>[].concat(...s.groups.map(g=>g.series));
 
 const ui={nav:{view:'home'},play:null,step:0,q:null};
@@ -1709,7 +1712,7 @@ function rulesCard(open,list){
 function seriesView(){
   const s=ui.nav.series,c=catOf(s),sec=secOf(s),st=seriesStats(s),pl=PLAYS.filter(p=>p.series===s),qs=QUIZ.filter(x=>x.series===s);
   const grp=grpOf(s);
-  let out=`<button class="back" data-act="nav-back">‹ ${esc(grp&&grp.id&&grp.series.length>1?grp.title:sec?sec.title:c.title)}</button>
+  let out=`<button class="back" data-act="nav-back">‹ ${esc(grp&&grp.id&&grp.series.length>1?grp.title:sec&&!soloSec(sec)?sec.title:c.title)}</button>
     <div class="row spread"><h2>${esc(stitle(s))}</h2>${ring(pct(st))}</div><p class="muted small" style="margin:2px 0 14px">${esc(SERIES_SUB[s]||'')}</p>`;
   if(SERIES_RULES[s])out+=rulesCard(true,SERIES_RULES[s]);
   if(pl.length){
@@ -2026,7 +2029,7 @@ function navBack(){
   if(n.view==='play'){const p=curPlay();ui.play=null;go({view:'series',series:p.series});}
   else if(n.view==='quiz'){ui.q=null;go(n.back||{view:'home'});}
   else if(n.view==='series'){const c=catOf(n.series),s=secOf(n.series),g=grpOf(n.series);
-    go(g&&g.id&&s&&g.series.length>1?{view:'grp',cat:c.id,sec:s.id,grp:g.id}:s?{view:'sec',cat:c.id,sec:s.id}:{view:'cat',cat:c.id});}
+    go(g&&g.id&&s&&g.series.length>1?{view:'grp',cat:c.id,sec:s.id,grp:g.id}:s&&!soloSec(s)?{view:'sec',cat:c.id,sec:s.id}:{view:'cat',cat:c.id});}
   else if(n.view==='grp'){go({view:'sec',cat:n.cat,sec:n.sec});}
   else if(n.view==='sec'){go({view:'cat',cat:n.cat});}
   else go({view:'home'});
@@ -2040,7 +2043,7 @@ document.addEventListener('click',e=>{
   }
   else if(act==='nav-back'){navBack();}
   else if(act==='open-cat'){go({view:'cat',cat:k});}
-  else if(act==='open-sec'){go({view:'sec',cat:ui.nav.cat,sec:k});}
+  else if(act==='open-sec'){const sc=(CATS.find(c=>c.id===ui.nav.cat).sections||[]).find(x=>x.id===k);if(soloSec(sc))go({view:'series',series:sc.groups[0].series[0]});else go({view:'sec',cat:ui.nav.cat,sec:k});}
   else if(act==='open-grp'){const g=allGroups(CATS.find(c=>c.id===ui.nav.cat)).find(x=>x.id===k);
     if(g&&g.series.length===1)go({view:'series',series:g.series[0]});else go({view:'grp',cat:ui.nav.cat,sec:ui.nav.sec,grp:k});}
   else if(act==='open-series'){go({view:'series',series:k});}
