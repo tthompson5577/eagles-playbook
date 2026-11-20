@@ -217,7 +217,7 @@ const TRANS_RULES=[
   ['The first girl down on each side goes to the wing.','Never inside the three point line.'],
   ['Three of us on the same side? The first one down keeps running.','She goes through the middle of the paint to the opposite corner, then fills back up to that wing. If there is already a wing on that side, she pushes her up to the slot. Fill the open spot.'],
   ['Kick it up the sideline as quick as we can.','The ideal pass is wing to wing on the same side of the court.'],
-  ['Good, quick, open shot at any point? Take it.','No quick shot? These rules have set us up to get right into our Motion offense.']
+  ['Good, quick, open shot at any point? Take it.','Wide open with the lane wide open? Attack the rim, for your own shot or to find an open teammate. Jump shooters can take the open jumper. No quick shot? These rules have set us up to get right into our Motion offense.']
 ];
 const RULES=[
   ['Overplayed? Backcut.','Step up, plant, go to the rim. Bounce pass on every backdoor.'],
@@ -540,14 +540,14 @@ const READS=[
    {t:'Wait for 5 to get open at the rim',why:'Kick it ahead to 3 now. She looks for 5.'}],
   show:[{a:[P(1,3)]}]},
  {id:'tr-r-quick',series:'Transition',view:'full94',you:'3',ball:'3',pos:with_(TRANS_MID,{3:[-20.5,19.5],5:SP.lb,2:SP.rw,1:[-12,38],4:[6,44]}),
-  sit:'You caught the kick-ahead at the wing spot. Your defender is still running back and you are wide open.',
+  sit:'You caught the kick-ahead at the wing spot. Your defender is still running back, you are wide open, and the lane is wide open.',
   q:'What do you do?',
   choices:[
-   {t:'Take the good, quick, open shot',ok:true,why:'Good, quick, open shot at any point? Take it.'},
-   {t:'Hold it until everyone gets set',why:'Do not pass up a good, quick, open shot.'},
-   {t:'Pass it back out to start Motion',why:'Open shot first. Motion is for when we do not get a quick shot.'},
-   {t:'Dribble into the lane',why:'You are open now. Take the shot.'}],
-  show:[]},
+   {t:'Attack the rim: score, or find an open teammate',ok:true,why:'Wide open with the lane wide open? Attack the rim, for your own shot or to find an open teammate.'},
+   {t:'Hold it until everyone gets set',why:'Do not waste the advantage. Attack the open lane.'},
+   {t:'Pass it back out to start Motion',why:'Motion is for when we do not get a quick shot. The lane is open: attack it.'},
+   {t:'Pull up for a long jump shot',why:'A jump shooter can take the open jumper, but with the lane wide open, attack the rim first.'}],
+  show:[{a:[D(3,[-5,8])]}]},
  {id:'tr-r-noshot',series:'Transition',view:'full94',you:'3',ball:'3',pos:with_(TRANS_MID,{3:[-20.5,19.5],5:SP.lb,2:SP.rw,1:SP.ls,4:SP.rs}),
   sit:'Everyone ran the lanes, but the defense got back. No quick shot, and 5 is covered on the block.',
   q:'What now?',
