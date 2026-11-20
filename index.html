@@ -1590,14 +1590,16 @@ const CATS=[
     {id:'press',title:'Presses',sub:'Full-court traps',groups:[]}]},
   {id:'blob',title:'BLOBs',sub:'Baseline Out-of-Bounds Plays',groups:[
     {id:'b3',title:'BLOB 3',sub:'Three across: screen the middle, 4 cuts to the ball',series:['BLOB 3']}]},
-  {id:'slob',title:'SLOBs',sub:'Sideline Out-of-Bounds Plays',groups:[
-    {id:'kansas',title:'Kansas',series:['Kansas','Kansas 2']}]}
+  {id:'slob',title:'SLOBs',sub:'Sideline Out-of-Bounds Plays',groups:[]}  /* Kansas + Kansas 2 are built but hidden until Coach finishes reviewing them: add back {id:'kansas',title:'Kansas',series:['Kansas','Kansas 2']} */
 ];
 const SERIES_SUB={Transition:'Primary break first, then rim runner, wings and slots',Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Man Rules':'The rules for all our man defenses','Ball Screens':'Switch or Fire, and where our help goes','Post D':'Front from the baseline side. Caught behind? Make her go middle','Kansas':'Get it to the corner, then the lob','BLOB 3':'Three across: screen the middle, 4 cuts to the ball','Kansas 2':'Looks like Kansas, then a back screen and lob','5':'All five pick up at half court','6':'5+1: one is up turning','7':'5+2: two are up turning','8':'5+3: three are up turning','9':'5+4: four are up turning','10':'5+5: all five are up turning'};
 const SERIES_TITLE={'Man Rules':'Man Defense Rules','Ball Screens':'Ball Screen Coverages','Post D':'Post Defense'};
 const stitle=x=>SERIES_TITLE[x]||x;
 const SERIES_RULES=Object.assign({Transition:TRANS_RULES,Rules:RULES,'Man Rules':HCM_RULES,'Ball Screens':BS_RULES,'Post D':PD_RULES},NUM_RULES,KAN_RULES,BLOB_RULES);
-const QUIZ=READS.map(x=>Object.assign({kind:'reads'},x)).concat(WHERE.map(x=>Object.assign({kind:'where'},x)));
+/* Only series listed in CATS are live: hidden ones stay out of plays, quizzes and the Daily 5. */
+const LIVE=new Set();CATS.forEach(c=>(c.sections?[].concat(...c.sections.map(x=>x.groups)):c.groups).forEach(g=>g.series.forEach(x=>LIVE.add(x))));
+for(let i=PLAYS.length-1;i>=0;i--)if(!LIVE.has(PLAYS[i].series))PLAYS.splice(i,1);
+const QUIZ=READS.filter(x=>LIVE.has(x.series)).map(x=>Object.assign({kind:'reads'},x)).concat(WHERE.filter(x=>LIVE.has(x.series)).map(x=>Object.assign({kind:'where'},x)));
 const qById=id=>QUIZ.find(x=>x.id===id);
 const allGroups=c=>c.sections?[].concat(...c.sections.map(s=>s.groups)):c.groups;
 const catOf=series=>CATS.find(c=>allGroups(c).some(g=>g.series.indexOf(series)>=0));
