@@ -217,7 +217,7 @@ const TRANS_RULES=[
   ['The first girl down on each side goes to the wing.','Never inside the three point line.'],
   ['Three of us on the same side? The first one down keeps running.','She goes through the middle of the paint to the opposite corner, then fills back up to that wing. If there is already a wing on that side, she pushes her up to the slot. Fill the open spot.'],
   ['Kick it up the sideline as quick as we can.','The ideal pass is wing to wing on the same side of the court.'],
-  ['Good, quick, open shot at any point? Take it.','Wide open with the lane wide open? Attack the rim, for your own shot or to find an open teammate. Jump shooters can take the open jumper. No quick shot? These rules have set us up to get right into our Motion offense.']
+  ['Quick, open, GREAT shot at any point? Take it.','Wide open with the lane wide open? Attack the rim, for your own shot or to find an open teammate. Jump shooters can take the open jumper. No quick, open, GREAT shot? These rules have set us up to get right into our Motion offense.']
 ];
 const RULES=[
   ['Overplayed? Backcut.','Step up, plant, go to the rim. Bounce pass on every backdoor.'],
@@ -250,7 +250,7 @@ const PLAYS=[
    {cap:'1 takes one dribble up the sideline. 3 sprints to the wing spot, outside the three point line. 5 runs to the rim and seals on the ball-side block. 2 gets wide on the other wing. 4 narrows back to the right slot.',
     a:[D(1,[-19.5,67]),C(3,[-20.5,19.5],[-22.5,32]),C(5,SP.lb,[-2,18]),C(2,SP.rw,[22,32]),C(4,SP.rs,[17,40])]},
    {cap:'Kick it up the sideline as quick as we can: wing to wing on the same side, 1 to 3 at the wing.',a:[P(1,3)]},
-   {cap:'1 fills the left slot. Good, quick, open shot? Take it, or hit 5 on the block. No quick shot? We are set up to go right into Motion.',a:[C(1,SP.ls,[-15,40]),P(3,5)]}
+   {cap:'1 fills the left slot. Quick, open, GREAT shot? Take it, or hit 5 on the block. No quick, open, GREAT shot? We are set up to go right into Motion.',a:[C(1,SP.ls,[-15,40]),P(3,5)]}
   ],end:'Post rebounds: outlet to the wing and run the rim. Wing to wing up the sideline.'},
 
  {id:'low-transition-dribble',series:'Transition',stage:1,title:'Guard Push',sub:'Guard rebounds, dribbles out wide: same lanes, same pass',view:'full94',
@@ -261,7 +261,7 @@ const PLAYS=[
    {cap:'1 keeps pushing up the sideline. 3 sprints to the wing spot, outside the three point line. 5 runs to the rim and seals on the ball-side block. 2 gets wide on the other wing. 4 narrows back to the right slot.',
     a:[D(1,[-19.5,67]),C(3,[-20.5,19.5],[-22.5,32]),C(5,SP.lb,[-2,18]),C(2,SP.rw,[22,32]),C(4,SP.rs,[17,40])]},
    {cap:'Kick it up the sideline as quick as we can: wing to wing on the same side, 1 to 3 at the wing.',a:[P(1,3)]},
-   {cap:'1 fills the left slot. Good, quick, open shot? Take it, or hit 5 on the block. No quick shot? We are set up to go right into Motion.',a:[C(1,SP.ls,[-15,40]),P(3,5)]}
+   {cap:'1 fills the left slot. Quick, open, GREAT shot? Take it, or hit 5 on the block. No quick, open, GREAT shot? We are set up to go right into Motion.',a:[C(1,SP.ls,[-15,40]),P(3,5)]}
   ],end:'Guard rebounds: dribble out wide, then the same lanes and the same pass as the outlet.'},
 
  {id:'trans-three-side',series:'Transition',stage:1,title:'Three on One Side',sub:'First one down keeps running to the opposite corner',view:'full94',
@@ -545,15 +545,15 @@ const READS=[
   choices:[
    {t:'Attack the rim: score, or find an open teammate',ok:true,why:'Wide open with the lane wide open? Attack the rim, for your own shot or to find an open teammate.'},
    {t:'Hold it until everyone gets set',why:'Do not waste the advantage. Attack the open lane.'},
-   {t:'Pass it back out to start Motion',why:'Motion is for when we do not get a quick shot. The lane is open: attack it.'},
+   {t:'Pass it back out to start Motion',why:'Motion is for when we do not get a quick, open, GREAT shot. The lane is open: attack it.'},
    {t:'Pull up for a long jump shot',why:'A jump shooter can take the open jumper, but with the lane wide open, attack the rim first.'}],
   show:[{a:[D(3,[-5,8])]}]},
  {id:'tr-r-noshot',series:'Transition',view:'full94',you:'3',ball:'3',pos:with_(TRANS_MID,{3:[-20.5,19.5],5:SP.lb,2:SP.rw,1:SP.ls,4:SP.rs}),
-  sit:'Everyone ran the lanes, but the defense got back. No quick shot, and 5 is covered on the block.',
+  sit:'Everyone ran the lanes, but the defense got back. No quick, open, GREAT shot, and 5 is covered on the block.',
   q:'What now?',
   choices:[
-   {t:'Go right into our Motion offense',ok:true,why:'No quick shot? Transition set us up to go right into Motion.'},
-   {t:'Force a shot anyway',why:'Only a good, quick, open shot. Otherwise, go right into Motion.'},
+   {t:'Go right into our Motion offense',ok:true,why:'No quick, open, GREAT shot? Transition set us up to go right into Motion.'},
+   {t:'Force a shot anyway',why:'Only a quick, open, GREAT shot. Otherwise, go right into Motion.'},
    {t:'Dribble it back out and stop',why:'The offense never stops. Go right into Motion.'},
    {t:'Wait for Coach to call a play',why:'We are already set up. Go right into Motion.'}],
   show:[]},
