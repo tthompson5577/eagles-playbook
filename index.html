@@ -247,10 +247,10 @@ const PLAYS=[
    {cap:'5, our post, gets the rebound and outlets to a guard at the wing: 1.',a:[P(5,1)]},
    {cap:'Then 5 sprints the middle. She is still the rim runner. 3 and 2, first down each side, sprint to the wings, eyes on the ball. 4 gets wide on the right side.',
     a:[C(5,[0,54],[2,72]),C(3,[-21.5,47],[-20,63]),C(2,[21.5,50],[20,63]),C(4,[15,66],[8,80])]},
-   {cap:'Kick it up the sideline as quick as we can: wing to wing on the same side, 1 to 3.',a:[P(1,3)]},
-   {cap:'3 pushes it to the wing spot, outside the three point line. 5 runs to the rim and seals on the ball-side block. 2 gets wide on the other wing. 1 and 4 fill the slots.',
-    a:[D(3,[-20.5,19.5]),C(5,SP.lb,[-2,18]),C(2,SP.rw,[22,32]),C(1,SP.ls,[-15,40]),C(4,SP.rs,[17,40])]},
-   {cap:'Good, quick, open shot? Take it, or hit 5 on the block. No quick shot? We are set up to go right into Motion.',a:[P(3,5)]}
+   {cap:'1 takes one dribble up the sideline. 3 sprints to the wing spot, outside the three point line. 5 runs to the rim and seals on the ball-side block. 2 gets wide on the other wing. 4 narrows back to the right slot.',
+    a:[D(1,[-19.5,67]),C(3,[-20.5,19.5],[-22.5,32]),C(5,SP.lb,[-2,18]),C(2,SP.rw,[22,32]),C(4,SP.rs,[17,40])]},
+   {cap:'Kick it up the sideline as quick as we can: wing to wing on the same side, 1 to 3 at the wing.',a:[P(1,3)]},
+   {cap:'1 fills the left slot. Good, quick, open shot? Take it, or hit 5 on the block. No quick shot? We are set up to go right into Motion.',a:[C(1,SP.ls,[-15,40]),P(3,5)]}
   ],end:'Post rebounds: outlet to the wing and run the rim. Wing to wing up the sideline.'},
 
  {id:'trans-three-side',series:'Transition',stage:1,title:'Three on One Side',sub:'First one down keeps running to the opposite corner',view:'full94',
@@ -543,8 +543,8 @@ const READS=[
    {t:'Run to the wing',why:'Wings are for the first girl down on each side. The post runs the rim.'},
    {t:'Trail behind the play',why:'The post is always the rim runner. Sprint the middle.'}],
   show:[{a:[C(5,[0,52],[2,68]),D(2,[8,62])]}]},
- {id:'tr-r-wingwing',series:'Transition',view:'full94',you:'1',ball:'1',pos:with_(REB,{1:[-19,76],3:[-21.5,47],2:[21.5,50],5:[0,54],4:[6,68]}),
-  sit:'You caught the outlet on the left wing. 3 is sprinting ahead up the same sideline.',
+ {id:'tr-r-wingwing',series:'Transition',view:'full94',you:'1',ball:'1',pos:with_(REB,{1:[-19.5,67],3:[-20.5,19.5],2:SP.rw,5:SP.lb,4:[15,50]}),
+  sit:'You caught the outlet on the left wing and took one dribble. 3 is at the wing spot ahead of you, on the same sideline.',
   q:'What is the ideal pass?',
   choices:[
    {t:'Kick it up the sideline to 3, wing to wing',ok:true,why:'Kick it up the sideline as quick as we can. Ideal pass: wing to wing on the same side.'},
