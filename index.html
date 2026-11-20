@@ -1356,7 +1356,7 @@ function courtSvg(f){
 }
 
 /* animate one step from st; calls onFrame(frame) and done(en) */
-let animId=0;
+let animId=0,seqGen=0;
 function animateStep(st,step,draw,done,dur){
   const my=++animId,en=applyStep(st,step),t0=performance.now();dur=dur||1150;
   const pa=step.a.find(a=>a.t==='pass'||a.t==='hand');
@@ -1377,14 +1377,15 @@ function animateStep(st,step,draw,done,dur){
   requestAnimationFrame(frame);
 }
 function animateSeq(st,steps,draw,done,gap){
-  let i=0;
+  let i=0;const g=seqGen;
   (function next(s){
+    if(g!==seqGen)return;
     if(i>=steps.length){done&&done(s);return;}
     const step=steps[i++];
     animateStep(s,step,draw,en=>{setTimeout(()=>{next(en);},gap==null?250:gap);});
   })(st);
 }
-function stopAnim(){animId++;}
+function stopAnim(){animId++;seqGen++;}
 
 /* =====================================================================
    UI
@@ -1616,7 +1617,7 @@ function render(keepScroll){
   $('#view').querySelector('.court-wrap');
   if(!keepScroll)window.scrollTo(0,0);
 }
-function go(nav){ui.nav=nav;render();}
+function go(nav){stopAnim();ui.nav=nav;render();}
 
 /* ---------- progress ---------- */
 function seriesStats(s){
@@ -1732,6 +1733,7 @@ function playView(){
   ${legend()}`;
 }
 function drawPlay(frame){
+  if(ui.nav.view!=='play'||!curPlay())return;
   const p=curPlay(),i=Math.min(ui.step,p.steps.length),st=stateAt(p,i);
   const f=frame||{pos:st.pos,ball:st.ball,arrows:i<p.steps.length?p.steps[i].a.map(a=>arrowSvg(a,st,applyStep(st,p.steps[i]))):[]};
   $('#court').innerHTML=courtSvg(Object.assign({view:p.view},f));
@@ -1750,7 +1752,7 @@ function dailyIds(){
   const known=shuffle(avail.filter(x=>store[x.kind][x.id]&&store[x.kind][x.id].last));
   return fresh.concat(known).slice(0,5).map(x=>x.id);
 }
-function curItem(){return qById(ui.q.items[ui.q.i]);}
+function curItem(){return ui.q&&ui.q.items?qById(ui.q.items[ui.q.i]):null;}
 function quizView(){
   const q=ui.q;
   if(q.done){
@@ -1816,12 +1818,12 @@ function redrawGuess(it){
   svg.innerHTML=tmp.firstChild.innerHTML;
   const b=document.querySelector('[data-act="check"]');if(b)b.disabled=false;
 }
-function showAnswer(){
-  const it=curItem();if(!it.show)return;
+function showAnswer(want){
+  const it=curItem();if(!it||!it.show||(want&&want!==it)||!ui.q||!ui.q.answered||ui.nav.view!=='quiz')return;
   const st={pos:copyPos(it.pos),ball:it.ball};
   const marks=it.kind==='where'?`<circle cx="${it.ans[0]}" cy="${it.ans[1]}" r="${it.tol}" fill="rgba(255,210,90,.18)" stroke="#ffd25a" stroke-width=".3" stroke-dasharray="1 .6"/>`:'';
-  animateSeq(st,it.show,f=>drawQ(Object.assign({marks},f)),en=>{
-    drawQ({pos:en.pos,ball:en.ball,marks,arrows:[]});
+  animateSeq(st,it.show,f=>{if(curItem()===it)drawQ(Object.assign({marks},f));},en=>{
+    if(curItem()===it)drawQ({pos:en.pos,ball:en.ball,marks,arrows:[]});
   },350);
 }
 function record(kind,id,ok){
@@ -2062,11 +2064,11 @@ document.addEventListener('click',e=>{
     const q=ui.q,it=curItem();if(!q.guess||q.answered)return;
     const d=Math.hypot(q.guess[0]-it.ans[0],q.guess[1]-it.ans[1]);
     q.answered=true;q.ok=d<=it.tol&&(!it.out3||Math.hypot(q.guess[0]-RIM[0],q.guess[1]-RIM[1])>ARC);if(q.ok)q.right++;else q.missed.push(it.id);record('where',it.id,q.ok);
-    render(true);setTimeout(showAnswer,700);
+    render(true);setTimeout(()=>showAnswer(it),700);
   }
-  else if(act==='replay-show'){stopAnim();drawQ();setTimeout(showAnswer,300);}
+  else if(act==='replay-show'){stopAnim();drawQ();const it=curItem();setTimeout(()=>showAnswer(it),300);}
   else if(act==='next-q'){
-    const q=ui.q;q.i++;q.answered=false;q.choice=null;q.guess=null;q.order=null;q.ok=null;
+    stopAnim();const q=ui.q;q.i++;q.answered=false;q.choice=null;q.guess=null;q.order=null;q.ok=null;
     if(q.i>=q.items.length)q.done=true;render();
   }
   else if(act==='si-yes'){store.player=signin.found;signin.found=null;signin.msg='';store.board=null;store.tab='home';ui.nav={view:'home'};save();render();}
