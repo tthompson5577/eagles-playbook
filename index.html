@@ -1833,7 +1833,7 @@ function record(kind,id,ok){
 /* ---------- Tracker: sign-in, offline outbox, team board ---------- */
 const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const SERIES4=['Transition','Rules','Low','Point','5 Out','Man Rules'].filter(x=>LIVE.has(x));
-const BADGE_SHORT={'5 Out':'5 OUT','Man Rules':'MAN D','Transition':'TRANS'};
+const BADGE_SHORT={'5 Out':'5 OUT','Man Rules':'MAN D'};
 function logEvent(kind,item,series,ok){
   if(!API_URL||!store.player)return;
   store.outbox.push({who:store.player.login,id:newId(),t:Date.now(),kind,item,series,ok});
