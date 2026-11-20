@@ -215,6 +215,7 @@ const TRANS_RULES=[
   ['If anyone else gets the rebound, she can start the fast break with the dribble.',''],
   ['Everyone ahead of the ball: eyes on the ball.','Get wide, with a good angle for the pass.'],
   ['The first girl down on each side goes to the wing.','Never inside the three point line.'],
+  ['Three of us on the same side? One keeps running.','She goes through the middle of the paint to the opposite corner, then fills back up to that wing. If there is already a wing on that side, she pushes her up to the slot. Fill the open spot.'],
   ['Kick it up the sideline as quick as we can.','The ideal pass is wing to wing on the same side of the court.'],
   ['Good, quick, open shot at any point? Take it.','No quick shot? These rules have set us up to get right into our Motion offense.']
 ];
@@ -250,6 +251,15 @@ const PLAYS=[
     a:[D(3,[-20.5,19.5]),C(5,SP.lb,[-2,18]),C(2,SP.rw,[22,32]),C(1,SP.ls,[-15,40]),C(4,SP.rs,[9,40])]},
    {cap:'Good, quick, open shot? Take it, or hit 5 on the block. No quick shot? We are set up to go right into Motion.',a:[P(3,5)]}
   ],end:'Post rebounds: outlet to the wing and run the rim. Wing to wing up the sideline.'},
+
+ {id:'trans-three-side',series:'Transition',stage:1,title:'Three on One Side',sub:'One keeps running to the opposite corner',view:'full94',
+  start:{1:[-12,64],3:[-21,46],4:[-16,56],5:[0,50],2:[21.5,50]},ball:'1',
+  steps:[
+   {cap:'1 pushes it up the left side, and 3 and 4 are running the left side too. That is three of us on the same side.',a:[D(1,[-10,40]),C(3,[-21,30]),C(4,[-19,40]),C(5,[0,24]),C(2,[21.5,30])]},
+   {cap:'One keeps running: 3 goes through the middle of the paint to the opposite corner. 4 takes the left wing. 5 seals on the ball-side block. 2 is on the right wing.',
+    a:[C(3,SP.rc,[-6,0]),C(4,[-20.5,19.5],[-22,30]),C(5,SP.lb,[-2,16]),C(2,SP.rw,[22,26]),D(1,SP.ls)]},
+   {cap:'3 fills back up to the right wing. That pushes 2 up to the right slot. Everyone fills the open spot.',a:[C(3,SP.rw,[23,10]),C(2,SP.rs,[17,26])]}
+  ],end:'Three on one side: one keeps running through the paint to the opposite corner, then fills back up to that wing. Fill the open spot.'},
 
  {id:'low-transition',series:'Transition',stage:1,title:'Outlet and Kick Ahead',sub:'4 rebounds and outlets, 5 runs the rim',view:'full94',
   video:'https://www.youtube.com/watch?v=OtEbuDo6Yac',start:REB,ball:'4',
@@ -560,6 +570,25 @@ const READS=[
    {t:'Wait for Coach to call a play',why:'We are already set up. Go right into Motion.'}],
   show:[]},
 
+ {id:'tr-r-three',series:'Transition',view:'full94',you:'3',ball:'1',pos:{1:[-10,40],3:[-21,30],4:[-19,40],5:[0,24],2:[21.5,30]},
+  sit:'Transition. 1 is pushing it up the left side, and you and 4 are on the left side too. Three of us on one side. You are the one who keeps running.',
+  q:'Where do you go?',
+  choices:[
+   {t:'Through the middle of the paint to the opposite corner, then fill back up to that wing',ok:true,why:'Three on one side: one keeps running through the paint to the opposite corner, then fills back up to that wing.'},
+   {t:'Stop at the left wing',why:'4 takes the left wing. You keep running to the opposite corner.'},
+   {t:'Stop in the paint',why:'Keep running all the way through to the opposite corner. The paint is for the rim runner.'},
+   {t:'Come back to the ball',why:'Keep running through the paint to the opposite corner.'}],
+  show:[{a:[C(3,SP.rc,[-6,0])]},{a:[C(3,SP.rw,[23,10]),C(2,SP.rs,[17,26])]}]},
+ {id:'tr-r-pushup',series:'Transition',view:'full94',you:'2',ball:'1',pos:{1:SP.ls,3:SP.rc,4:[-20.5,19.5],5:SP.lb,2:SP.rw},
+  sit:'You are on the right wing. 3 ran through the paint to your corner and is filling back up to your wing.',
+  q:'What do you do?',
+  choices:[
+   {t:'Move up to the slot',ok:true,why:'Her cut pushes you up to the slot. Fill the open spot.'},
+   {t:'Stay on the wing',why:'She is filling the wing. You fill the open spot: the slot.'},
+   {t:'Go to the corner',why:'She just left the corner. Fill the open spot at the slot.'},
+   {t:'Cut to the basket',why:'5 is on the block. Fill the open spot at the slot.'}],
+  show:[{a:[C(3,SP.rw,[23,10]),C(2,SP.rs,[17,26])]}]},
+
  {id:'r-outlet',series:'Transition',view:'full94',you:'5',ball:'5',pos:with_(REB,{4:[-1,80],5:[-3,85]}),
   sit:'They miss. You\'re 5, the rim runner, and you grab the rebound.',
   q:'What do you do?',
@@ -677,6 +706,10 @@ const READS=[
 
 /* Where do you go? Tap or drag YOUR player to the spot. Graded within tol (feet). */
 const WHERE=[
+ {id:'tr-w-three',series:'Transition',view:'full94',you:'3',ball:'1',pos:{1:[-10,40],3:[-21,30],4:[-19,40],5:[0,24],2:[21.5,30]},
+  q:'Three of us are running the left side, and you are the one who keeps running. Where do you go first?',
+  ans:SP.rc,tol:6,why:'Through the middle of the paint to the opposite corner. Then fill back up to that wing.',
+  show:[{a:[C(3,SP.rc,[-6,0])]}]},
  {id:'w-rimrun',series:'Transition',view:'full94',you:'5',ball:'1',pos:TRANS_MID,ctx:[D(1,[-19,50])],
   q:'Transition! 1 is pushing it up the left sideline. You\'re the rim runner (5). Where do you run?',
   ans:SP.lb,tol:5,why:'Rim runner sprints the middle to the rim, then seals on the BALL-SIDE block looking for the layup.',
