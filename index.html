@@ -275,14 +275,14 @@ const PLAYS=[
   ],end:'No layup? You\'re in Low, and every spot is filled. Spots matter, not numbers: whoever trails fills the open slot. Play out of it (next plays). If 5 gets the rebound, she outlets right away so she can run; a guard who rebounds can push it on the dribble.'},
 
  {id:'low-transition-dribble',series:'Transition',stage:1,title:'Guard Push',sub:'Guard rebounds and dribbles: same lanes',view:'full94',
-  start:REB_G,ball:'1',
+  start:with_(REB_G,{4:[8,76]}),ball:'1',
   steps:[
    {cap:'1 rebounds and pushes it on the dribble. Rim runner 5 sprints the middle. First two down, 3 and 2, sprint to the wings with eyes on the ball.',
-    a:[D(1,[-8,54]),C(5,[0,46],[2,66]),C(3,[-21.5,44],[-20,62]),C(2,[21.5,44],[20,62]),C(4,[-4,64])]},
-   {cap:'3 and 2 get to the wing spots, outside the 3-point line. 5 seals on the ball-side block. 4 trails as one of the next two down.',
-    a:[D(1,[-11,33]),C(3,[-20.5,19.5],[-22.5,30]),C(2,SP.rw,[22,30]),C(5,SP.lb,[-2,18]),C(4,[3,40])]},
+    a:[D(1,[-8,54]),C(5,[0,46],[2,66]),C(3,[-21.5,44],[-20,62]),C(2,[21.5,44],[20,62]),C(4,[9,62])]},
+   {cap:'3 and 2 get to the wing spots, outside the 3-point line. 5 seals on the ball-side block. 4 runs the right side as one of the next two down, so nobody crosses the middle.',
+    a:[D(1,[-11,33]),C(3,[-20.5,19.5],[-22.5,30]),C(2,SP.rw,[22,30]),C(5,SP.lb,[-2,18]),C(4,[10,42])]},
    {cap:'1 hits 3 on the wing. Next two down fill the slots: 1 takes the left slot, 4 the right.',
-    a:[P(1,3),C(1,SP.ls,[-11,29]),C(4,SP.rs,[5,31])]},
+    a:[P(1,3),C(1,SP.ls,[-11,29]),C(4,SP.rs,[11,32])]},
    {cap:'3 looks inside first for 5 on the block.',a:[P(3,5)]}
   ],end:'Outlet or dribble, same lanes: rim runner to the rim, first two down to the wings, next two to the slots.'},
 
