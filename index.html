@@ -203,7 +203,7 @@ const REB_G={1:[-2,84],2:[13,72],3:[-12,74],4:[-7,79],5:[4,83]};
 const LANES_MID={1:[-9,48],2:[21.5,44],3:[-21.5,42],4:[-3,62],5:[0,40]};
 const TRANS_MID={1:[-19,60],2:[21.5,50],3:[-21.5,47],4:[3,66],5:[0,52]};
 const ARC=19.75,RIM=[0,5.25];
-const with_=(base,extra)=>Object.assign({},base,extra);
+const with_=(...parts)=>Object.assign({},...parts);
 
 const SERIES=['All','Rules','Low','Point','5 Out'];
 
@@ -275,68 +275,6 @@ const PLAYS=[
     a:[P(1,4),C(3,SP.rw,[23,10]),C(2,SP.rs,[17,26])]},
    {cap:'1 fills the left slot. Quick, open, GREAT shot? Take it, or hit 5 on the block. Everyone filled the open spot.',a:[C(1,SP.ls,[-15,40]),P(4,5)]}
   ],end:'Three on one side: the first one down keeps running through the paint to the opposite corner, then fills back up to that wing. Kick it ahead to the new wing. Fill the open spot.'},
-
- {id:'low-pass-cut',series:'Low',stage:1,title:'Low: Pass, Cut, Fill',sub:'Give-and-go, clear out, everyone fills',
-  start:LOW,ball:'1',
-  steps:[
-   {cap:'1 passes to the wing.',a:[P(1,3)]},
-   {cap:'Pass and cut: 1 cuts hard to the rim looking for the give-and-go.',a:[C(1,[-2,9],[-5,20])]},
-   {cap:'No pass? 1 clears out to the opposite wing. Everyone fills: 2 slides over to the slot 1 left, 4 lifts to the open slot.',
-    a:[C(1,[20,16],[9,7]),C(2,SP.ls,[0,28]),C(4,SP.rs,[17,24])]},
-   {cap:'3 can swing it to 2 in the slot. Spots are full again.',a:[P(3,2)]}
-  ],end:'Pass, cut, fill. The ball side always has a slot to swing it to.'},
-
- {id:'low-screen-away',series:'Low',stage:1,title:'Low: Pass & Screen Away',sub:'Screen for the other guard, pop back',
-  start:LOW,ball:'1',
-  steps:[
-   {cap:'1 passes to the wing.',a:[P(1,3)]},
-   {cap:'Pass and screen away: 1 goes to screen for 2.',a:[S(1,[4,25])]},
-   {cap:'2 comes off the screen to the ball-side slot. 1 pops back out to 2\'s old spot.',a:[C(2,SP.ls,[0,22.5]),C(1,SP.rs,[6,28])]},
-   {cap:'3 swings it to 2.',a:[P(3,2)]}
-  ],end:'The screener always pops back so the spots stay full. If 2\'s defender cheats over the screen, 2 backcuts.'},
-
- {id:'low-split',series:'Low',stage:1,title:'Low: Split',sub:'Passer screens, cutter pops to the wing',
-  video:'https://www.youtube.com/watch?v=7KBun_5cNPc',start:LOW,ball:'3',
-  steps:[
-   {cap:'3 feeds 5 on the block.',a:[P(3,5)]},
-   {cap:'Split: 3 (the passer) runs up and screens for 1.',a:[S(3,[-12,23])]},
-   {cap:'1 comes off the screen to the wing. 3 fills the empty slot. 5 reads the cutters first.',a:[C(1,[-20,16],[-14,25.5]),C(3,SP.ls,[-10,26])]},
-   {cap:'5 kicks it out to 1 for the catch & shoot.',a:[P(5,1)]}
-  ],end:'Never stand after a post feed. The post is the passer.'},
-
- {id:'low-split-backcut',series:'Low',stage:1,title:'Low: Split Backcut',sub:'Defender jumps the screen? Go backdoor',
-  video:'https://www.youtube.com/watch?v=7KBun_5cNPc',start:LOW,ball:'3',
-  steps:[
-   {cap:'3 feeds 5 on the block.',a:[P(3,5)]},
-   {cap:'3 runs up to screen for 1.',a:[S(3,[-12,23])]},
-   {cap:'1\'s defender jumps over the top of the screen. 1 plants and backcuts to the rim. Call "Back!" 3 fills the slot.',a:[C(1,[-2,6],[-8,15]),C(3,SP.ls,[-10,26])]},
-   {cap:'5 hits the backcut with a bounce pass. Layup.',a:[P(5,1)]}
-  ],end:'Split Backcut beats a defender who cheats over the screen.'},
-
- {id:'low-curl',series:'Low',stage:1,title:'Low: Curl',sub:'Curl tight for the handoff',
-  video:'https://www.youtube.com/watch?v=7KBun_5cNPc',start:LOW,ball:'3',
-  steps:[
-   {cap:'3 feeds 5 on the block.',a:[P(3,5)]},
-   {cap:'3 runs up to screen for 1.',a:[S(3,[-12,23])]},
-   {cap:'1\'s defender trails the screen. 1 curls tight around it toward 5. 3 fills the slot.',a:[C(1,[-4.5,11],[-16,19]),C(3,SP.ls,[-10,26])]},
-   {cap:'5 hands it off. 1 finishes at the rim.',a:[H(5,1)]}
-  ],end:'Curl when the defender trails you around the screen.'},
-
- {id:'low-block-to-block',series:'Low',stage:1,title:'Low: Block to Block',sub:'Ball moved too fast? Post crosses the lane',
-  start:LOW,ball:'3',
-  steps:[
-   {cap:'No post feed. 3 swings it to 1.',a:[P(3,1)]},
-   {cap:'1 reverses it fast to 2, before 5 can get to the high post. 5 goes block to block instead, across the lane to the new ball-side block.',a:[P(1,2),C(5,SP.rb,[0,6.5])]},
-   {cap:'2 swings it to the wing. 5 seals on the block for the post feed.',a:[P(2,4)]}
-  ],end:'The offense never waits on the post. Keep playing: pass-cut-fill or pass and screen away.'},
-
- {id:'low-reversal',series:'Low',stage:2,title:'Leaving Low: Post Flashes High',sub:'What the floor looks like next',
-  video:'https://www.youtube.com/watch?v=F04sPDeFRuw',start:LOW,ball:'3',
-  steps:[
-   {cap:'No post feed? Swing it. 3 passes back to 1.',a:[P(3,1)]},
-   {cap:'1 reverses it to 2. On the reversal, 5 flashes to the high post.',a:[P(1,2),C(5,SP.hp,[-5,13])]},
-   {cap:'2 hits 5 at the high post.',a:[P(2,5)]}
-  ],end:'Nobody calls it. When the post is at the high post, the floor looks like Point. If the ball moves too fast for her, she goes block to block and flashes on the next reversal.'},
 
  {id:'point-away',series:'Point',stage:2,title:'Point Away (Base)',sub:'Pass to the high post, screen away',
   video:'https://www.youtube.com/watch?v=fJxH3z4j49k',start:POINT,ball:'1',
@@ -503,18 +441,6 @@ const READS=[
    {t:'Dribble first, then look',why:'Face the rim first. She\'s late, so shoot it.'},
    {t:'Pass it right back',why:'Open 3 in your range is a shot we want. Let it fly.'}]},
 
- {id:'r-postfeed',series:'Low',you:'3',ball:'5',
-  pos:with_(LOW,{x1:[-7,22.5],x2:[6,22],x3:[-16,15],x4:[12,14],x5:[-6.5,6]}),
-  ctx:[P(3,5)],
-  sit:'You are 3. You just fed 5 on the block.',
-  q:'What do you do now?',
-  choices:[
-   {t:'Cut off the post: Split, Split Backcut or Curl',ok:true,why:'Post feed on the block = cut off the post. The post is the passer.'},
-   {t:'Stay on the wing and watch 5 score',why:'Never stand after a post feed. Cut off the post.'},
-   {t:'Run to the other side of the floor',why:'Cut off the post on your side: Split, Split Backcut or Curl.'},
-   {t:'Post up next to 5',why:'That crowds her. Cut off the post instead.'}],
-  show:[{a:[S(3,[-12,23])]},{a:[C(1,[-20,16],[-14,25.5]),C(3,SP.ls,[-10,26])]},{a:[P(5,1)]}]},
-
  {id:'tr-r-primary',series:'Transition',view:'full94',you:'3',ball:'3',pos:Object.assign({},REB_G,{1:[-6,70],3:[-11,34]},{x1:[-4,52],x2:[9,70],x3:[-11,60],x4:[1,82],x5:[7,80]}),ctx:[P(1,3)],
   sit:'You caught it ahead of everyone. Nobody is between you and the basket.',
   q:'What do you do?',
@@ -528,7 +454,7 @@ const READS=[
   sit:'They miss and 2 gets the rebound. You are 5, our post.',
   q:'What is your job?',
   choices:[
-   {t:'Sprint the middle: I am the rim runner',ok:true,why:'The post is always the rim runner, no matter who gets the rebound.'},
+   {t:'Sprint the middle to the rim',ok:true,why:'The post is always the rim runner, no matter who gets the rebound. Sprint the middle.'},
    {t:'Come get the outlet',why:'2 can start the break with the dribble. You run the rim.'},
    {t:'Run to the wing',why:'Wings are for the first girl down on each side. The post runs the rim.'},
    {t:'Trail behind the play',why:'The post is always the rim runner. Sprint the middle.'}],
@@ -537,8 +463,8 @@ const READS=[
   sit:'You caught the outlet on the left wing and took one dribble. 3 is at the wing spot ahead of you, on the same sideline.',
   q:'What is the ideal pass?',
   choices:[
-   {t:'Kick it up the sideline to 3, wing to wing',ok:true,why:'Kick it up the sideline as quick as we can. Ideal pass: wing to wing on the same side.'},
-   {t:'Dribble it all the way up myself',why:'The pass is faster than the dribble. Kick it ahead to 3.'},
+   {t:'Kick it up the sideline to 3',ok:true,why:'Kick it up the sideline as quick as we can. The ideal pass is wing to wing on the same side.'},
+   {t:'Dribble it up the floor myself',why:'The pass is faster than the dribble. Kick it ahead to 3.'},
    {t:'Throw it across the court to 2',why:'Cross-court passes get picked off. Wing to wing on the same side.'},
    {t:'Wait for 5 to get open at the rim',why:'Kick it ahead to 3 now. She looks for 5.'}],
   show:[{a:[P(1,3)]}]},
@@ -546,29 +472,29 @@ const READS=[
   sit:'You caught the kick-ahead at the wing spot. Your defender is still running back, you are wide open, and the lane is wide open.',
   q:'What do you do?',
   choices:[
-   {t:'Attack the rim: score, or find an open teammate',ok:true,why:'Wide open with the lane wide open? Attack the rim, for your own shot or to find an open teammate.'},
-   {t:'Hold it until everyone gets set',why:'Do not waste the advantage. Attack the open lane.'},
-   {t:'Pass it back out to start Motion',why:'Motion is for when we do not get a quick, open, GREAT shot. The lane is open: attack it.'},
-   {t:'Pull up for a long jump shot',why:'A jump shooter can take the open jumper, but with the lane wide open, attack the rim first.'}],
+   {t:'Attack the rim',ok:true,why:'Wide open with the lane wide open? Attack the rim, for your own shot or to find an open teammate.'},
+   {t:'Hold it until everyone is set',why:'Do not waste the advantage. Attack the open lane.'},
+   {t:'Swing it to start Motion',why:'Motion is for when we do not get a quick, open, GREAT shot. The lane is open: attack it.'},
+   {t:'Pull up for a long jumper',why:'A jump shooter can take the open jumper, but with the lane wide open, attack the rim first.'}],
   show:[{a:[D(3,[-5,8])]}]},
  {id:'tr-r-noshot',series:'Transition',view:'full94',you:'3',ball:'3',pos:with_(TRANS_MID,{3:[-20.5,19.5],5:SP.lb,2:SP.rw,1:SP.ls,4:SP.rs}),
   sit:'Everyone ran the lanes, but the defense got back. No quick, open, GREAT shot, and 5 is covered on the block.',
   q:'What now?',
   choices:[
-   {t:'Go right into our Motion offense',ok:true,why:'No quick, open, GREAT shot? Transition set us up to go right into Motion.'},
+   {t:'Go right into Motion',ok:true,why:'No quick, open, GREAT shot? Transition set us up to go right into our Motion offense.'},
    {t:'Force a shot anyway',why:'Only a quick, open, GREAT shot. Otherwise, go right into Motion.'},
-   {t:'Dribble it back out and stop',why:'The offense never stops. Go right into Motion.'},
-   {t:'Wait for Coach to call a play',why:'We are already set up. Go right into Motion.'}],
+   {t:'Dribble it out and stop',why:'The offense never stops. Go right into Motion.'},
+   {t:'Wait for a play call',why:'We are already set up. Go right into Motion.'}],
   show:[]},
 
  {id:'tr-r-three',series:'Transition',view:'full94',you:'3',ball:'1',pos:{1:[-19,76],3:[-21,40],4:[-19,48],5:[0,40],2:[21.5,40]},
   sit:'Transition. 1 is pushing it up the left side, and you and 4 are on the left side too. Three of us on one side, and you were the first one down.',
   q:'Where do you go?',
   choices:[
-   {t:'Through the middle of the paint to the opposite corner, then fill back up to that wing',ok:true,why:'Three on one side: the first one down keeps running through the paint to the opposite corner, then fills back up to that wing.'},
+   {t:'Through the paint to the far corner',ok:true,why:'Three on one side: the first one down keeps running through the middle of the paint to the opposite corner, then fills back up to that wing.'},
    {t:'Stop at the left wing',why:'4 takes the left wing. You keep running to the opposite corner.'},
-   {t:'Stop in the paint',why:'Keep running all the way through to the opposite corner. The paint is for the rim runner.'},
-   {t:'Come back to the ball',why:'Keep running through the paint to the opposite corner.'}],
+   {t:'Stop in the middle of the paint',why:'Keep running all the way through to the opposite corner. The paint is for the rim runner.'},
+   {t:'Come back toward the ball',why:'Keep running through the paint to the opposite corner.'}],
   show:[{a:[C(3,SP.rc,[-6,0])]},{a:[C(3,SP.rw,[23,10]),C(2,SP.rs,[17,26])]}]},
  {id:'tr-r-pushup',series:'Transition',view:'full94',you:'2',ball:'1',pos:{1:SP.ls,3:SP.rc,4:[-20.5,19.5],5:SP.lb,2:SP.rw},
   sit:'You are on the right wing. 3 ran through the paint to your corner and is filling back up to your wing.',
@@ -584,10 +510,10 @@ const READS=[
   sit:'They miss. You\'re 5, the rim runner, and you grab the rebound.',
   q:'What do you do?',
   choices:[
-   {t:'Outlet it right away and sprint the middle',ok:true,why:'Get it out of your hands so you can run. You\'re the rim runner: first one to the rim.'},
-   {t:'Dribble it up the floor yourself',why:'If you dribble, nobody runs the rim. Outlet and go.'},
-   {t:'Wait for a guard to come get it',why:'Waiting kills the break. Outlet to the guard on the wing right away.'},
-   {t:'Hold it until the defense sets up',why:'We want to run. Outlet it and sprint the middle.'}],
+   {t:'Outlet it and sprint the middle',ok:true,why:'Outlet it right away so you can run. You are the rim runner: first one to the rim.'},
+   {t:'Dribble it up the floor myself',why:'If you dribble, nobody runs the rim. Outlet and go.'},
+   {t:'Wait for a guard to get it',why:'Waiting kills the break. Outlet to the guard on the wing right away.'},
+   {t:'Hold it and slow it down',why:'We want to run. Outlet it and sprint the middle.'}],
   show:[{a:[P(5,1)]},{a:[C(5,[0,52],[2,70]),C(3,[-21.5,47],[-20,63]),C(2,[21.5,50],[20,63])]}]},
 
  {id:'r-kick',series:'Transition',view:'full94',you:'3',ball:'1',pos:TRANS_MID,ctx:[D(1,[-19,50])],
@@ -604,47 +530,11 @@ const READS=[
   sit:'1 rebounded and is dribbling out wide. You\'re 2, the first one down the right side. 5 is the rim runner.',
   q:'What\'s your job?',
   choices:[
-   {t:'Sprint wide to the wing, eyes on the ball',ok:true,why:'First two down (one each side) sprint to the wings with eyes on the ball, outside the 3-point line.'},
+   {t:'Sprint wide to the wing',ok:true,why:'First two down, one each side, sprint to the wings with eyes on the ball, outside the 3-point line.'},
    {t:'Run to the rim',why:'That\'s the rim runner\'s lane. First two down go to the wings.'},
    {t:'Stop at the slot',why:'The slots are for the next two down. You\'re first down your side, so you take the wing.'},
-   {t:'Come back to help 1 bring it up',why:'1 has it on the dribble. Sprint wide so she can kick it ahead to you.'}],
+   {t:'Come back to help 1',why:'1 has it on the dribble. Sprint wide so she can kick it ahead to you.'}],
   show:[{a:[C(2,[21.5,50],[20,63]),C(3,[-21.5,47],[-20,63]),C(5,[0,54],[2,72])]},{a:[C(2,SP.rw,[22,32]),C(3,[-20.5,19.5],[-22.5,32])]}]},
-
- {id:'r-quick-rev',series:'Low',you:'5',ball:'2',
-  pos:with_(LOW,{x1:[-7,23],x2:[7,22.5],x3:[-17,16],x4:[17,16],x5:[-6.5,10.5]}),
-  ctx:[P(3,1),P(1,2)],
-  sit:'The ball went 3 to 1 to 2 so fast you couldn\'t flash high in time. You\'re 5 on the left block.',
-  q:'What now?',
-  choices:[
-   {t:'Go block to block and seal on the new ball side',ok:true,why:'The offense never waits on the post. Seal on the new ball-side block, then flash high on the next reversal.'},
-   {t:'Flash high anyway, even though you\'re late',why:'A late flash makes the offense wait on you. Go block to block.'},
-   {t:'Stay where you are on the left block',why:'The ball left your side. Go block to block.'},
-   {t:'Run out to the corner',why:'Stay inside: block to block, then flash on the next reversal.'}],
-  show:[{a:[C(5,SP.rb,[0,6.5])]},{a:[P(2,4)]}]},
-
- {id:'r-flash',series:'Low',you:'5',ball:'2',
-  pos:with_(LOW,{x1:[-7,23],x2:[7,22.5],x3:[-17,16],x4:[17,16],x5:[-6.5,10.5]}),
-  ctx:[P(1,2)],
-  sit:'No post feed. The ball just got reversed to 2. You are 5 on the left block.',
-  q:'Your defender is on your high side. What do you do?',
-  choices:[
-   {t:'Flash to the high post',ok:true,why:'Ball reversal = flash to the high post. High-post catch = Point.'},
-   {t:'Duck in to the lane',why:'Duck in when her defender is behind you. She\'s on your high side, so flash high.'},
-   {t:'Stay on the block',why:'Every reversal, the post flashes. Stand still and the offense stops.'},
-   {t:'Run out to the corner',why:'The post flashes high on a reversal.'}],
-  show:[{a:[C(5,SP.hp,[-5,14])]},{a:[P(2,5)]}]},
-
- {id:'r-duckin',series:'Low',you:'5',ball:'2',
-  pos:with_(LOW,{x1:[-7,23],x2:[7,22.5],x3:[-17,16],x4:[17,16],x5:[-8.5,5.5]}),
-  ctx:[P(1,2)],
-  sit:'The ball just got reversed to 2. You are 5 on the left block.',
-  q:'Your defender is behind you and late. What do you do?',
-  choices:[
-   {t:'Duck in: seal her and step into the lane',ok:true,why:'Flash high, unless her defender is behind her. Then duck in and seal.'},
-   {t:'Flash to the high post',why:'Usually yes, but she\'s behind you. Duck in and take the easy post catch.'},
-   {t:'Stay on the block',why:'Move on every reversal. She\'s behind you, so duck in.'},
-   {t:'Go set a screen for 1',why:'She\'s behind you and late. Duck in and seal.'}],
-  show:[{a:[C(5,[-1.5,10])]},{a:[P(2,5)]}]},
 
  {id:'r-point-sag',series:'Point',you:'1',ball:'5',
   pos:with_(POINT,{x1:[-3.5,21.5],x2:[6.5,23],x3:[-17.5,16],x4:[17.5,16],x5:[0,15.5]}),
@@ -717,22 +607,10 @@ const WHERE=[
   q:'Transition. You\'re 2, the first one down the right side (5 is the rim runner). Where do you go?',
   ans:SP.rw,tol:6,out3:true,why:'First two down sprint to the wings, eyes on the ball, outside the 3-point line.',
   show:[{a:[C(2,SP.rw,[22,32])]}]},
- {id:'w-block2block',series:'Low',you:'5',ball:'2',pos:with_(LOW,{x5:[-6.5,10.5]}),ctx:[P(3,1),P(1,2)],
-  q:'The ball went 3 to 1 to 2 so fast you couldn\'t get to the high post. Where do you go?',
-  ans:SP.rb,tol:4.5,why:'Block to block: seal on the new ball-side block. Flash high on the next reversal. The offense never stops.',
-  show:[{a:[C(5,SP.rb,[0,6.5])]},{a:[P(2,4)]}]},
  {id:'w-fill',series:'Rules',you:'2',ball:'3',pos:with_(LOW,{1:[-4,13]}),ctx:[C(1,[-2,7])],
   q:'1 just backcut out of the left slot. You\'re 2. Where do you go?',
   ans:SP.ls,tol:5,why:'Fill the empty spot. 3 needs an outlet in the slot.',
   show:[{a:[C(2,SP.ls,[0,29])]}]},
- {id:'w-split',series:'Low',you:'3',ball:'5',pos:LOW,ctx:[P(3,5)],
-  q:'You (3) just fed 5 on the block. Where do you go to set the Split screen for 1?',
-  ans:[-12,23],tol:5,why:'Split: the passer runs up toward the slot and screens for 1.',
-  show:[{a:[S(3,[-12,23])]}]},
- {id:'w-flash',series:'Low',you:'5',ball:'2',pos:with_(LOW,{x5:[-6.5,10.5]}),ctx:[P(1,2)],
-  q:'1 is swinging it to 2, and you have time. Your defender is on your high side. Where do you go?',
-  ans:SP.hp,tol:4.5,why:'Ball reversal = flash to the high post. High-post catch = Point.',
-  show:[{a:[C(5,SP.hp,[-5,14])]}]},
  {id:'w-over',series:'Point',you:'1',ball:'5',pos:with_(POINT,{x1:[-3.5,21.5]}),ctx:[P(1,5)],
   q:'You passed to 5 at the high post. Your defender sagged to help. Where do you go?',
   ans:[2.5,21.5],tol:4.5,why:'Defender sags = OVER. Cut over the top of 5 for the handoff.',
@@ -1324,6 +1202,7 @@ function arrowSvg(a,st,en,opt){
       return g(`<path d="M${f2(p[0])} ${f2(p[1])}L${f2(q[0])} ${f2(q[1])}" stroke-dasharray=".5 .45" marker-end="${mk}"/>`)+`<text x="${f2(m[0])}" y="${f2(m[1]-1.2)}" text-anchor="middle" font-size="1.5" font-weight="700" fill="${col}" opacity="${op}" font-family="system-ui,sans-serif">HAND</text>`;}
     return g(`<path d="M${f2(p[0])} ${f2(p[1])}L${f2(q[0])} ${f2(q[1])}" stroke-dasharray="1 .7" marker-end="${mk}"/>`);
   }
+  if(String(a.p)[0]==='x')return ''; /* defenders move, but get no arrow */
   const A=st.pos[a.p];if(!A)return '';
   const B=a.to;
   if(a.t==='drib'){const [p]=shorten(A,B,1.9,0);return g(`<path d="${zig(p,B)}" marker-end="${mk}"/>`);}
@@ -1560,11 +1439,374 @@ WHERE.push(
   show:[{a:[C(1,[-6.5,4.2],[0,-1])]}]}
 );
 
+/* ===== MOTION: LOW (rebuilt 11/24 from Coach's scenario answers) and SPLITS ===== */
+const LOW_RULES=[
+  ['What Low looks like.','Two slots, two wings, and the post on a block. That spacing is why we play out of Low.'],
+  ['Let the spacing pick the formation.','Two slots and two wings: Low. A corner filled, or three of us on one half: Point with the post high fits better. Low still works when the wing has it and the backside is spaced Point, wing, corner.'],
+  ['The post follows the ball.','When the ball changes sides, she crosses to the new ball-side block.'],
+  ['Slot passes to the wing: cut through.','The passer cuts hard through the middle of the lane to the corner opposite the post. The other slot fills to the Point, not all the way to the ball-side slot. The weak-side wing fills up slightly, even less than that.'],
+  ['Skip to a wing: the ball-side slot cuts through.','Same move as if she had made the pass herself: she cuts through the middle of the lane to the corner opposite the post, and the other slot fills to the Point.'],
+  ['Slot passes to the slot: interchange away.','The passer swaps spots with the wing on her side. Going away from the ball: go on the inside. Coming toward the ball: go on the outside. A real screen away is fine too.'],
+  ['Post touch: split.','The two slots split (see Splits). The passer stays on the wing or drops toward the corner, never higher than the wing.'],
+  ['Backcut only with room and a filler.','There has to be space at the rim and someone on that side to fill behind you. The wing on the post side holds her spot. The slot away from the post can backcut, and the wing behind her fills up.'],
+  ['A dribble at you in Low is a handoff.','A backcut would run right into the post. We only read handoff or backcut when the post is high.'],
+  ['Post: play opposite the drive.','Baseline drive: slide up the lane. Middle drive: slide down toward the baseline. Already on the opposite block: stay. Eyes on the ball for the drop-off.'],
+  ['Help defender sags: stay wide.','Be ready for the skip pass.'],
+  ['Post is fronted: swing it.','Reverse the ball so she can seal. No lob.'],
+  ['Leaving Low: pass back to the Point, post goes high.','After a cut-through, the post stays low while the ball is on her wing. When the ball is passed back to the Point, she steps up to her same-side elbow, a step wider than the lane, and the wing on her side slides a couple of steps lower. Now we are in Point. Nothing is called. The cutter has to end up opposite the post, or the floor jams.']
+];
+const SPLIT_RULES=[
+  ['Post touch starts a split.','The slot on the post side goes at the other slot\'s defender.'],
+  ['Every split ends the same way.','One basket cutter and one perimeter filler.'],
+  ['FILL: her defender goes underneath the screen.','2 fills up to the Point. 1 rolls hard to the rim.'],
+  ['CURL: her defender goes over the top of the screen.','2 curls tight to the rim. 1 fills back out.'],
+  ['BASKET: her defender overplays toward the screen.','2 rejects the screen and cuts hard to the rim. 1 rolls back out.'],
+  ['SLIP: a defender jumps out early.','1 slips to the rim before the screen is set. 2 fills out.'],
+  ['After the cut.','The basket cutter fills out to the corner opposite the post. The weak-side wing fills up to the wing.']
+];
+/* Low with the post on the left block. Defenders for the ball at the left slot. */
+const LD_SLOT={x1:[-7,22.5],x2:[4,21],x3:[-17,18.5],x4:[12,12],x5:[-5,5.5]};
+const LD_WING={x3:[-17.5,16],x1:[-7.5,21.5],x2:[1,17],x4:[6,9.5],x5:[-5,5.5]};
+const PT_ELBOW=[-8.5,19];
+const AFTER_CT={1:SP.rc,2:SP.top,3:SP.lw,4:[17.5,21],5:SP.lb};
+/* defense with the ball still on 3's wing, and with the ball back at the Point */
+const DCT_WING={x3:[-17.5,16],x2:[-2,23.5],x1:[14,6],x4:[7,13],x5:[-5,5.5]};
+const DCT_POINT={x2:[0,24.5],x3:[-16.5,19.5],x4:[13.5,19],x1:[15,7],x5:[-5,5.5]};
+/* split setup: 3 fed 5 on the left block, 1 and 2 split */
+const SPL=Object.assign({},LOW,{x1:[-6.5,23],x5:[-5,5.5]});
+
+PLAYS.push(
+ {id:'low-cut-through',series:'Low',stage:1,title:'Pass to the Wing: Cut Through',sub:'Passer cuts to the opposite corner, slot fills the Point',
+  start:LOW,ball:'1',
+  steps:[
+   {cap:'1 passes from the slot to the wing.',a:[P(1,3)]},
+   {cap:'1 cuts hard through the middle of the lane to the corner opposite the post.',a:[C(1,SP.rc,[-1,9])]},
+   {cap:'2 fills to the Point, not all the way to the ball-side slot. 4 fills up slightly, even less than 2.',a:[C(2,SP.top,[6,29]),C(4,[17.5,21])]}
+  ],end:'Slot to wing: cut through. The other slot fills the Point.'},
+
+ {id:'low-skip',series:'Low',stage:1,title:'Skip to the Wing: Slot Cuts Through',sub:'Same move as if she made the pass',
+  start:LOW,ball:'2',
+  steps:[
+   {cap:'2 skips it from the far slot to 3 on the wing.',a:[P(2,3)]},
+   {cap:'1, the slot on the ball side, cuts through anyway, the same as if she had made the pass. Through the middle of the lane to the corner opposite the post.',a:[C(1,SP.rc,[-1,9])]},
+   {cap:'2 fills to the Point. 4 fills up slightly, even less than 2.',a:[C(2,SP.top,[6,29]),C(4,[17.5,21])]}
+  ],end:'Skip to a wing: the ball-side slot cuts through, just like a pass from the slot.'},
+
+ {id:'low-interchange',series:'Low',stage:1,title:'Slot to Slot: Interchange Away',sub:'Passer swaps with her wing, post follows the ball',
+  start:LOW,ball:'1',
+  steps:[
+   {cap:'1 passes slot to slot, to 2.',a:[P(1,2)]},
+   {cap:'1 interchanges with 3: they swap spots. 1, going away from the ball, goes on the inside. 3, coming toward the ball, goes on the outside. The post follows the ball across to the new ball-side block.',a:[C(1,SP.lw,[-12.5,16.5]),C(3,SP.ls,[-16,28]),C(5,SP.rb,[0,6.5])]}
+  ],end:'Slot to slot: interchange away. A real screen away is fine too. The post follows the ball.'},
+
+ {id:'low-backcut',series:'Low',stage:1,title:'Backcut Away From the Post',sub:'Room at the rim, and a wing to fill behind',
+  start:with_(LOW,LD_SLOT,{x2:[1.5,25]}),ball:'1',
+  steps:[
+   {cap:'X2 is overplaying 2, the slot away from the post. There is room at the rim, and 4 can fill behind her: backcut.',a:[C(2,[3,7],[7,17])]},
+   {cap:'4 fills up to the slot. If the pass is not there, 2 fills out to the corner on her side.',a:[C(4,SP.rs,[17,24]),C(2,SP.rc,[10,3])]},
+   {cap:'2 comes up from the corner to the wing. Every spot is filled again.',a:[C(2,SP.rw,[22.5,10])]}
+  ],end:'Backcut only with room at the rim and a filler behind you. The wing on the post side holds her spot.'},
+
+ {id:'low-handoff',series:'Low',stage:1,title:'Dribble At: Handoff',sub:'In Low, a dribble at you is always a handoff',
+  start:with_(LOW,LD_SLOT),ball:'1',
+  steps:[
+   {cap:'1 dribbles at 3 on the wing.',a:[D(1,[-15,21])]},
+   {cap:'3 comes to get the handoff. No backcut in Low: it would run right into the post.',a:[C(3,[-12,23],[-17,21]),H(1,3)]},
+   {cap:'3 takes it to the slot. 1 fills out to the wing.',a:[D(3,SP.ls),C(1,SP.lw,[-18,23])]}
+  ],end:'Low: a dribble at you is a handoff. Read handoff or backcut only when the post is high.'},
+
+ {id:'low-drive',series:'Low',stage:1,title:'Post Plays Opposite the Drive',sub:'Baseline drive: slide up the lane',
+  start:with_(LOW,LD_WING),ball:'3',
+  steps:[
+   {cap:'3 drives baseline from the wing.',a:[D(3,[-16,5])]},
+   {cap:'5 slides up the lane, opposite the drive, eyes on the ball for the drop-off.',a:[C(5,[-4.5,14])]},
+   {cap:'Her defender helps: drop it off to 5.',a:[P(3,5)]}
+  ],end:'Baseline drive: slide up. Middle drive: slide down. Opposite block: stay.'},
+
+ {id:'low-to-point',series:'Low',stage:2,title:'Leaving Low: Into Point',sub:'Pass back to the Point: post steps up to her elbow',
+  start:LOW,ball:'1',
+  steps:[
+   {cap:'1 passes to 3, the wing on the post side.',a:[P(1,3)]},
+   {cap:'1 cuts through to the corner opposite the post.',a:[C(1,SP.rc,[-1,9])]},
+   {cap:'2 fills to the Point, and 4 fills up slightly. The ball is on the wing on her side, so 5 stays low.',a:[C(2,SP.top,[6,29]),C(4,[17.5,21])]},
+   {cap:'3 passes back to the Point. That is the trigger.',a:[P(3,2)]},
+   {cap:'5 steps up to her same-side elbow, a step wider than the lane. 3 slides a couple of steps lower to keep the spacing.',a:[C(5,PT_ELBOW,[-9,13]),C(3,[-21,13])]}
+  ],end:'Nobody calls it. Ball on her wing: stay low. Ball back to the Point: come high. That is the Point formation.'},
+
+ {id:'split-fill',series:'Splits',stage:1,title:'Fill',sub:'Defender goes underneath: 2 fills up, 1 rolls',
+  start:with_(SPL,{x2:[6,21]}),ball:'3',
+  steps:[
+   {cap:'3 feeds the post. 1 goes straight at X2 and screens her. X2 is a step off 2, still between her and the basket.',a:[P(3,5),S(1,[3.9,22.6]),C('x1',[2,24.8])]},
+   {cap:'X2 goes underneath the screen. That is the trigger.',a:[C('x2',[1.5,19.3],[4.5,18.8])]},
+   {cap:'FILL: 2 fills up to the Point. 1 rolls hard to the rim.',a:[C(2,SP.top,[6,30]),C(1,[1,9],[3.5,17]),C('x1',[2.8,11.5],[3.5,20]),C('x2',[0,24.6])]},
+   {cap:'1 fills out to the corner opposite the post.',a:[C(1,SP.rc,[9,4]),C('x1',[18.5,5.5],[9,6.5])]}
+  ],end:'Fill: X2 goes underneath, 2 fills up, 1 rolls. One cutter, one filler.'},
+
+ {id:'split-curl',series:'Splits',stage:1,title:'Curl',sub:'Defender trails over the top: curl tight',
+  start:with_(SPL,{x2:[7.1,23.7]}),ball:'3',
+  steps:[
+   {cap:'3 feeds the post. 1 goes straight at X2 and screens her. X2 is guarding 2 close, between her and the basket.',a:[P(3,5),S(1,[4.7,24.5]),C('x1',[4.2,22.4])]},
+   {cap:'X2 goes over the top of the screen. That is the trigger.',a:[C('x2',[7,29.3],[8.5,28])]},
+   {cap:'CURL: 2 curls tight around 1 and gets to the basket. 1 holds her screen.',a:[C(2,[1,9],[-1,33]),C('x2',[2.5,17],[2.5,28])]},
+   {cap:'No pass? 2 fills out to the corner opposite the post, and 1 fills back out to the Point.',a:[C(2,SP.rc,[9,4]),C(1,SP.top),C('x1',[0,24.8])]}
+  ],end:'Curl: 2 curls tight, 1 fills out. One cutter, one filler.'},
+
+ {id:'split-basket',series:'Splits',stage:1,title:'Basket',sub:'Defender overplays toward the screen: reject it',
+  start:with_(SPL,{x2:[5,26]}),ball:'3',
+  steps:[
+   {cap:'3 feeds the post. 1 comes to screen, but X2 is overplaying 2 toward the screen.',a:[P(3,5),S(1,[3.2,25.8]),C('x1',[2.7,23.7])]},
+   {cap:'BASKET: 2 rejects the screen and cuts hard to the rim. 1 rolls back out to the Point.',a:[C(2,[3,9],[11,19]),C(1,SP.top,[-1,28]),C('x1',[0,24.8])]},
+   {cap:'2 fills out to the corner opposite the post.',a:[C(2,SP.rc,[9,4])]}
+  ],end:'Basket: 2 rejects and cuts, 1 rolls back out. One cutter, one filler.'},
+
+ {id:'split-slip',series:'Splits',stage:1,title:'Slip',sub:'Defender jumps out early: slip it',
+  start:with_(SPL,{x2:[3,25],x1:[-3,24]}),ball:'3',
+  steps:[
+   {cap:'3 feeds the post. 1 heads to screen X2, but the defenders jump out early to switch.',a:[P(3,5),C(1,[-2,22]),C('x1',[0.3,23.6])]},
+   {cap:'SLIP: 1 slips to the rim before the screen is ever set. 2 fills out to the Point.',a:[C(1,[1,9],[1,17]),C(2,SP.top,[6,29]),C('x1',[0,25])]},
+   {cap:'1 fills out to the corner opposite the post.',a:[C(1,SP.rc,[9,4])]}
+  ],end:'Slip: 1 slips, 2 fills out. One cutter, one filler.'}
+);
+
+READS.push(
+ {id:'lo-r-wingdeny',series:'Low',you:'3',ball:'1',pos:with_(LOW,LD_SLOT,{x3:[-15.5,20]}),
+  sit:'Low. 1 has it at the left slot. X3 is overplaying you on the wing, on the post side.',
+  q:'What do you do?',
+  choices:[
+   {t:'Hold my spot',ok:true,why:'Backcut only with room and a filler. The post is at the rim and nobody is in your corner to fill. Hold your spot, and 1 looks to hit 5 or reverse it to 2.'},
+   {t:'Backcut to the rim',why:'No room: the post is there, and nobody can fill behind you. Hold your spot.'},
+   {t:'Run up to the slot',why:'Hold your spot. 1 can feed the post or reverse it.'},
+   {t:'Go screen for 2',why:'Hold your spot. 1 looks inside or reverses it.'}],
+  show:[]},
+ {id:'lo-r-cutthrough',series:'Low',you:'1',ball:'3',pos:with_(LOW,LD_WING),ctx:[P(1,3)],
+  sit:'Low. You just passed from the slot to the wing.',
+  q:'What do you do?',
+  choices:[
+   {t:'Cut through to the corner opposite the post',ok:true,why:'Slot to wing: cut hard through the middle of the lane to the corner opposite the post.'},
+   {t:'Stay in the slot for a pass back',why:'Slot to wing means cut through.'},
+   {t:'Screen away for 2',why:'Slot to wing: cut through. Slot to slot is the interchange.'},
+   {t:'Cut through to the corner on the post side',why:'The cutter ends up opposite the post, or the floor jams.'}],
+  show:[{a:[C(1,SP.rc,[-1,9])]},{a:[C(2,SP.top,[6,29])]}]},
+ {id:'lo-r-skip',series:'Low',you:'1',ball:'3',pos:with_(LOW,LD_WING),ctx:[P(2,3)],
+  sit:'Low. 2 just skipped it from the far slot to 3, the wing on your side. You are the slot on the ball side.',
+  q:'What do you do?',
+  choices:[
+   {t:'Cut through to the corner opposite the post',ok:true,why:'Skip to a wing: the ball-side slot cuts through, the same as if you had made the pass.'},
+   {t:'Stay in the slot, I did not pass it',why:'Same move as if you had passed it: cut through.'},
+   {t:'Screen away for 2',why:'Cut through to the corner opposite the post.'},
+   {t:'Cut through to the corner on the post side',why:'The cutter ends up opposite the post.'}],
+  show:[{a:[C(1,SP.rc,[-1,9])]},{a:[C(2,SP.top,[6,29])]}]},
+
+ {id:'lo-r-fillpoint',series:'Low',you:'2',ball:'3',pos:with_(LOW,LD_WING),
+  sit:'Low. 1 passed to the wing and is cutting through. You are the other slot.',
+  q:'Where do you fill?',
+  choices:[
+   {t:'To the Point',ok:true,why:'Fill to the Point, not all the way to the ball-side slot.'},
+   {t:'All the way to the ball-side slot',why:'Stop at the Point.'},
+   {t:'Stay where I am',why:'Fill up to the Point.'},
+   {t:'Cut to the rim behind 1',why:'1 is the cutter. You fill to the Point.'}],
+  show:[{a:[C(1,SP.rc,[-1,9]),C(2,SP.top,[6,29]),C(4,[17.5,21])]}]},
+ {id:'lo-r-interchange',series:'Low',you:'1',ball:'2',pos:with_(LOW,LD_SLOT),ctx:[P(1,2)],
+  sit:'Low. You just passed slot to slot, to 2.',
+  q:'What do you do?',
+  choices:[
+   {t:'Swap spots with 3',ok:true,why:'Slot to slot: interchange away with the wing on your side. You are going away from the ball, so you go on the inside and 3 comes over the outside. A real screen away is fine too.'},
+   {t:'Cut through to the corner',why:'That is slot to wing. Slot to slot is the interchange.'},
+   {t:'Follow my pass',why:'Interchange away, with the wing on your side.'},
+   {t:'Stand and watch',why:'Pass and move: interchange with 3.'}],
+  show:[{a:[C(1,SP.lw,[-12.5,16.5]),C(3,SP.ls,[-16,28])]}]},
+ {id:'lo-r-postfollow',series:'Low',you:'5',ball:'2',pos:with_(LOW,LD_SLOT),ctx:[P(1,2)],
+  sit:'Low. The ball just went slot to slot, to the other side. You are on the left block.',
+  q:'What do you do?',
+  choices:[
+   {t:'Cross to the ball-side block',ok:true,why:'In Low, the post follows the ball: cross to the new ball-side block.'},
+   {t:'Flash to the high post',why:'You come high on a pass back to the Point after a cut-through. Here, follow the ball to the other block.'},
+   {t:'Stay on the left block',why:'Follow the ball to the new ball-side block.'},
+   {t:'Pop out to the wing',why:'Follow the ball to the new ball-side block.'}],
+  show:[{a:[C(5,SP.rb,[0,6.5])]}]},
+ {id:'lo-r-sealed',series:'Low',you:'3',ball:'3',pos:with_(LOW,LD_WING,{x5:[-5,5.5]}),
+  sit:'Low. You have it on the wing. 5 has X5 sealed behind her on the block.',
+  q:'What do you do?',
+  choices:[
+   {t:'Feed the post right away',ok:true,why:'Post sealed: get it to her right away. A post touch starts our split.'},
+   {t:'Swing it back to 1',why:'She is sealed. Feed her now.'},
+   {t:'Drive baseline',why:'Feed the sealed post.'},
+   {t:'Wait for a better look',why:'The seal will not last. Feed her right away.'}],
+  show:[{a:[P(3,5)]}]},
+ {id:'lo-r-passer',series:'Low',you:'3',ball:'5',pos:with_(LOW,LD_WING),ctx:[P(3,5)],
+  sit:'Low. You just fed the post from the wing.',
+  q:'What do you do?',
+  choices:[
+   {t:'Stay wide on the wing',ok:true,why:'The passer stays on the wing or drops toward the corner, never higher than the wing. The two slots split.'},
+   {t:'Go screen for 1',why:'The two slots split. You find space on the wing or toward the corner.'},
+   {t:'Cut to the basket',why:'The split puts a cutter at the rim. You stay wide.'},
+   {t:'Come up to the slot',why:'Never higher than the wing.'}],
+  show:[]},
+ {id:'lo-r-slotafterfeed',series:'Low',you:'1',ball:'5',pos:with_(LOW,LD_WING),ctx:[P(3,5)],
+  sit:'Low. 3 just fed 5 on your side. You are the slot on the post side.',
+  q:'What do you do?',
+  choices:[
+   {t:'Go at X2 to start the split',ok:true,why:'Post touch: the two slots split. Go straight at the other slot\'s defender.'},
+   {t:'Cut straight to the rim',why:'Start the split with 2 by going at her defender.'},
+   {t:'Stay in my slot and wait',why:'Post touch means split.'},
+   {t:'Go set a screen for 3',why:'The split is between the two slots.'}],
+  show:[{a:[S(1,[-0.3,18.3]),C('x1',[-2.3,16.8])]}]},
+ {id:'lo-r-slotdeny',series:'Low',you:'2',ball:'1',pos:with_(LOW,LD_SLOT,{x2:[1.5,25]}),
+  sit:'Low. 1 has it. X2 is overplaying you, the slot away from the post.',
+  q:'What do you do?',
+  choices:[
+   {t:'Backcut to the rim',ok:true,why:'There is room at the rim on this side, and 4 fills up behind you. Backcut.'},
+   {t:'Hold my spot',why:'Away from the post you have room and a filler: backcut.'},
+   {t:'Go screen for 4',why:'Backcut. 4 fills up behind you.'},
+   {t:'Come to the ball',why:'She is overplaying you. Backcut.'}],
+  show:[{a:[C(2,[3,7],[7,17])]},{a:[C(4,SP.rs,[17,24]),C(2,SP.rc,[10,3])]}]},
+ {id:'lo-r-dribat',series:'Low',you:'3',ball:'1',pos:with_(LOW,LD_SLOT),ctx:[D(1,[-15,21])],
+  sit:'Low. 1 is dribbling right at you on the wing. The post is on your block.',
+  q:'What do you do?',
+  choices:[
+   {t:'Come get the handoff',ok:true,why:'In Low, a dribble at you is a handoff. A backcut would run into the post.'},
+   {t:'Backcut to the rim',why:'Not in Low: the post is at the rim. Handoff.'},
+   {t:'Clear out to the corner',why:'Come get the handoff.'},
+   {t:'Read handoff or backcut',why:'That read is for when the post is high. In Low, always the handoff.'}],
+  show:[{a:[C(3,[-12,23],[-17,21]),H(1,3)]}]},
+ {id:'lo-r-baseline',series:'Low',you:'5',ball:'3',pos:with_(LOW,LD_WING),ctx:[D(3,[-16,5])],
+  sit:'3 drives baseline on your side. You are on the block.',
+  q:'Where do you go?',
+  choices:[
+   {t:'Slide up the lane',ok:true,why:'Play opposite the drive. Baseline drive: slide up the lane, eyes on the ball for the drop-off.'},
+   {t:'Slide down to the baseline',why:'That is for a middle drive. Baseline drive: slide up.'},
+   {t:'Stay and seal',why:'You are in her way. Slide up the lane.'},
+   {t:'Pop out to the corner',why:'Slide up the lane, ready for the drop-off.'}],
+  show:[{a:[C(5,[-4.5,14])]}]},
+ {id:'lo-r-middle',series:'Low',you:'5',ball:'3',pos:with_(LOW,LD_WING),ctx:[D(3,[-9,14])],
+  sit:'3 drives middle from the wing on your side. You are on the block.',
+  q:'Where do you go?',
+  choices:[
+   {t:'Slide down the lane',ok:true,why:'Play opposite the drive. Middle drive: slide down toward the baseline, eyes on the ball.'},
+   {t:'Slide up the lane',why:'That is for a baseline drive.'},
+   {t:'Step up to the elbow',why:'Slide down, opposite the drive.'},
+   {t:'Cross to the other block',why:'Slide down on your side, eyes on the ball.'}],
+  show:[{a:[C(5,[-8.5,3])]}]},
+ {id:'lo-r-sag',series:'Low',you:'4',ball:'3',pos:with_(LOW,LD_WING,{x4:[3,9]}),
+  sit:'Ball on the far wing. Your defender sagged all the way into the lane to help.',
+  q:'What do you do?',
+  choices:[
+   {t:'Stay wide on the wing',ok:true,why:'Help defender sags: stay wide, ready for the skip pass.'},
+   {t:'Cut to the rim',why:'Stay wide. She is giving you the skip pass.'},
+   {t:'Come up to the slot',why:'Stay wide, ready for the skip.'},
+   {t:'Go screen for the post',why:'Stay wide for the skip pass.'}],
+  show:[{a:[P(3,4)]}]},
+ {id:'lo-r-fronted',series:'Low',you:'3',ball:'3',pos:with_(LOW,LD_WING,{x5:[-10.3,10.5]}),
+  sit:'You have it on the wing. X5 is fronting 5 on the block.',
+  q:'What do you do?',
+  choices:[
+   {t:'Swing it and reverse it',ok:true,why:'Post fronted: swing it and reverse the ball so she can seal. No lob.'},
+   {t:'Lob it over the top',why:'No lob. Swing and reverse it.'},
+   {t:'Force it in',why:'Swing and reverse it so she can seal.'},
+   {t:'Hold it and wait',why:'Swing it and reverse it.'}],
+  show:[{a:[P(3,1)]},{a:[P(1,2)]}]},
+ {id:'lo-r-staylow',series:'Low',you:'5',ball:'3',pos:with_(AFTER_CT,DCT_WING),
+  sit:'1 cut through to the opposite corner and 2 filled the Point. 3 still has the ball on your wing.',
+  q:'What do you do?',
+  choices:[
+   {t:'Stay low on my block',ok:true,why:'Ball on your wing: stay low. You come high when it goes back to the Point.'},
+   {t:'Step up to my elbow',why:'Not yet. Wait for the pass back to the Point.'},
+   {t:'Cross to the other block',why:'Stay low on your side while the ball is on your wing.'},
+   {t:'Go set a screen for 2',why:'Stay low. The pass back to the Point is your trigger.'}],
+  show:[]},
+ {id:'lo-r-intopoint',series:'Low',you:'5',ball:'2',pos:with_(AFTER_CT,DCT_POINT),ctx:[P(3,2)],
+  sit:'1 cut through to the opposite corner, 2 filled the Point, and 3 just passed back to 2 at the Point.',
+  q:'What do you do?',
+  choices:[
+   {t:'Step up to my same-side elbow',ok:true,why:'Ball back to the Point: the post comes high to her same-side elbow, a step wider than the lane. Now we are in Point.'},
+   {t:'Cross to the other block',why:'The cutter is over there. Step up to your elbow.'},
+   {t:'Stay on the block',why:'The pass back to the Point is your trigger. Step up to your elbow.'},
+   {t:'Step up to the middle of the line',why:'Your same-side elbow, a step wider than the lane.'}],
+  show:[{a:[C(5,PT_ELBOW,[-9,13]),C(3,[-21,13])]}]},
+
+ {id:'sp-r-fill',series:'Splits',you:'2',ball:'5',pos:with_(SPL,{x2:[1.5,19.3]}),ctx:[S(1,[3.9,22.6])],
+  sit:'Post touch. 1 comes to screen your defender, and X2 goes underneath the screen.',
+  q:'Which read?',
+  choices:[
+   {t:'Fill',ok:true,why:'X2 goes underneath the screen: Fill. 2 fills up to the Point, and 1 rolls hard to the rim.'},
+   {t:'Curl',why:'Curl is when she goes over the top of the screen.'},
+   {t:'Basket',why:'Basket is when she overplays toward the screen.'},
+   {t:'Slip',why:'Slip is when they jump out early.'}],
+  show:[{a:[C(2,SP.top,[6,30]),C(1,[1,9],[3.5,17])]}]},
+ {id:'sp-r-curl',series:'Splits',you:'2',ball:'5',pos:with_(SPL,{x2:[7.1,23.7]}),ctx:[S(1,[4.7,24.5]),C('x2',[7,29.3],[8.5,28])],
+  sit:'Post touch. 1 screens X2, who was guarding you close. X2 is going over the top of the screen.',
+  q:'Which read?',
+  choices:[
+   {t:'Curl',ok:true,why:'X2 goes over the top of the screen: Curl. 2 curls tight around 1 to the rim, then 1 fills back out to the Point.'},
+   {t:'Fill',why:'Fill is when she goes underneath the screen.'},
+   {t:'Basket',why:'Basket is when she overplays toward the screen.'},
+   {t:'Slip',why:'Slip is when they jump out early.'}],
+  show:[{a:[C(2,[1,9],[-1,33])]},{a:[C(1,SP.top)]}]},
+ {id:'sp-r-basket',series:'Splits',you:'2',ball:'5',pos:with_(SPL,{x2:[5,26]}),ctx:[S(1,[3.2,25.8])],
+  sit:'Post touch. 1 is coming to screen, but X2 is overplaying you toward the screen.',
+  q:'Which read?',
+  choices:[
+   {t:'Basket',ok:true,why:'X2 overplays toward the screen: Basket. 2 rejects the screen and cuts hard to the rim, and 1 rolls back out.'},
+   {t:'Curl',why:'Curl is when she goes over the top of the screen.'},
+   {t:'Fill',why:'Fill is when she goes underneath the screen.'},
+   {t:'Slip',why:'Slip is the screener\'s read when they jump out early.'}],
+  show:[{a:[C(2,[3,9],[11,19]),C(1,SP.top,[-1,28])]}]},
+ {id:'sp-r-slip',series:'Splits',you:'1',ball:'5',pos:with_(SPL,{x2:[3,25],x1:[-3,24]}),ctx:[C(1,[-2,22])],
+  sit:'Post touch. You head over to screen X2, and both defenders jump out early to switch.',
+  q:'Which read?',
+  choices:[
+   {t:'Slip: slip to the rim before the screen is set',ok:true,why:'A defender jumps out early: Slip.'},
+   {t:'Set the screen anyway',why:'They jumped early. Slip it.'},
+   {t:'Fill',why:'Fill is when X2 goes underneath the screen.'},
+   {t:'Pop back out',why:'Slip to the rim. 2 fills out.'}],
+  show:[{a:[C(1,[1,9],[1,17]),C(2,SP.top,[6,29])]}]},
+ {id:'sp-r-oneone',series:'Splits',you:'1',ball:'5',pos:with_(SPL,{1:[4.7,24.5],x2:[7.1,23.7]}),ctx:[C(2,[1,9],[-1,33])],
+  sit:'Post touch. 2 just curled your screen to the rim.',
+  q:'What is your job?',
+  choices:[
+   {t:'Fill back out',ok:true,why:'Every split: one basket cutter, one perimeter filler. She cut, so you fill back out.'},
+   {t:'Roll to the rim too',why:'One cutter, one filler. She cut, so you fill out.'},
+   {t:'Stay where I screened',why:'Fill back out to the perimeter.'},
+   {t:'Post up',why:'Fill back out to the perimeter.'}],
+  show:[{a:[C(1,SP.top)]}]}
+);
+
+WHERE.push(
+ {id:'lo-w-cutthrough',series:'Low',you:'1',ball:'3',pos:with_(LOW,LD_WING),ctx:[P(1,3)],
+  q:'Low. You passed from the slot to the wing. Where do you end up?',
+  ans:SP.rc,tol:5,why:'Cut hard through the middle of the lane to the corner opposite the post.',
+  show:[{a:[C(1,SP.rc,[-1,9])]}]},
+ {id:'lo-w-skip',series:'Low',you:'1',ball:'3',pos:with_(LOW,LD_WING),ctx:[P(2,3)],
+  q:'Low. 2 skipped it to the wing on your side. You are the ball-side slot. Where do you end up?',
+  ans:SP.rc,tol:5,why:'Cut through to the corner opposite the post, the same as if you had made the pass.',
+  show:[{a:[C(1,SP.rc,[-1,9])]}]},
+
+ {id:'lo-w-point',series:'Low',you:'2',ball:'3',pos:with_(LOW,LD_WING),
+  q:'Low. 1 is cutting through. You are the other slot. Where do you fill?',
+  ans:SP.top,tol:4.5,why:'To the Point, not all the way to the ball-side slot.',
+  show:[{a:[C(1,SP.rc,[-1,9]),C(2,SP.top,[6,29]),C(4,[17.5,21])]}]},
+ {id:'lo-w-postfollow',series:'Low',you:'5',ball:'2',pos:with_(LOW,LD_SLOT),ctx:[P(1,2)],
+  q:'Low. The ball went slot to slot, to the other side. Where do you go?',
+  ans:SP.rb,tol:3.5,why:'The post follows the ball: cross to the new ball-side block.',
+  show:[{a:[C(5,SP.rb,[0,6.5])]}]},
+ {id:'lo-w-elbow',series:'Low',you:'5',ball:'2',pos:with_(AFTER_CT,DCT_POINT),ctx:[P(3,2)],
+  q:'After the cut-through, 3 passes back to 2 at the Point. Where do you go?',
+  ans:PT_ELBOW,tol:3.5,why:'Step up to your same-side elbow, a step wider than the lane. Now we are in Point.',
+  show:[{a:[C(5,PT_ELBOW,[-9,13]),C(3,[-21,13])]}]},
+ {id:'sp-w-cutter',series:'Splits',you:'2',ball:'5',pos:with_(SPL,{2:[1,9],1:SP.top}),
+  q:'You curled the split to the rim and did not get the ball. Where do you fill?',
+  ans:SP.rc,tol:5,why:'The basket cutter fills out to the corner opposite the post.',
+  show:[{a:[C(2,SP.rc,[9,4])]}]}
+);
+
+/* Sections under review show only on the local preview (localhost), never on the live site. */
+const PREVIEW=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 const CATS=[
   {id:'offense',title:'Offense',sub:'Transition, Man and Zone Offenses',sections:[
     {id:'trans',title:'Transition',sub:'Same break against man or zone',groups:[
       {id:'transition',title:'Transition',sub:'Primary break first, then rim runner, wings and slots',series:['Transition']}]},
-    {id:'man',title:'Man Offenses',sub:'Motion and sets vs. man-to-man',groups:[]},  /* Motion is built but hidden until Coach reworks it: add back {id:'motion',title:'Motion',sub:'Our motion offense: Low, Point and 5 Out',series:['Rules','Low','Point','5 Out']} */
+    {id:'man',title:'Man Offenses',sub:'Motion and sets vs. man-to-man',groups:[
+      {id:'motion',title:'Motion',sub:'Our motion offense: Low and Splits (Point and 5 Out coming)',series:['Low','Splits']}]},  /* Motion is built but hidden until Coach reworks it: add back {id:'motion',title:'Motion',sub:'Our motion offense: Low, Point and 5 Out',series:['Rules','Low','Point','5 Out']} */
     {id:'zone',title:'Zone Offenses',sub:'Attacking a 2-3, 1-3-1 and other zones',groups:[]}]},
   {id:'defense',title:'Defense',sub:'Man and Zone Defenses, Presses',sections:[
     {id:'mand',title:'Man Defenses',sub:'Half court and full court man-to-man',groups:[]},  /* Built but hidden until Coach finalizes the defenses. To restore, put these back in groups: {id:'manrules',title:'Rules',sub:'The rules for all our man defenses',series:['Man Rules']}, {id:'ballscreens',title:'Ball Screen Coverages',sub:'Switch or Fire, and where our help goes',series:['Ball Screens']}, {id:'postd',title:'Post Defense',sub:'Front from the baseline side. Caught behind? Make her go middle',series:['Post D']}, {id:'m5',title:'5',sub:'All five pick up at half court',series:['5']}, {id:'m6',title:'6',sub:'5+1: one is up turning',series:['6']}, {id:'m7',title:'7',sub:'5+2: two are up turning',series:['7']}, {id:'m8',title:'8',sub:'5+3: three are up turning',series:['8']}, {id:'m9',title:'9',sub:'5+4: four are up turning',series:['9']}, {id:'m10',title:'10',sub:'5+5: all five are up turning',series:['10']} */
@@ -1573,10 +1815,10 @@ const CATS=[
   {id:'blob',title:'BLOBs',sub:'Baseline Out-of-Bounds Plays',groups:[]}  /* BLOB 3 is final (Coach) but hidden until more BLOBs are ready: {id:'b3',title:'BLOB 3',sub:'Three across: screen the middle, 4 cuts to the ball',series:['BLOB 3']} */,
   {id:'slob',title:'SLOBs',sub:'Sideline Out-of-Bounds Plays',groups:[]}  /* Kansas + Kansas 2 are built but hidden until Coach finishes reviewing them: add back {id:'kansas',title:'Kansas',series:['Kansas','Kansas 2']} */
 ];
-const SERIES_SUB={Transition:'Primary break first, then rim runner, wings and slots',Rules:'The rules every play is built on, and reading the floor',Low:'Out of transition: fills every spot',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Man Rules':'The rules for all our man defenses','Ball Screens':'Switch or Fire, and where our help goes','Post D':'Front from the baseline side. Caught behind? Make her go middle','Kansas':'Get it to the corner, then the lob','BLOB 3':'Three across: screen the middle, 4 cuts to the ball','Kansas 2':'Looks like Kansas, then a back screen and lob','5':'All five pick up at half court','6':'5+1: one is up turning','7':'5+2: two are up turning','8':'5+3: three are up turning','9':'5+4: four are up turning','10':'5+5: all five are up turning'};
+const SERIES_SUB={Transition:'Primary break first, then rim runner, wings and slots',Rules:'The rules every play is built on, and reading the floor',Low:'Two slots, two wings, post on the block',Splits:'Post touch: Fill, Curl, Basket or Slip',Point:'Post at the high post: Away and Over','5 Out':'Everyone out, post passes up top','Man Rules':'The rules for all our man defenses','Ball Screens':'Switch or Fire, and where our help goes','Post D':'Front from the baseline side. Caught behind? Make her go middle','Kansas':'Get it to the corner, then the lob','BLOB 3':'Three across: screen the middle, 4 cuts to the ball','Kansas 2':'Looks like Kansas, then a back screen and lob','5':'All five pick up at half court','6':'5+1: one is up turning','7':'5+2: two are up turning','8':'5+3: three are up turning','9':'5+4: four are up turning','10':'5+5: all five are up turning'};
 const SERIES_TITLE={'Man Rules':'Man Defense Rules','Ball Screens':'Ball Screen Coverages','Post D':'Post Defense'};
 const stitle=x=>SERIES_TITLE[x]||x;
-const SERIES_RULES=Object.assign({Transition:TRANS_RULES,Rules:RULES,'Man Rules':HCM_RULES,'Ball Screens':BS_RULES,'Post D':PD_RULES},NUM_RULES,KAN_RULES,BLOB_RULES);
+const SERIES_RULES=Object.assign({Transition:TRANS_RULES,Rules:RULES,Low:LOW_RULES,Splits:SPLIT_RULES,'Man Rules':HCM_RULES,'Ball Screens':BS_RULES,'Post D':PD_RULES},NUM_RULES,KAN_RULES,BLOB_RULES);
 /* Only series listed in CATS are live: hidden ones stay out of plays, quizzes and the Daily 5. */
 const LIVE=new Set();CATS.forEach(c=>(c.sections?[].concat(...c.sections.map(x=>x.groups)):c.groups).forEach(g=>g.series.forEach(x=>LIVE.add(x))));
 for(let i=PLAYS.length-1;i>=0;i--)if(!LIVE.has(PLAYS[i].series))PLAYS.splice(i,1);
@@ -1598,7 +1840,7 @@ if(['home','team'].indexOf(store.tab)<0)store.tab='home';
 function renderTabs(){
   $('#tabs').innerHTML=TABS.map(t=>`<button class="tb" role="tab" data-act="tab" data-k="${t[0]}" aria-selected="${store.tab===t[0]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${t[2]}</svg>${t[1]}</button>`).join('');
 }
-function needSignIn(){return !!API_URL&&!store.player;}
+function needSignIn(){return !PREVIEW&&!!API_URL&&!store.player;}
 function render(keepScroll){
   stopAnim();
   const gate=needSignIn();
@@ -1834,9 +2076,10 @@ function record(kind,id,ok){
 
 /* ---------- Tracker: sign-in, offline outbox, team board ---------- */
 const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
-const SERIES4=['Transition','Rules','Low','Point','5 Out','Man Rules'].filter(x=>LIVE.has(x));
+const SERIES4=['Transition','Rules','Low','Splits','Point','5 Out','Man Rules'].filter(x=>LIVE.has(x));
 const BADGE_SHORT={'5 Out':'5 OUT','Man Rules':'MAN D'};
 function logEvent(kind,item,series,ok){
+  if(PREVIEW)return; /* local preview: never touch the real team board */
   if(!API_URL||!store.player)return;
   store.outbox.push({who:store.player.login,id:newId(),t:Date.now(),kind,item,series,ok});
   if(store.outbox.length>3000)store.outbox=store.outbox.slice(-3000);
@@ -1844,6 +2087,7 @@ function logEvent(kind,item,series,ok){
 }
 let flushing=false;
 async function flush(){
+  if(PREVIEW)return;
   if(!API_URL||flushing||!store.outbox.length||navigator.onLine===false)return;
   flushing=true;
   try{
