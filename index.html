@@ -1806,7 +1806,7 @@ const CATS=[
     {id:'trans',title:'Transition',sub:'Same break against man or zone',groups:[
       {id:'transition',title:'Transition',sub:'Primary break first, then rim runner, wings and slots',series:['Transition']}]},
     {id:'man',title:'Man Offenses',sub:'Motion and sets vs. man-to-man',groups:[
-      {id:'motion',title:'Motion',sub:'Our motion offense: Low and Splits (Point and 5 Out coming)',series:['Low','Splits']}]},  /* Motion is built but hidden until Coach reworks it: add back {id:'motion',title:'Motion',sub:'Our motion offense: Low, Point and 5 Out',series:['Rules','Low','Point','5 Out']} */
+      {id:'motion',title:'Motion',sub:'Our motion offense: Splits and Low (Point and 5 Out coming)',series:['Splits','Low']}  /* order: Splits, Low, Point, 5 Out */]},  /* Motion is built but hidden until Coach reworks it: add back {id:'motion',title:'Motion',sub:'Our motion offense: Low, Point and 5 Out',series:['Rules','Low','Point','5 Out']} */
     {id:'zone',title:'Zone Offenses',sub:'Attacking a 2-3, 1-3-1 and other zones',groups:[]}]},
   {id:'defense',title:'Defense',sub:'Man and Zone Defenses, Presses',sections:[
     {id:'mand',title:'Man Defenses',sub:'Half court and full court man-to-man',groups:[]},  /* Built but hidden until Coach finalizes the defenses. To restore, put these back in groups: {id:'manrules',title:'Rules',sub:'The rules for all our man defenses',series:['Man Rules']}, {id:'ballscreens',title:'Ball Screen Coverages',sub:'Switch or Fire, and where our help goes',series:['Ball Screens']}, {id:'postd',title:'Post Defense',sub:'Front from the baseline side. Caught behind? Make her go middle',series:['Post D']}, {id:'m5',title:'5',sub:'All five pick up at half court',series:['5']}, {id:'m6',title:'6',sub:'5+1: one is up turning',series:['6']}, {id:'m7',title:'7',sub:'5+2: two are up turning',series:['7']}, {id:'m8',title:'8',sub:'5+3: three are up turning',series:['8']}, {id:'m9',title:'9',sub:'5+4: four are up turning',series:['9']}, {id:'m10',title:'10',sub:'5+5: all five are up turning',series:['10']} */
@@ -2076,7 +2076,7 @@ function record(kind,id,ok){
 
 /* ---------- Tracker: sign-in, offline outbox, team board ---------- */
 const newId=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
-const SERIES4=['Transition','Rules','Low','Splits','Point','5 Out','Man Rules'].filter(x=>LIVE.has(x));
+const SERIES4=['Transition','Rules','Splits','Low','Point','5 Out','Man Rules'].filter(x=>LIVE.has(x));
 const BADGE_SHORT={'5 Out':'5 OUT','Man Rules':'MAN D'};
 function logEvent(kind,item,series,ok){
   if(PREVIEW)return; /* local preview: never touch the real team board */
